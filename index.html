@@ -16,58 +16,53 @@
       width: 90%;
       height: 420px;
       margin: 20px auto;
-      background: #ecf0f1; /* светлый фон, чтобы видно было лошадей */
+      background: #ecf0f1;
       border: 4px solid #fff;
       border-radius: 10px;
+      overflow: hidden;
     }
 
     .horse {
       position: absolute;
       left: 0;
-      width: 100px; /* шире, чтобы заметнее */
+      width: 100px;
       height: 30px;
       border-radius: 5px;
       text-align: center;
       line-height: 30px;
-      color: #000; /* чёрный текст для контраста */
+      color: #000;
       font-size: 14px;
       font-weight: bold;
-    }
-
-    .controls {
-      margin: 20px;
-    }
-
-    input {
-      width: 40px;
-      margin: 2px;
-      text-align: center;
-    }
-
-    button {
-      margin-top: 10px;
-      padding: 8px 16px;
-      font-size: 16px;
       cursor: pointer;
-      border-radius: 5px;
-      border: none;
-      background: #27ae60;
-      color: white;
-      transition: background 0.3s;
+      transition: left 2s linear;
     }
 
-    button:hover {
-      background: #2ecc71;
+    /* Всплывающая подсказка */
+    .horse::after {
+      content: attr(data-points) " очков";
+      position: absolute;
+      bottom: 120%;
+      left: 50%;
+      transform: translateX(-50%);
+      background: rgba(0, 0, 0, 0.8);
+      color: #fff;
+      padding: 4px 8px;
+      border-radius: 5px;
+      font-size: 12px;
+      white-space: nowrap;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.3s;
+    }
+
+    .horse:hover::after {
+      opacity: 1;
     }
   </style>
 </head>
 <body>
   <h1>🏇 Игра "Скачки"</h1>
-  <div class="controls">
-    <p>Задай значение для каждой лошади:</p>
-    <div id="inputs"></div>
-    <button onclick="startRace()">Старт</button>
-  </div>
+  <p>Наблюдайте за забегом!</p>
 
   <div class="track" id="track"></div>
 
@@ -77,33 +72,29 @@
       "#e67e22", "#1abc9c", "#34495e", "#d35400", "#7f8c8d"
     ];
     const track = document.getElementById("track");
-    const inputs = document.getElementById("inputs");
 
-    // Создаём 10 инпутов и 10 лошадей
-    for (let i = 0; i < 10; i++) {
-      let input = document.createElement("input");
-      input.type = "number";
-      input.value = 10;
-      input.id = "horseInput" + i;
-      inputs.appendChild(input);
+    // 🔹 Здесь ты задаёшь значения (баллы) для лошадей
+    const horsePoints = [12, 20, 7, 15, 25, 10, 18, 5, 30, 22];
 
+    // Создаём лошадей
+    for (let i = 0; i < horsePoints.length; i++) {
       let horse = document.createElement("div");
       horse.className = "horse";
       horse.style.top = i * 38 + "px";
       horse.style.background = colors[i];
       horse.innerText = i + 1;
       horse.id = "horse" + i;
+      horse.setAttribute("data-points", horsePoints[i]);
       track.appendChild(horse);
     }
 
-    function startRace() {
-      for (let i = 0; i < 10; i++) {
-        let value = document.getElementById("horseInput" + i).value;
+    // Запускаем анимацию автоматически
+    window.onload = () => {
+      for (let i = 0; i < horsePoints.length; i++) {
         let horse = document.getElementById("horse" + i);
-        horse.style.transition = "left 2s linear";
-        horse.style.left = value * 5 + "px"; // множитель для движения
+        horse.style.left = horsePoints[i] * 15 + "px"; // множитель для движения
       }
-    }
+    };
   </script>
 </body>
 </html>
