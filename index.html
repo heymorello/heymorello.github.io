@@ -14,9 +14,9 @@
     .track {
       position: relative;
       width: 90%;
-      height: 400px;
+      height: 420px;
       margin: 20px auto;
-      background: #34495e;
+      background: #ecf0f1; /* светлый фон, чтобы видно было лошадей */
       border: 4px solid #fff;
       border-radius: 10px;
     }
@@ -24,12 +24,12 @@
     .horse {
       position: absolute;
       left: 0;
-      width: 60px;
+      width: 100px; /* шире, чтобы заметнее */
       height: 30px;
       border-radius: 5px;
       text-align: center;
       line-height: 30px;
-      color: #fff;
+      color: #000; /* чёрный текст для контраста */
       font-size: 14px;
       font-weight: bold;
     }
@@ -101,7 +101,7 @@
         let value = document.getElementById("horseInput" + i).value;
         let horse = document.getElementById("horse" + i);
         horse.style.transition = "left 2s linear";
-        horse.style.left = value * 5 + "px"; // множитель, чтобы видно движение
+        horse.style.left = value * 5 + "px"; // множитель для движения
       }
     }
   </script>
