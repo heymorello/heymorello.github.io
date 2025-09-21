@@ -2,30 +2,83 @@
 <html lang="ru">
 <head>
   <meta charset="UTF-8">
-  <title>Игра Скачки</title>
+  <title>Волшебные скачки</title>
   <style>
     body {
       margin: 0;
       padding: 0;
-      overflow-x: scroll; /* горизонтальный скролл */
+      overflow-x: scroll;
       overflow-y: hidden;
+      font-family: Arial, sans-serif;
     }
 
-    /* Фон с замощением */
-    .background {
+    /* ===== СЛОИ ФОНА ===== */
+    .layer {
       position: fixed;
       top: 0;
       left: 0;
       width: 100%;
       height: 100%;
-      background: url("https://i.postimg.cc/6QGH1nhf/Chat-GPT-Image-21-2025-07-52-16.png") repeat-x;
-      background-size: auto;
-      z-index: -1;
+      z-index: -10;
     }
 
+    /* Небо */
+    .sky {
+      background: url("https://i.ibb.co/zRS5dY3/sky-texture.jpg") repeat-x;
+      background-size: auto 100%;
+      z-index: -10;
+    }
+
+    /* Облака */
+    .clouds {
+      background: url("https://i.ibb.co/QmVjJZC/clouds.png") repeat-x;
+      background-size: auto 60%;
+      opacity: 0.8;
+      z-index: -9;
+    }
+
+    /* Забор и трава */
+    .fence {
+      background: url("https://i.ibb.co/mcQ6Tn2/fence.png") repeat-x bottom;
+      background-size: auto 200px;
+      z-index: -8;
+    }
+
+    /* Песок */
+    .sand {
+      background: url("https://i.ibb.co/b5mY84M/sand.png") repeat-x;
+      background-size: auto 150px;
+      bottom: 0;
+      height: 200px;
+      position: fixed;
+      z-index: -7;
+    }
+
+    /* ===== ТЕКСТ ===== */
+    .header {
+      position: fixed;
+      top: 20%;
+      left: 50%;
+      transform: translateX(-50%);
+      text-align: center;
+      color: white;
+      text-shadow: 2px 2px 4px rgba(0,0,0,0.7);
+    }
+
+    .header h1 {
+      font-size: 60px;
+      margin: 0;
+    }
+
+    .header p {
+      font-size: 22px;
+      margin-top: 10px;
+    }
+
+    /* ===== ТРАССА ===== */
     .race {
       position: relative;
-      width: 5000px; /* длина трассы */
+      width: 5000px;
       height: 100vh;
     }
 
@@ -37,11 +90,10 @@
     }
 
     .horse img {
-      width: 100%;
+      width: 100px;
       display: block;
     }
 
-    /* Подсказка */
     .horse::after {
       content: attr(data-points) " очков";
       position: absolute;
@@ -55,7 +107,6 @@
       font-size: 12px;
       white-space: nowrap;
       opacity: 0;
-      pointer-events: none;
       transition: opacity 0.3s;
     }
 
@@ -65,11 +116,23 @@
   </style>
 </head>
 <body>
-  <div class="background"></div>
+  <!-- СЛОИ -->
+  <div class="layer sky"></div>
+  <div class="layer clouds"></div>
+  <div class="layer fence"></div>
+  <div class="layer sand"></div>
+
+  <!-- ЗАГОЛОВОК -->
+  <div class="header">
+    <h1>Волшебные скачки</h1>
+    <p>Это учебная игра Гриффиндора</p>
+  </div>
+
+  <!-- ТРАССА -->
   <div class="race" id="race"></div>
 
   <script>
-    // 🔹 Картинки лошадей
+    // Лошадки
     const horseImages = [
       "https://i.ibb.co/7K0hFh8/horse1.png",
       "https://i.ibb.co/Y0sNwmx/horse2.png",
@@ -83,31 +146,20 @@
       "https://i.ibb.co/DRN7XkM/horse10.png"
     ];
 
-    // 🔹 Очки
-    const horsePoints = [1, 2, 7, 1, 2, 1, 1, 5, 3, 2];
-
+    const horsePoints = [12, 20, 7, 15, 25, 10, 18, 5, 30, 22];
     const race = document.getElementById("race");
 
     function placeHorses() {
-      race.innerHTML = ""; // очистить при пересчёте
-
+      race.innerHTML = "";
       const screenHeight = window.innerHeight;
-
-      // 🔹 Высота лошади (динамическая, но не больше 120px)
-      const horseHeight = Math.min(120, screenHeight / 12);
-
-      // 🔹 Вертикальный шаг (чуть меньше высоты, чтобы налегали)
+      const horseHeight = Math.min(100, screenHeight / 12);
       const step = horseHeight * 0.8;
 
-      // Создаём лошадей
       for (let i = 0; i < horsePoints.length; i++) {
         let horse = document.createElement("div");
         horse.className = "horse";
-
-        // Первая лошадь стоит у "песка" (внизу экрана)
-        horse.style.bottom = i * step + "px";
-
-        horse.style.width = horseHeight + "px"; // ширина ≈ высоте для пропорций
+        horse.style.bottom = 200 + i * step + "px"; // песок = 200px
+        horse.style.width = horseHeight + "px";
         horse.setAttribute("data-points", horsePoints[i]);
 
         let img = document.createElement("img");
@@ -120,13 +172,10 @@
       }
     }
 
-    // Первое размещение
     placeHorses();
-
-    // Перерасчёт при изменении размера окна
     window.onresize = placeHorses;
 
-    // Анимация старта
+    // Анимация
     window.onload = () => {
       for (let i = 0; i < horsePoints.length; i++) {
         let horse = document.getElementById("horse" + i);
@@ -137,7 +186,9 @@
     // Параллакс
     window.addEventListener("scroll", () => {
       const scrollX = window.scrollX;
-      document.querySelector(".background").style.backgroundPositionX = -(scrollX * 0.5) + "px";
+      document.querySelector(".clouds").style.backgroundPositionX = -(scrollX * 0.3) + "px";
+      document.querySelector(".fence").style.backgroundPositionX = -(scrollX * 0.6) + "px";
+      document.querySelector(".sand").style.backgroundPositionX = -(scrollX * 1) + "px";
     });
   </script>
 </body>
