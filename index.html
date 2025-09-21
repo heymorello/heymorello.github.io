@@ -16,41 +16,40 @@
     /* ===== СЛОИ ===== */
     .layer-sky {
       position: fixed; inset: 0;
-      background: linear-gradient(to bottom, #bfefff 100%, #64a8be 100%);
+      background: linear-gradient(to bottom, #99ccdd 0%, #64a8be 100%);
       z-index: 0;
       pointer-events: none;
     }
 
     .layer-fence {
-  position: fixed;
-  left: 0;
-  right: 0;
-  bottom: 200px; /* ставим прямо над песком */
-  height: auto;  /* авто-высота */
-  min-height: 180px; /* застраховка, если фон не подтянется */
-  background: url("https://i.ibb.co/tTWqfybM/Chat-GPT-Image-21-2025-07-52-16.png") repeat-x bottom;
-  background-size: auto 100%; /* сохраняем пропорции */
-  z-index: 10;
-  pointer-events: none;
-}
+      position: fixed;
+      left: 0;
+      right: 0;
+      bottom: 70vh; /* песок занимает 70% экрана */
+      height: auto;
+      min-height: 120px;
+      background: url("https://i.ibb.co/tTWqfybM/Chat-GPT-Image-21-2025-07-52-16.png") repeat-x bottom;
+      background-size: auto 100%;
+      z-index: 10;
+      pointer-events: none;
+    }
 
     .layer-sand {
       position: fixed;
       left: 0;
       right: 0;
       bottom: 0;
-      height: 200px;
+      height: 70vh; /* песок = 70% экрана */
       background: url("https://txtrs.ru/textures/sand/sand-6.jpg") repeat-x;
-      background-size: auto 200px;
+      background-size: auto 100%;
       z-index: 20;
       pointer-events: none;
-      will-change: background-position;
     }
 
     /* ===== ТЕКСТ ===== */
     .header {
       position: fixed;
-      top: 14%;
+      top: 5%;
       left: 50%;
       transform: translateX(-50%);
       text-align: center;
@@ -58,8 +57,10 @@
       text-shadow: 0 3px 8px rgba(0,0,0,0.6);
       z-index: 60;
     }
-    .header h1 { font-size: clamp(32px, 6vw, 64px); margin: 0; }
-    .header p  { font-size: clamp(14px, 2.2vw, 22px); margin: 8px 0 0; }
+    .header h1 {
+      font-size: clamp(32px, 6vw, 64px);
+      margin: 0;
+    }
 
     /* ===== ТРАССА ===== */
     .race {
@@ -115,55 +116,36 @@
   <!-- ЗАГОЛОВОК -->
   <div class="header">
     <h1>Волшебные скачки</h1>
-    <p>Это учебная игра Гриффиндора</p>
   </div>
 
   <!-- ТРАССА -->
   <div class="race" id="race"></div>
 
   <script>
-    // Картинки лошадей
-    const horseImages = [
-      "https://i.ibb.co/7K0hFh8/horse1.png",
-      "https://i.ibb.co/Y0sNwmx/horse2.png",
-      "https://i.ibb.co/1fHzy8J/horse3.png",
-      "https://i.ibb.co/z6BQ8Mz/horse4.png",
-      "https://i.ibb.co/Wn04FZC/horse5.png",
-      "https://i.ibb.co/cC2x8Wc/horse6.png",
-      "https://i.ibb.co/TbGg7nq/horse7.png",
-      "https://i.ibb.co/RzXcz7d/horse8.png",
-      "https://i.ibb.co/Z1xV0QC/horse9.png",
-      "https://i.ibb.co/DRN7XkM/horse10.png"
-    ];
+    // Картинка для всех лошадей
+    const horseImage = "https://i.postimg.cc/593CXQst/20250920-1029-remix-01k5jsen2he3ebb44mn75tbs8q.png";
 
-    // Генерация случайных очков (1–7)
-    const horsePoints = Array.from({length: 10}, () => Math.floor(Math.random() * 7) + 1);
+    // Очки задаёшь сама, по умолчанию 0
+    const horsePoints = Array(10).fill(0);
 
     const race = document.getElementById('race');
 
     function placeHorses() {
       race.innerHTML = '';
-      const sandHeight = 200;
-      const fenceHeight = 120;
+      const sandHeight = window.innerHeight * 0.7; // песок = 70% экрана
+      const step = 60; // шаг между лошадьми
 
-      // Все лошади располагаются на песке
       for (let i = 0; i < horsePoints.length; i++) {
         const horse = document.createElement('div');
         horse.className = 'horse';
         horse.id = 'horse' + i;
 
-        // Первая лошадь слегка на забор заходит
-        if (i === 0) {
-          horse.style.bottom = sandHeight - 20 + "px"; // чуть выше песка
-        } else {
-          // остальные с наложением друг на друга
-          horse.style.bottom = sandHeight + (i * 15) + "px";
-        }
-
+        // все лошади стартуют прямо с песка
+        horse.style.bottom = sandHeight - 100 - (i * step) + "px";
         horse.setAttribute('data-points', horsePoints[i]);
 
         const img = document.createElement('img');
-        img.src = horseImages[i];
+        img.src = horseImage;
         img.alt = 'Лошадь ' + (i+1);
 
         horse.appendChild(img);
