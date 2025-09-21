@@ -11,7 +11,7 @@
       overflow-y: hidden;
     }
 
-    /* Дорожка с замощённым фоном */
+    /* Фон с замощением */
     .background {
       position: fixed;
       top: 0;
@@ -23,7 +23,6 @@
       z-index: -1;
     }
 
-    /* Контейнер трассы */
     .race {
       position: relative;
       width: 5000px; /* длина трассы */
@@ -33,8 +32,6 @@
     .horse {
       position: absolute;
       left: 0;
-      width: 120px; /* размер лошадей */
-      height: auto;
       cursor: pointer;
       transition: left 2s linear;
     }
@@ -44,7 +41,7 @@
       display: block;
     }
 
-    /* Всплывающая подсказка */
+    /* Подсказка */
     .horse::after {
       content: attr(data-points) " очков";
       position: absolute;
@@ -86,46 +83,58 @@
       "https://i.ibb.co/DRN7XkM/horse10.png"
     ];
 
-    // 🔹 Очки (позиции)
+    // 🔹 Очки
     const horsePoints = [12, 20, 7, 15, 25, 10, 18, 5, 30, 22];
 
     const race = document.getElementById("race");
 
-    // Высота окна
-    const screenHeight = window.innerHeight;
+    function placeHorses() {
+      race.innerHTML = ""; // очистить при пересчёте
 
-    // Отступ первой лошади сверху
-    const startOffset = 640;
+      const screenHeight = window.innerHeight;
 
-    // Расчёт вертикального шага так, чтобы все влезли
-    const availableHeight = screenHeight - startOffset;
-    const step = availableHeight / (horsePoints.length - 1);
+      // 🔹 Высота лошади (динамическая, но не больше 120px)
+      const horseHeight = Math.min(120, screenHeight / 12);
 
-    // Создаём лошадей
-    for (let i = 0; i < horsePoints.length; i++) {
-      let horse = document.createElement("div");
-      horse.className = "horse";
-      horse.style.top = startOffset + i * step + "px";
-      horse.setAttribute("data-points", horsePoints[i]);
+      // 🔹 Вертикальный шаг (чуть меньше высоты, чтобы налегали)
+      const step = horseHeight * 0.8;
 
-      let img = document.createElement("img");
-      img.src = horseImages[i];
-      img.alt = "Лошадь " + (i + 1);
+      // Создаём лошадей
+      for (let i = 0; i < horsePoints.length; i++) {
+        let horse = document.createElement("div");
+        horse.className = "horse";
 
-      horse.appendChild(img);
-      horse.id = "horse" + i;
-      race.appendChild(horse);
+        // Первая лошадь стоит у "песка" (внизу экрана)
+        horse.style.bottom = i * step + "px";
+
+        horse.style.width = horseHeight + "px"; // ширина ≈ высоте для пропорций
+        horse.setAttribute("data-points", horsePoints[i]);
+
+        let img = document.createElement("img");
+        img.src = horseImages[i];
+        img.alt = "Лошадь " + (i + 1);
+
+        horse.appendChild(img);
+        horse.id = "horse" + i;
+        race.appendChild(horse);
+      }
     }
+
+    // Первое размещение
+    placeHorses();
+
+    // Перерасчёт при изменении размера окна
+    window.onresize = placeHorses;
 
     // Анимация старта
     window.onload = () => {
       for (let i = 0; i < horsePoints.length; i++) {
         let horse = document.getElementById("horse" + i);
-        horse.style.left = horsePoints[i] * 120 + "px"; // множитель для движения
+        horse.style.left = horsePoints[i] * 120 + "px";
       }
     };
 
-    // Параллакс фон при скролле
+    // Параллакс
     window.addEventListener("scroll", () => {
       const scrollX = window.scrollX;
       document.querySelector(".background").style.backgroundPositionX = -(scrollX * 0.5) + "px";
