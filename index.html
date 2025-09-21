@@ -2,13 +2,18 @@
 <html lang="ru">
 <head>
   <meta charset="utf-8" />
-  <title>Волшебные скачки — слоёный фон (исправлено)</title>
-  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Волшебные скачки</title>
   <style>
-    html,body { height:100%; margin:0; padding:0; overflow-x: auto; overflow-y: hidden; }
+    html, body {
+      height: 100%;
+      margin: 0;
+      padding: 0;
+      overflow-x: auto;
+      overflow-y: hidden;
+      font-family: Arial, sans-serif;
+    }
 
-    /* ========== СЛОИ ========== */
-    /* backmost: небо (градиент) */
+    /* ===== СЛОИ ===== */
     .layer-sky {
       position: fixed; inset: 0;
       background: linear-gradient(to bottom, #bfefff 0%, #6fb7ff 100%);
@@ -16,46 +21,33 @@
       pointer-events: none;
     }
 
-    /* clouds above sky */
-    .layer-clouds {
-      position: fixed; inset: 0;
-      background: url("https://i.ibb.co/QmVjJZC/clouds.png") repeat-x;
-      background-size: auto 60%;
-      z-index: 10;
-      opacity: 0.85;
-      pointer-events: none;
-      will-change: background-position;
-    }
-
-    /* fence (сразу над облаками) — расположим у нижней части экрана */
     .layer-fence {
       position: fixed;
       left: 0;
       right: 0;
-      bottom: 200px; /* ставим забор чуть выше песка (высоту песка можно менять) */
+      bottom: 200px; /* высота песка */
       height: 120px;
-      background: url("https://i.ibb.co/mcQ6Tn2/fence.png") repeat-x bottom;
+      background: url("https://i.postimg.cc/02z1MSLm/temp-Imagemr-Vc-Z4.avif") repeat-x bottom;
       background-size: auto 120px;
-      z-index: 20;
+      z-index: 10;
       pointer-events: none;
       will-change: background-position;
     }
 
-    /* sand (поверх забора в визуале будет лежать песок, по которому бегают лошади) */
     .layer-sand {
       position: fixed;
       left: 0;
       right: 0;
       bottom: 0;
-      height: 200px; /* высота песка */
+      height: 200px;
       background: url("https://txtrs.ru/textures/sand/sand-6.jpg") repeat-x;
       background-size: auto 200px;
-      z-index: 30;
+      z-index: 20;
       pointer-events: none;
       will-change: background-position;
     }
 
-    /* ====== Заголовок (поверх всех слоёв) ====== */
+    /* ===== ТЕКСТ ===== */
     .header {
       position: fixed;
       top: 14%;
@@ -65,35 +57,39 @@
       color: #fff;
       text-shadow: 0 3px 8px rgba(0,0,0,0.6);
       z-index: 60;
-      pointer-events: auto;
     }
     .header h1 { font-size: clamp(32px, 6vw, 64px); margin: 0; }
     .header p  { font-size: clamp(14px, 2.2vw, 22px); margin: 8px 0 0; }
 
-    /* ====== Трасса и лошади (над песком) ====== */
+    /* ===== ТРАССА ===== */
     .race {
-      position: relative; /* reference for absolutely positioned horses */
-      width: 5000px;      /* длина трассы — можно менять */
+      position: relative;
+      width: 5000px;
       height: 100vh;
-      z-index: 40;        /* выше песка (30) и ниже header (60) */
+      z-index: 40;
     }
 
     .horse {
       position: absolute;
-      bottom: 200px; /* фиксируем базовую высоту над низом (высота песка) */
       left: 0;
       cursor: pointer;
       transition: left 2s linear;
-      z-index: 45; /* над песком, ниже header */
+      z-index: 45;
     }
 
-    .horse img { display:block; width:100%; height:auto; user-select:none; -webkit-user-drag:none; }
+    .horse img {
+      display: block;
+      width: 100px;
+      height: auto;
+      user-select: none;
+      -webkit-user-drag: none;
+    }
 
-    /* tooltip */
+    /* Подсказка */
     .horse::after {
       content: attr(data-points) " очков";
       position: absolute;
-      bottom: calc(100% + 10px);
+      bottom: 110%;
       left: 50%;
       transform: translateX(-50%);
       padding: 6px 8px;
@@ -108,29 +104,25 @@
       z-index: 70;
     }
     .horse:hover::after { opacity: 1; }
-
-    /* небольшая помощь для видимости при тесте */
-    /* убирай или меняй размеры картинок лошадей под свои */
   </style>
 </head>
 <body>
-  <!-- слои (порядок в DOM не важен — z-index управляет) -->
+  <!-- СЛОИ -->
   <div class="layer-sky"></div>
-  <div class="layer-clouds"></div>
   <div class="layer-fence"></div>
   <div class="layer-sand"></div>
 
-  <!-- заголовок -->
+  <!-- ЗАГОЛОВОК -->
   <div class="header">
     <h1>Волшебные скачки</h1>
     <p>Это учебная игра Гриффиндора</p>
   </div>
 
-  <!-- трасса (широкий контейнер, по которому двигаются лошади) -->
+  <!-- ТРАССА -->
   <div class="race" id="race"></div>
 
   <script>
-    // картинки (замени на свои ссылки при необходимости)
+    // Картинки лошадей
     const horseImages = [
       "https://i.ibb.co/7K0hFh8/horse1.png",
       "https://i.ibb.co/Y0sNwmx/horse2.png",
@@ -144,56 +136,57 @@
       "https://i.ibb.co/DRN7XkM/horse10.png"
     ];
 
-    // очки (задаёшь только ты)
-    const horsePoints = [12,20,7,15,25,10,18,5,30,22];
+    // Генерация случайных очков (1–7)
+    const horsePoints = Array.from({length: 10}, () => Math.floor(Math.random() * 7) + 1);
 
     const race = document.getElementById('race');
 
     function placeHorses() {
       race.innerHTML = '';
-      const screenH = window.innerHeight;
-      const sandHeight = 200; // синхронизировано с .layer-sand height в CSS
-      // рассчитываем размер лошадей так, чтобы 10 влезали и слегка накладывались
-      const maxHorseHeight = 120;
-      const horseH = Math.min(maxHorseHeight, Math.max(60, (screenH - sandHeight) / 10 * 1.6));
-      const step = horseH * 0.8;
+      const sandHeight = 200;
+      const fenceHeight = 120;
 
-      for (let i=0;i<horsePoints.length;i++){
-        const d = document.createElement('div');
-        d.className = 'horse';
-        d.id = 'horse' + i;
-        // ставим базовую bottom — песок (200px) + небольшая коррекция по индексу
-        d.style.bottom = (sandHeight + i * step) + 'px';
-        d.style.width = Math.round(horseH) + 'px';
-        d.setAttribute('data-points', horsePoints[i]);
+      // Все лошади располагаются на песке
+      for (let i = 0; i < horsePoints.length; i++) {
+        const horse = document.createElement('div');
+        horse.className = 'horse';
+        horse.id = 'horse' + i;
+
+        // Первая лошадь слегка на забор заходит
+        if (i === 0) {
+          horse.style.bottom = sandHeight - 20 + "px"; // чуть выше песка
+        } else {
+          // остальные с наложением друг на друга
+          horse.style.bottom = sandHeight + (i * 15) + "px";
+        }
+
+        horse.setAttribute('data-points', horsePoints[i]);
 
         const img = document.createElement('img');
         img.src = horseImages[i];
         img.alt = 'Лошадь ' + (i+1);
-        d.appendChild(img);
-        race.appendChild(d);
+
+        horse.appendChild(img);
+        race.appendChild(horse);
       }
     }
 
     placeHorses();
     window.addEventListener('resize', placeHorses);
 
-    // стартовая анимация (смещаем по горизонтали в зависимости от очков)
-    window.addEventListener('load', () => {
-      for (let i=0;i<horsePoints.length;i++){
+    // Анимация старта
+    window.onload = () => {
+      for (let i = 0; i < horsePoints.length; i++) {
         const el = document.getElementById('horse' + i);
-        // множитель можно подстроить
         el.style.left = (horsePoints[i] * 120) + 'px';
       }
-    });
+    };
 
-    // параллакс: двигаем background-position X у слоёв
+    // Параллакс для забора и песка
     window.addEventListener('scroll', () => {
       const sx = window.scrollX;
-      document.querySelector('.layer-clouds').style.backgroundPositionX = -(sx * 0.25) + 'px';
       document.querySelector('.layer-fence').style.backgroundPositionX = -(sx * 0.6) + 'px';
       document.querySelector('.layer-sand').style.backgroundPositionX  = -(sx * 1) + 'px';
-      // (небо — градиент, его не двигаем)
     });
   </script>
 </body>
