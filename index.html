@@ -4,204 +4,205 @@
   <meta charset="utf-8" />
   <title>Скачки и задачки</title>
 
-  <!-- Marmelad -->
+  <!-- Шрифт Marmelad -->
   <link href="https://fonts.googleapis.com/css2?family=Marmelad&display=swap" rel="stylesheet">
 
-  <meta name="viewport" content="width=device-width,initial-scale=1" />
   <style>
-    :root{
-      --horse-w: 200px;
-      --horse-h: 200;
-      --fence-h: 120;
-      --n: 10;
-      --lane-color: rgba(255,255,255,0.7);
-    }
-
-    html,body{
-      margin:0;
-      padding:0;
-      box-sizing:border-box;
+    html, body {
+      height: 100%;
+      margin: 0;
+      padding: 0;
+      overflow-x: auto;
+      overflow-y: auto; /* теперь можно скроллить вниз */
       font-family: Arial, sans-serif;
-      overflow-x:auto;
-      overflow-y:auto;
-      background:#64a8be; /* небо */
     }
 
-    /* Заголовок */
+    /* ===== СЛОИ ===== */
+    .layer-sky {
+      position: fixed; inset: 0;
+      background: #64a8be;
+      z-index: 0;
+      pointer-events: none;
+    }
+
+    .layer-fence {
+      position: fixed;
+      left: 0;
+      right: 0;
+      bottom: 65vh; /* песок занимает 65% экрана */
+      height: auto;
+      min-height: 120px;
+      background: url("https://i.postimg.cc/cJJ3rDsb/Chat-GPT-Image-21-2025-07-52-16.png") repeat-x bottom;
+      background-size: auto 100%;
+      z-index: 10;
+      pointer-events: none;
+    }
+
+    .layer-sand {
+      position: fixed;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      height: 65vh;
+      background: url("https://txtrs.ru/textures/sand/sand-6.jpg") repeat-x;
+      background-size: auto 100%;
+      z-index: 20;
+      pointer-events: none;
+    }
+
+    /* ===== ТЕКСТ ===== */
     .header {
-      text-align:center;
-      padding:16px 0 0 0; /* меньше отступа */
-      color:#fff;
-      text-shadow:0 3px 8px rgba(0,0,0,0.6);
+      position: fixed;
+      top: 5%;
+      left: 50%;
+      transform: translateX(-50%);
+      text-align: center;
+      color: #fff;
+      text-shadow: 0 3px 8px rgba(0,0,0,0.6);
+      z-index: 60;
     }
     .header h1 {
-      margin:0;
-      font-family:'Marmelad',sans-serif;
-      font-size:clamp(28px,5.5vw,56px);
+      font-family: 'Marmelad', sans-serif;
+      font-size: clamp(32px, 6vw, 64px);
+      margin: 0;
     }
 
-    /* Забор */
-    .fence {
-      height: var(--fence-h, 120px);
-      background:url("https://i.postimg.cc/cJJ3rDsb/Chat-GPT-Image-21-2025-07-52-16.png") repeat-x bottom;
-      background-size:auto 100%;
+    /* ===== ТРАССА ===== */
+    .race {
+      position: relative;
+      width: 5000px;
+      min-height: 150vh; /* добавляем высоту для скролла вниз */
+      z-index: 40;
     }
 
-    /* Песок */
-    .sand {
-      position:relative;
-      width:100%;
-      background:url("https://i.postimg.cc/PJmprnQs/Chat-GPT-Image-21-2025-08-32-15.png") repeat;
-      background-size:auto;
-      min-height:100vh; /* песок тянется до низа */
-      overflow:visible;
-    }
-
-    .stage {
-      position:relative;
-      width:5000px; /* длина трассы */
-      margin:0 auto;
-      z-index:400;
-    }
-
-    /* Линии дорожек */
+    /* Дорожки */
     .lane {
-      position:absolute;
-      left:0;
-      width:100%;
-      height:2px;
-      background:var(--lane-color);
-      z-index:450;
+      position: absolute;
+      left: 0;
+      width: 100%;
+      height: 2px;
+      background: rgba(255,255,255,0.7);
+      z-index: 25; /* под лошадьми, но над песком */
     }
 
-    /* Специальная линия между забором и песком */
-    .lane-top {
-      position:absolute;
-      top:0;
-      left:0;
-      width:100%;
-      height:2px;
-      background:#fff;
-      z-index:460;
-    }
-
-    /* Лошади */
     .horse {
-      position:absolute;
-      left:0;
-      z-index:500;
-      transform-origin:left bottom;
-      transition:left 2s ease; /* анимация движения */
+      position: absolute;
+      left: 0;
+      cursor: pointer;
+      transition: left 2s linear;
+      z-index: 45;
     }
+
     .horse img {
-      width:var(--horse-w);
-      height:auto;
-      display:block;
-      user-select:none;
-      -webkit-user-drag:none;
+      display: block;
+      width: 200px; /* увеличенные лошади */
+      height: auto;
+      user-select: none;
+      -webkit-user-drag: none;
     }
 
-    .horse::after{
-      content:attr(data-points) " очков";
-      position:absolute;
-      bottom:calc(100% + 8px);
-      left:50%;
-      transform:translateX(-50%);
-      padding:6px 8px;
-      background:rgba(0,0,0,0.75);
-      color:#fff;
-      border-radius:6px;
-      font-size:13px;
-      white-space:nowrap;
-      opacity:0;
-      pointer-events:none;
-      transition:opacity .15s;
-      z-index:800;
+    /* Подсказка */
+    .horse::after {
+      content: attr(data-points) " очков";
+      position: absolute;
+      bottom: 110%;
+      left: 50%;
+      transform: translateX(-50%);
+      padding: 6px 8px;
+      background: rgba(0,0,0,0.75);
+      color: #fff;
+      border-radius: 6px;
+      font-size: 13px;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity .2s;
+      white-space: nowrap;
+      z-index: 70;
     }
-    .horse:hover::after{ opacity:1; }
-
-    .page-bottom-space{height:120px;}
+    .horse:hover::after { opacity: 1; }
   </style>
 </head>
 <body>
+  <!-- СЛОИ -->
+  <div class="layer-sky"></div>
+  <div class="layer-fence"></div>
+  <div class="layer-sand"></div>
+
+  <!-- ЗАГОЛОВОК -->
   <div class="header">
     <h1>Скачки и задачки</h1>
   </div>
 
-  <div class="fence"></div>
-
-  <div class="sand" id="sand">
-    <!-- Линия сверху песка -->
-    <div class="lane-top"></div>
-    <div class="stage" id="stage"></div>
-  </div>
-
-  <div class="page-bottom-space"></div>
+  <!-- ТРАССА -->
+  <div class="race" id="race"></div>
 
   <script>
-    (function(){
-      const N = 10;
-      const horsePoints = [1,2,4,0,5,2,0,0,1,0];
-      const horseImg = "https://i.postimg.cc/593CXQst/20250920-1029-remix-01k5jsen2he3ebb44mn75tbs8q.png";
+    // Временная картинка для всех лошадей
+    const horseImage = "https://i.postimg.cc/593CXQst/20250920-1029-remix-01k5jsen2he3ebb44mn75tbs8q.png";
 
-      const sand = document.getElementById('sand');
-      const stage = document.getElementById('stage');
+    // Очки для каждой лошади
+    const horsePoints = [1, 2, 4, 0, 5, 2, 0, 0, 1, 0];
 
-      let horseW, horseH, fenceH, step;
+    const race = document.getElementById('race');
 
-      function layout(){
-        horseW = parseInt(getComputedStyle(document.documentElement).getPropertyValue('--horse-w'))||200;
-        horseH = parseInt(getComputedStyle(document.documentElement).getPropertyValue('--horse-h'))||200;
-        fenceH = parseInt(getComputedStyle(document.documentElement).getPropertyValue('--fence-h'))||120;
-        step = Math.round(horseH/2);
+    function placeHorses() {
+      race.innerHTML = '';
 
-        // Высота песка — минимум, чтобы все влезли
-        const minimalSand = horseH + (N-1)*step + 80;
-        sand.style.minHeight = minimalSand + "px";
+      const sandHeight = window.innerHeight * 0.65;
+      const horseHeight = 200;
+      const step = horseHeight / 2; // наполовину перекрываются
 
-        stage.style.height = sand.offsetHeight+"px";
-        stage.innerHTML="";
-
-        // Первая лошадь наполовину на заборе
-        const horseBottomFirst = sand.offsetHeight - horseH/2;
-
-        for(let i=0;i<N;i++){
-          const bottom = horseBottomFirst - i*step;
-
-          const lane=document.createElement('div');
-          lane.className='lane';
-          lane.style.bottom=(bottom-8)+'px';
-          stage.appendChild(lane);
-
-          const horse=document.createElement('div');
-          horse.className='horse';
-          horse.id='horse'+i;
-          horse.style.bottom=bottom+'px';
-          horse.setAttribute('data-points',horsePoints[i]||0);
-
-          const img=document.createElement('img');
-          img.src=horseImg; // у всех одна картинка
-          img.alt='Лошадь '+(i+1);
-          img.style.width=horseW+'px';
-          horse.appendChild(img);
-
-          stage.appendChild(horse);
+      for (let i = 0; i < horsePoints.length; i++) {
+        // ===== Дорожка =====
+        const lane = document.createElement('div');
+        lane.className = 'lane';
+        if (i === 0) {
+          lane.style.bottom = (sandHeight - horseHeight/2) + "px";
+        } else {
+          lane.style.bottom = (sandHeight - horseHeight/2 - (i * step)) + "px";
         }
+        race.appendChild(lane);
+
+        // ===== Лошадь =====
+        const horse = document.createElement('div');
+        horse.className = 'horse';
+        horse.id = 'horse' + i;
+
+        if (i === 0) {
+          // первая наполовину на заборе
+          horse.style.bottom = sandHeight - horseHeight/2 + "px";
+        } else {
+          horse.style.bottom = sandHeight - horseHeight/2 - (i * step) + "px";
+        }
+
+        horse.setAttribute('data-points', horsePoints[i]);
+
+        const img = document.createElement('img');
+        img.src = horseImage;
+        img.alt = 'Лошадь ' + (i+1);
+        horse.appendChild(img);
+
+        race.appendChild(horse);
       }
+    }
 
-      window.addEventListener('load',()=>{
-        layout();
-        // Анимация — после layout
-        setTimeout(()=>{
-          for (let i=0;i<N;i++){
-            const el=document.getElementById('horse'+i);
-            el.style.left=((horsePoints[i]||0)*120)+'px';
-          }
-        },100);
-      });
+    placeHorses();
+    window.addEventListener('resize', placeHorses);
 
-      window.addEventListener('resize',layout);
-    })();
+    // Анимация старта
+    window.onload = () => {
+      for (let i = 0; i < horsePoints.length; i++) {
+        const el = document.getElementById('horse' + i);
+        el.style.left = (horsePoints[i] * 120) + 'px';
+      }
+    };
+
+    // Параллакс
+    window.addEventListener('scroll', () => {
+      const sx = window.scrollX;
+      document.querySelector('.layer-fence').style.backgroundPositionX = -(sx * 0.6) + 'px';
+      document.querySelector('.layer-sand').style.backgroundPositionX  = -(sx * 1) + 'px';
+    });
   </script>
 </body>
 </html>
