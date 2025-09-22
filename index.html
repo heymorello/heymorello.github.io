@@ -3,6 +3,10 @@
 <head>
   <meta charset="utf-8" />
   <title>Скачки и задачки</title>
+
+  <!-- Подключаем шрифт Marmelad -->
+  <link href="https://fonts.googleapis.com/css2?family=Marmelad&display=swap" rel="stylesheet">
+
   <style>
     html, body {
       height: 100%;
@@ -40,7 +44,7 @@
       right: 0;
       bottom: 0;
       height: 70vh; /* песок = 70% экрана */
-      background: url("https://txtrs.ru/textures/sand/sand-6.jpg") repeat-x;
+      background: url("https://i.pinimg.com/736x/cc/90/3b/cc903b50df10bb8c9a13e862e0faa4d6.jpg") repeat-x;
       background-size: auto 100%;
       z-index: 20;
       pointer-events: none;
@@ -58,6 +62,7 @@
       z-index: 60;
     }
     .header h1 {
+      font-family: 'Marmelad', sans-serif;
       font-size: clamp(32px, 6vw, 64px);
       margin: 0;
     }
@@ -132,16 +137,23 @@
 
     function placeHorses() {
       race.innerHTML = '';
-      const sandHeight = window.innerHeight * 0.7; // песок = 70% экрана
-      const step = 60; // шаг между лошадьми
+      const sandHeight = window.innerHeight * 0.7; // высота песка
+      const baseBottom = sandHeight - 100; // положение первой лошади
+      const step = 80; // равное расстояние между лошадьми
 
       for (let i = 0; i < horsePoints.length; i++) {
         const horse = document.createElement('div');
         horse.className = 'horse';
         horse.id = 'horse' + i;
 
-        // все лошади стартуют прямо с песка
-        horse.style.bottom = sandHeight - 100 - (i * step) + "px";
+        // Первая лошадь чуть налезает на заборчик
+        if (i === 0) {
+          horse.style.bottom = baseBottom + 20 + "px";
+        } else {
+          // остальные идут равномерно вниз
+          horse.style.bottom = baseBottom - (i * step) + "px";
+        }
+
         horse.setAttribute('data-points', horsePoints[i]);
 
         const img = document.createElement('img');
