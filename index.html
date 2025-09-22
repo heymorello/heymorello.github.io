@@ -2,7 +2,7 @@
 <html lang="ru">
 <head>
   <meta charset="utf-8" />
-  <title>Волшебные скачки</title>
+  <title>Скачки и задачки</title>
   <style>
     html, body {
       height: 100%;
@@ -16,7 +16,7 @@
     /* ===== СЛОИ ===== */
     .layer-sky {
       position: fixed; inset: 0;
-      background: linear-gradient(to bottom, #99ccdd 0%, #64a8be 100%);
+      background: #64a8be; /* однотонное небо */
       z-index: 0;
       pointer-events: none;
     }
@@ -28,7 +28,7 @@
       bottom: 70vh; /* песок занимает 70% экрана */
       height: auto;
       min-height: 120px;
-      background: url("https://i.ibb.co/tTWqfybM/Chat-GPT-Image-21-2025-07-52-16.png") repeat-x bottom;
+      background: url("https://i.postimg.cc/cJJ3rDsb/Chat-GPT-Image-21-2025-07-52-16.png") repeat-x bottom;
       background-size: auto 100%;
       z-index: 10;
       pointer-events: none;
@@ -115,14 +115,14 @@
 
   <!-- ЗАГОЛОВОК -->
   <div class="header">
-    <h1>Волшебные скачки</h1>
+    <h1>Скачки и задачки</h1>
   </div>
 
   <!-- ТРАССА -->
   <div class="race" id="race"></div>
 
   <script>
-    // Картинка для всех лошадей
+    // Временная картинка для всех лошадей
     const horseImage = "https://i.postimg.cc/593CXQst/20250920-1029-remix-01k5jsen2he3ebb44mn75tbs8q.png";
 
     // Очки задаёшь сама, по умолчанию 0
