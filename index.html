@@ -2,7 +2,7 @@
 <html lang="ru">
 <head>
   <meta charset="utf-8" />
-  <title>Скачки и задачки — исправлено</title>
+  <title>Скачки и задачки</title>
 
   <!-- Marmelad -->
   <link href="https://fonts.googleapis.com/css2?family=Marmelad&display=swap" rel="stylesheet">
@@ -10,9 +10,9 @@
   <meta name="viewport" content="width=device-width,initial-scale=1" />
   <style>
     :root{
-      --horse-w: 200px;      /* ширина картинок лошадей */
-      --horse-h: 200;        /* логическая высота (px) для расчётов */
-      --fence-h: 120;        /* высота забора (px) — подгони при необходимости */
+      --horse-w: 200px;
+      --horse-h: 200;
+      --fence-h: 120;
       --n: 10;
       --lane-color: rgba(255,255,255,0.7);
     }
@@ -22,136 +22,112 @@
       padding:0;
       box-sizing:border-box;
       font-family: Arial, sans-serif;
-      overflow-x:auto;   /* горизонтальный скролл для трассы */
-      overflow-y:auto;   /* вертикальный скролл включён */
-      background: #64a8be; /* fallback небо */
+      overflow-x:auto;
+      overflow-y:auto;
+      background:#64a8be;
     }
 
-    /* Заголовок — фиксирован, всегда сверху */
+    /* Заголовок теперь статичный */
     .header {
-      position: fixed;
-      top: 12px;
-      left: 50%;
-      transform: translateX(-50%);
-      z-index: 2000;
-      text-align: center;
-      color: #fff;
-      text-shadow: 0 3px 8px rgba(0,0,0,0.6);
-      pointer-events: none;
+      text-align:center;
+      padding:20px 0;
+      color:#fff;
+      text-shadow:0 3px 8px rgba(0,0,0,0.6);
     }
     .header h1 {
       margin:0;
-      font-family: 'Marmelad', sans-serif;
-      font-size: clamp(28px, 5.5vw, 56px);
+      font-family:'Marmelad',sans-serif;
+      font-size:clamp(28px,5.5vw,56px);
     }
 
-    /* Секции страницы (обычные, скроллятся) */
     .sky {
-      height: 35vh;
-      background: #64a8be;
+      height:35vh;
+      background:#64a8be;
     }
 
-    /* Песок — контейнер для трассы и забора (позже высота задаётся скриптом) */
     .sand {
-      position: relative;
-      width: 100%;
-      background: url("https://txtrs.ru/textures/sand/sand-6.jpg") repeat-x;
-      background-size: auto 100%;
-      overflow: visible; /* чтобы элементы могли выступать */
+      position:relative;
+      width:100%;
+      background:url("https://txtrs.ru/textures/sand/sand-6.jpg") repeat-x;
+      background-size:auto; /* ✅ замостили снова */
+      overflow:visible;
     }
 
-    /* Забор — внутри песка, частично выступает вверх.
-       Мы делаем его absolute и ставим top: -fence_h/2, чтобы он выглядел между небом и песком.
-    */
     .fence {
-      position: absolute;
-      left: 0;
-      right: 0;
-      top: calc(var(--fence-top, -60px)); /* будет задан скриптом, по умолчанию -60px */
-      height: var(--fence-h, 120px);
-      background: url("https://i.postimg.cc/cJJ3rDsb/Chat-GPT-Image-21-2025-07-52-16.png") repeat-x bottom;
-      background-size: auto 100%;
-      z-index: 300; /* ниже лошадей */
-      pointer-events: none;
+      position:absolute;
+      left:0;
+      right:0;
+      top:calc(var(--fence-top, -60px));
+      height:var(--fence-h, 120px);
+      background:url("https://i.postimg.cc/cJJ3rDsb/Chat-GPT-Image-21-2025-07-52-16.png") repeat-x bottom;
+      background-size:auto 100%;
+      z-index:300;
+      pointer-events:none;
     }
 
-    /* Сцена/стадион внутри песка. Ширина большая (трасса), высота — скриптом */
     .stage {
-      position: relative;
-      width: 5000px; /* длина трассы — можешь поменять */
-      margin: 0 auto;
-      z-index: 400; /* над фоном, но лошадям дадим больший z */
+      position:relative;
+      width:5000px;
+      margin:0 auto;
+      z-index:400;
     }
 
-    /* Дорожка (тонкая линия под каждой лошадью) */
     .lane {
-      position: absolute;
-      left: 0;
-      width: 100%;
-      height: 2px;
-      background: var(--lane-color);
-      z-index: 450; /* под лошадьми, над фоном */
+      position:absolute;
+      left:0;
+      width:100%;
+      height:2px;
+      background:var(--lane-color);
+      z-index:450;
     }
 
-    /* Лошади */
     .horse {
-      position: absolute;
-      left: 0;
-      z-index: 500;
-      transform-origin: left bottom;
-      transition: left 1.6s ease;
+      position:absolute;
+      left:0;
+      z-index:500;
+      transform-origin:left bottom;
+      transition:left 1.6s ease;
     }
     .horse img {
-      width: var(--horse-w);
-      height: auto;
+      width:var(--horse-w);
+      height:auto;
       display:block;
       user-select:none;
       -webkit-user-drag:none;
-      pointer-events: auto;
     }
 
-    /* tooltip (подсказка при hover) */
     .horse::after{
-      content: attr(data-points) " очков";
-      position: absolute;
-      bottom: calc(100% + 8px);
-      left: 50%;
-      transform: translateX(-50%);
+      content:attr(data-points) " очков";
+      position:absolute;
+      bottom:calc(100% + 8px);
+      left:50%;
+      transform:translateX(-50%);
       padding:6px 8px;
-      background: rgba(0,0,0,0.75);
-      color: #fff;
+      background:rgba(0,0,0,0.75);
+      color:#fff;
       border-radius:6px;
       font-size:13px;
       white-space:nowrap;
       opacity:0;
       pointer-events:none;
       transition:opacity .15s;
-      z-index: 800;
+      z-index:800;
     }
     .horse:hover::after{ opacity:1; }
 
-    /* некоторый отступ снизу страницы, чтобы не "упираться" в край */
-    .page-bottom-space { height: 120px; }
-
-    @media (max-width:800px){
-      :root { --horse-w: 140px; --horse-h: 140; }
-    }
+    .page-bottom-space{height:120px;}
   </style>
 </head>
 <body>
-  <!-- Заголовок фиксированный -->
+  <!-- Заголовок теперь статичный -->
   <div class="header">
     <h1>Скачки и задачки</h1>
   </div>
 
-  <!-- Обычные секции: небо -> песок (внутри песка — забор и сцена) -->
   <div class="sky"></div>
 
   <div class="sand" id="sand">
-    <!-- забор будет позиционирован скриптом -->
     <div class="fence" id="fence"></div>
-
-    <!-- stage — внутри песка, занимает всю ширину трассы -->
     <div class="stage" id="stage"></div>
   </div>
 
@@ -159,105 +135,77 @@
 
   <script>
     (function(){
-      // Настройки
       const N = 10;
-      const horsePoints = [1,2,4,0,5,2,0,0,1,0]; // задано тобой
-      const horseImg = "https://i.postimg.cc/593CXQst/20250920-1029-remix-01k5jsen2he3ebb44mn75tbs8q.png";
-      const fenceImg = "https://i.postimg.cc/cJJ3rDsb/Chat-GPT-Image-21-2025-07-52-16.png";
-      const sandImg = "https://txtrs.ru/textures/sand/sand-6.jpg";
+      const horsePoints = [1,2,4,0,5,2,0,0,1,0];
 
-      // Взятые из CSS-переменных / соглашений
-      let horseW = parseInt(getComputedStyle(document.documentElement).getPropertyValue('--horse-w')) || 200;
-      let horseH = parseInt(getComputedStyle(document.documentElement).getPropertyValue('--horse-h')) || 200;
-      let fenceH = parseInt(getComputedStyle(document.documentElement).getPropertyValue('--fence-h')) || 120;
-      let step = Math.round(horseH / 2); // половина высоты — наполовину перекрываются
+      // картинки
+      const horseImgs = [
+        "https://i.postimg.cc/593CXQst/20250920-1029-remix-01k5jsen2he3ebb44mn75tbs8q.png", // первая
+        "https://i.ibb.co/fzNnCTWp/horse2.png",
+        "https://i.ibb.co/QjfLD3tj/horse3.png",
+        "https://i.ibb.co/Ftg7WVQ/horse4.png",
+        "https://i.ibb.co/kVFh9mPb/horse5.png",
+        "https://i.ibb.co/1YthbMrH/horse6.png",
+        "https://i.ibb.co/20VChFFM/horse7.png",
+        "https://i.ibb.co/v4VJ1dPq/horse8.png",
+        "https://i.ibb.co/nqXKgVV8/horse9.png",
+        "https://i.ibb.co/KzbYP3cV/horse10.png"
+      ];
 
-      // DOM
       const sand = document.getElementById('sand');
       const fence = document.getElementById('fence');
       const stage = document.getElementById('stage');
 
-      // Установить фоны (на случай, если CSS кэш не подтянулся)
-      sand.style.backgroundImage = `url("${sandImg}")`;
-      fence.style.backgroundImage = `url("${fenceImg}")`;
+      let horseW, horseH, fenceH, step;
 
-      function layout() {
-        // Пересчитываем размеры (на resize)
-        horseW = parseInt(getComputedStyle(document.documentElement).getPropertyValue('--horse-w')) || 200;
-        horseH = parseInt(getComputedStyle(document.documentElement).getPropertyValue('--horse-h')) || 200;
-        fenceH = parseInt(getComputedStyle(document.documentElement).getPropertyValue('--fence-h')) || 120;
-        step = Math.round(horseH / 2);
+      function layout(){
+        horseW = parseInt(getComputedStyle(document.documentElement).getPropertyValue('--horse-w'))||200;
+        horseH = parseInt(getComputedStyle(document.documentElement).getPropertyValue('--horse-h'))||200;
+        fenceH = parseInt(getComputedStyle(document.documentElement).getPropertyValue('--fence-h'))||120;
+        step = Math.round(horseH/2);
 
-        // минимальная необходимая высота песка, чтобы все лошади уместились и нижняя не ушла за край:
-        // формула: minimalSand = horseH - overlap + (N-1)*step
-        // где overlap = половина забора (хотим, чтобы первая лошадь заходила на половину забора)
-        const overlap = Math.round(fenceH / 2);
-        const minimalSand = (horseH - overlap) + (N - 1) * step; // px
+        const overlap = Math.round(fenceH/2);
+        const minimalSand = (horseH - overlap) + (N-1)*step;
+        const desired65vh = Math.round(window.innerHeight*0.65);
+        const sandH = Math.max(desired65vh, minimalSand+80);
 
-        // берём желаемую высоту 65vh, но если минимальная больше — используем минимальную + небольшой запас
-        const desired65vh = Math.round(window.innerHeight * 0.65);
-        const sandH = Math.max(desired65vh, minimalSand + 80); // +80px запас
+        sand.style.height = sandH+"px";
+        fence.style.height = fenceH+"px";
+        fence.style.top = (-Math.round(fenceH/2))+"px";
+        stage.style.height = sandH+"px";
 
-        // применяем высоту песка и положение забора (чтобы забор выступал наполовину)
-        sand.style.height = sandH + "px";
+        stage.innerHTML="";
 
-        // Позиция забора: пусть верхняя половина забора выступает над верхом песка:
-        // Так: top = -(fenceH/2)
-        fence.style.height = fenceH + "px";
-        fence.style.top = (-Math.round(fenceH/2)) + "px";
-
-        // stage (внутри песка) будет иметь ту же высоту (чтобы bottom отсчёт корректный)
-        stage.style.height = sandH + "px";
-        stage.style.width = "5000px"; // можно менять
-
-        // очистка предыдущего
-        stage.innerHTML = "";
-
-        // рисуем дорожки и лошадей (нижняя точка — отсчёт от низа stage)
-        // для первой лошади задаём bottom так, чтобы её верх заходил на половину забора:
-        // horseBottom_first = sandH - horseH + overlap
         const horseBottomFirst = sandH - horseH + overlap;
 
-        for (let i = 0; i < N; i++) {
-          // bottom для этой лошади:
-          const bottom = horseBottomFirst - i * step; // i=0 — первая
+        for(let i=0;i<N;i++){
+          const bottom = horseBottomFirst - i*step;
 
-          // lane
-          const lane = document.createElement('div');
-          lane.className = 'lane';
-          lane.style.bottom = (bottom - 8) + 'px'; // чуть ниже стопы лошади
+          const lane=document.createElement('div');
+          lane.className='lane';
+          lane.style.bottom=(bottom-8)+'px';
           stage.appendChild(lane);
 
-          // horse
-          const horse = document.createElement('div');
-          horse.className = 'horse';
-          horse.id = 'horse' + i;
-          horse.style.bottom = bottom + 'px';
-          horse.setAttribute('data-points', horsePoints[i] || 0);
+          const horse=document.createElement('div');
+          horse.className='horse';
+          horse.id='horse'+i;
+          horse.style.bottom=bottom+'px';
+          horse.setAttribute('data-points',horsePoints[i]||0);
 
-          const img = document.createElement('img');
-          img.src = horseImg;
-          img.alt = 'Лошадь ' + (i + 1);
-          img.style.width = horseW + 'px';
+          const img=document.createElement('img');
+          img.src=horseImgs[i];
+          img.alt='Лошадь '+(i+1);
+          img.style.width=horseW+'px';
           horse.appendChild(img);
 
           stage.appendChild(horse);
 
-          // позиция по горизонтали в соответствии с очками (ставим множитель 120px)
-          // если очки меняются динамически — можно вызвать animatePositions()
-          horse.style.left = ( (horsePoints[i] || 0) * 120 ) + 'px';
+          horse.style.left=((horsePoints[i]||0)*120)+'px';
         }
-
-        // небольшое пространство под сценой, чтобы можно было прокрутить ещё чуть вниз
-        sand.style.paddingBottom = '40px';
       }
 
-      // Запуск (и перерасчёт при изменении окна)
-      window.addEventListener('load', layout);
-      window.addEventListener('resize', layout);
-
-      // также экспортим функцию в глобал, если захочешь вручную пересчитать
-      window.__race_layout = layout;
+      window.addEventListener('load',layout);
+      window.addEventListener('resize',layout);
     })();
   </script>
 </body>
