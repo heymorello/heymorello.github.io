@@ -9,50 +9,37 @@
 
   <style>
     html, body {
-      height: 100%;
       margin: 0;
       padding: 0;
       overflow-x: auto;
-      overflow-y: auto; /* теперь можно скроллить вниз */
+      overflow-y: auto;
       font-family: Arial, sans-serif;
+      background: #64a8be; /* небо как фон по умолчанию */
     }
 
-    /* ===== СЛОИ ===== */
-    .layer-sky {
-      position: fixed; inset: 0;
+    /* ===== СЕКЦИИ ===== */
+    .sky {
+      height: 35vh;
       background: #64a8be;
-      z-index: 0;
-      pointer-events: none;
     }
 
-    .layer-fence {
-      position: fixed;
-      left: 0;
-      right: 0;
-      bottom: 65vh; /* песок занимает 65% экрана */
-      height: auto;
-      min-height: 120px;
+    .fence {
+      height: 120px;
       background: url("https://i.postimg.cc/cJJ3rDsb/Chat-GPT-Image-21-2025-07-52-16.png") repeat-x bottom;
       background-size: auto 100%;
-      z-index: 10;
-      pointer-events: none;
     }
 
-    .layer-sand {
-      position: fixed;
-      left: 0;
-      right: 0;
-      bottom: 0;
+    .sand {
+      position: relative;
       height: 65vh;
       background: url("https://txtrs.ru/textures/sand/sand-6.jpg") repeat-x;
       background-size: auto 100%;
-      z-index: 20;
-      pointer-events: none;
+      overflow: hidden;
     }
 
     /* ===== ТЕКСТ ===== */
     .header {
-      position: fixed;
+      position: absolute;
       top: 5%;
       left: 50%;
       transform: translateX(-50%);
@@ -70,19 +57,17 @@
     /* ===== ТРАССА ===== */
     .race {
       position: relative;
-      width: 5000px;
-      min-height: 150vh; /* добавляем высоту для скролла вниз */
-      z-index: 40;
+      width: 5000px; /* длина трассы */
+      height: 100%;
     }
 
-    /* Дорожки */
     .lane {
       position: absolute;
       left: 0;
       width: 100%;
       height: 2px;
       background: rgba(255,255,255,0.7);
-      z-index: 25; /* под лошадьми, но над песком */
+      z-index: 25; /* под лошадьми */
     }
 
     .horse {
@@ -95,13 +80,12 @@
 
     .horse img {
       display: block;
-      width: 200px; /* увеличенные лошади */
+      width: 200px;
       height: auto;
       user-select: none;
       -webkit-user-drag: none;
     }
 
-    /* Подсказка */
     .horse::after {
       content: attr(data-points) " очков";
       position: absolute;
@@ -123,24 +107,18 @@
   </style>
 </head>
 <body>
-  <!-- СЛОИ -->
-  <div class="layer-sky"></div>
-  <div class="layer-fence"></div>
-  <div class="layer-sand"></div>
-
-  <!-- ЗАГОЛОВОК -->
-  <div class="header">
-    <h1>Скачки и задачки</h1>
+  <!-- СЕКЦИИ -->
+  <div class="sky"></div>
+  <div class="fence"></div>
+  <div class="sand">
+    <div class="header">
+      <h1>Скачки и задачки</h1>
+    </div>
+    <div class="race" id="race"></div>
   </div>
 
-  <!-- ТРАССА -->
-  <div class="race" id="race"></div>
-
   <script>
-    // Временная картинка для всех лошадей
     const horseImage = "https://i.postimg.cc/593CXQst/20250920-1029-remix-01k5jsen2he3ebb44mn75tbs8q.png";
-
-    // Очки для каждой лошади
     const horsePoints = [1, 2, 4, 0, 5, 2, 0, 0, 1, 0];
 
     const race = document.getElementById('race');
@@ -148,12 +126,12 @@
     function placeHorses() {
       race.innerHTML = '';
 
-      const sandHeight = window.innerHeight * 0.65;
+      const sandHeight = race.offsetHeight;
       const horseHeight = 200;
-      const step = horseHeight / 2; // наполовину перекрываются
+      const step = horseHeight / 2;
 
       for (let i = 0; i < horsePoints.length; i++) {
-        // ===== Дорожка =====
+        // ===== Линия дорожки =====
         const lane = document.createElement('div');
         lane.className = 'lane';
         if (i === 0) {
@@ -169,7 +147,6 @@
         horse.id = 'horse' + i;
 
         if (i === 0) {
-          // первая наполовину на заборе
           horse.style.bottom = sandHeight - horseHeight/2 + "px";
         } else {
           horse.style.bottom = sandHeight - horseHeight/2 - (i * step) + "px";
@@ -196,13 +173,6 @@
         el.style.left = (horsePoints[i] * 120) + 'px';
       }
     };
-
-    // Параллакс
-    window.addEventListener('scroll', () => {
-      const sx = window.scrollX;
-      document.querySelector('.layer-fence').style.backgroundPositionX = -(sx * 0.6) + 'px';
-      document.querySelector('.layer-sand').style.backgroundPositionX  = -(sx * 1) + 'px';
-    });
   </script>
 </body>
 </html>
