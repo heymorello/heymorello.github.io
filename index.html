@@ -13,7 +13,7 @@
       margin: 0;
       padding: 0;
       overflow-x: auto;
-      overflow-y: hidden;
+      overflow-y: auto; /* ✅ теперь можно скроллить вниз */
       font-family: Arial, sans-serif;
     }
 
@@ -71,34 +71,17 @@
     .race {
       position: relative;
       width: 5000px;
-      height: 100vh;
+      min-height: 100vh;
+      padding-top: 35vh; /* отступ от верха до дорожек */
       z-index: 40;
     }
 
     /* Дорожки */
     .lane {
-      position: absolute;
-      left: 0;
+      position: relative;
       width: 100%;
-      height: 2px;
-      background: rgba(255,255,255,0.6);
-    }
-
-    /* Старт и финиш */
-    .start-line, .finish-line {
-      position: absolute;
-      top: 0;
-      bottom: 0;
-      width: 6px;
-      background: red;
-      z-index: 50;
-    }
-    .start-line {
-      left: 0;
-    }
-    .finish-line {
-      left: 4800px; /* почти в конце ширины трассы */
-      background: green;
+      height: 220px; /* одинаковая высота дорожек */
+      border-top: 2px dashed rgba(255,255,255,0.7);
     }
 
     .horse {
@@ -111,7 +94,7 @@
 
     .horse img {
       display: block;
-      width: 200px; /* увеличенные лошади */
+      width: 200px;
       height: auto;
       user-select: none;
       -webkit-user-drag: none;
@@ -150,56 +133,43 @@
   </div>
 
   <!-- ТРАССА -->
-  <div class="race" id="race">
-    <!-- Старт и финиш -->
-    <div class="start-line"></div>
-    <div class="finish-line"></div>
-  </div>
+  <div class="race" id="race"></div>
 
   <script>
     // Временная картинка для всех лошадей
     const horseImage = "https://i.postimg.cc/593CXQst/20250920-1029-remix-01k5jsen2he3ebb44mn75tbs8q.png";
 
-    // Очки задаёшь сама, по умолчанию 0
-    const horsePoints = Array(10).fill(0);
+    // Очки для каждой лошади
+    const horsePoints = [1, 2, 4, 0, 5, 2, 0, 0, 1, 0];
 
     const race = document.getElementById('race');
 
     function placeHorses() {
-      race.querySelectorAll('.horse, .lane').forEach(el => el.remove());
+      race.innerHTML = '';
 
-      const sandHeight = window.innerHeight * 0.65;
       const horseHeight = 200;
-      const step = horseHeight / 2; // наполовину перекрываются
+      const laneHeight = 220; // одинаковая дорожка
+      const lanes = horsePoints.length;
 
-      for (let i = 0; i < horsePoints.length; i++) {
-        // ===== ЛОШАДЬ =====
+      for (let i = 0; i < lanes; i++) {
+        // ===== дорожка =====
+        const lane = document.createElement('div');
+        lane.className = 'lane';
+
+        // ===== лошадь =====
         const horse = document.createElement('div');
         horse.className = 'horse';
         horse.id = 'horse' + i;
-
-        if (i === 0) {
-          // первая лошадь на половину заборчика
-          horse.style.bottom = sandHeight - horseHeight/2 + "px";
-        } else {
-          // остальные наполовину перекрывают друг друга
-          horse.style.bottom = sandHeight - horseHeight/2 - (i * step) + "px";
-        }
-
+        horse.style.top = (i * laneHeight + 10) + "px";
         horse.setAttribute('data-points', horsePoints[i]);
 
         const img = document.createElement('img');
         img.src = horseImage;
         img.alt = 'Лошадь ' + (i+1);
-
         horse.appendChild(img);
-        race.appendChild(horse);
 
-        // ===== ЛИНИЯ ДОРОЖКИ =====
-        const lane = document.createElement('div');
-        lane.className = 'lane';
-        lane.style.bottom = parseInt(horse.style.bottom) - 10 + "px"; // чуть ниже лошади
         race.appendChild(lane);
+        race.appendChild(horse);
       }
     }
 
