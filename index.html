@@ -152,10 +152,12 @@
       const horseHeight = 200;
       const step = horseHeight / 2; // наполовину перекрываются
 
-      // ===== Дополнительная линия перед первой лошадью =====
+      // ===== Дополнительная линия перед первой лошадью (в одноимённом шаге) =====
+      // ставим её ровно на высоту "на один step выше" первой обычной линии,
+      // чтобы расстояние между линиями было одинаковым.
       const firstLane = document.createElement('div');
       firstLane.className = 'lane';
-      firstLane.style.bottom = (sandHeight - horseHeight/2 + horseHeight) + "px";
+      firstLane.style.bottom = (sandHeight - horseHeight/2 + step) + "px";
       race.appendChild(firstLane);
 
       for (let i = 0; i < horsePoints.length; i++) {
@@ -199,15 +201,17 @@
     window.onload = () => {
       for (let i = 0; i < horsePoints.length; i++) {
         const el = document.getElementById('horse' + i);
-        el.style.left = (horsePoints[i] * 120) + 'px';
+        if (el) el.style.left = (horsePoints[i] * 120) + 'px';
       }
     };
 
     // Параллакс
     window.addEventListener('scroll', () => {
       const sx = window.scrollX;
-      document.querySelector('.layer-fence').style.backgroundPositionX = -(sx * 0.6) + 'px';
-      document.querySelector('.layer-sand').style.backgroundPositionX  = -(sx * 1) + 'px';
+      const fence = document.querySelector('.layer-fence');
+      const sand = document.querySelector('.layer-sand');
+      if (fence) fence.style.backgroundPositionX = -(sx * 0.6) + 'px';
+      if (sand) sand.style.backgroundPositionX  = -(sx * 1) + 'px';
     });
   </script>
 </body>
