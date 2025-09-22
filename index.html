@@ -152,6 +152,12 @@
       const horseHeight = 200;
       const step = horseHeight / 2; // наполовину перекрываются
 
+      // ===== Дополнительная линия перед первой лошадью =====
+      const firstLane = document.createElement('div');
+      firstLane.className = 'lane';
+      firstLane.style.bottom = (sandHeight - horseHeight/2 + horseHeight) + "px";
+      race.appendChild(firstLane);
+
       for (let i = 0; i < horsePoints.length; i++) {
         // ===== Дорожка =====
         const lane = document.createElement('div');
