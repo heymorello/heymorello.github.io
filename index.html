@@ -29,7 +29,7 @@
       position: fixed;
       left: 0;
       right: 0;
-      bottom: 70vh; /* песок занимает 70% экрана */
+      bottom: 60vh; /* песок занимает 60% экрана */
       height: auto;
       min-height: 120px;
       background: url("https://i.postimg.cc/cJJ3rDsb/Chat-GPT-Image-21-2025-07-52-16.png") repeat-x bottom;
@@ -43,8 +43,8 @@
       left: 0;
       right: 0;
       bottom: 0;
-      height: 70vh; /* песок = 70% экрана */
-      background: url("https://i.pinimg.com/736x/cc/90/3b/cc903b50df10bb8c9a13e862e0faa4d6.jpg") repeat-x;
+      height: 60vh; /* песок = 60% экрана */
+      background: url("https://i.pinimg.com/736x/08/32/04/08320492ebd3ad1ecb7e15cb6bde1be2.jpg") repeat-x;
       background-size: auto 100%;
       z-index: 20;
       pointer-events: none;
@@ -137,9 +137,9 @@
 
     function placeHorses() {
       race.innerHTML = '';
-      const sandHeight = window.innerHeight * 0.7; // высота песка
+      const sandHeight = window.innerHeight * 0.6; // высота песка
       const baseBottom = sandHeight - 100; // положение первой лошади
-      const step = 80; // равное расстояние между лошадьми
+      const step = 60; // равное расстояние между лошадьми
 
       for (let i = 0; i < horsePoints.length; i++) {
         const horse = document.createElement('div');
