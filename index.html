@@ -43,16 +43,16 @@
 
     .sand {
       position: relative;
-      height: 800px; /* увеличили, чтобы был запас по вертикали */
+      min-height: 1200px; /* продлили вниз */
       background: url("https://txtrs.ru/textures/sand/sand-6.jpg") repeat;
-      background-size: auto 100%;
+      background-size: auto;
       overflow: visible;
     }
 
     /* ===== ТРАССА ===== */
     .race {
       position: relative;
-      width: 5000px;   /* горизонтальный размер */
+      width: 5000px;   /* длина трассы */
       height: 100%;    /* растягивается по песку */
     }
 
@@ -148,7 +148,8 @@
         horse.id = 'horse' + i;
 
         if (i === 0) {
-          horse.style.bottom = sandHeight - horseHeight/2 - 40 + "px";
+          // первая лошадь на верхней дорожке, чуть наезжает на забор
+          horse.style.bottom = sandHeight - horseHeight/2 + "px";
         } else {
           horse.style.bottom = sandHeight - horseHeight/2 - (i * step) + "px";
         }
