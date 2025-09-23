@@ -11,10 +11,22 @@
     html, body {
       margin: 0;
       padding: 0;
-      overflow-x: auto;
-      overflow-y: auto;
+      overflow: auto;
       font-family: Arial, sans-serif;
       background: #64a8be; /* небо */
+    }
+
+    /* ===== ЗАГОЛОВОК ===== */
+    .header {
+      text-align: center;
+      color: #fff;
+      text-shadow: 0 3px 8px rgba(0,0,0,0.6);
+      padding: 40px 0 10px;
+    }
+    .header h1 {
+      font-family: 'Marmelad', sans-serif;
+      font-size: clamp(32px, 6vw, 64px);
+      margin: 0;
     }
 
     /* ===== СЕКЦИИ ===== */
@@ -31,30 +43,17 @@
 
     .sand {
       position: relative;
-      height: 65vh;
-      background: url("https://txtrs.ru/textures/sand/sand-6.jpg") repeat-x;
+      height: 800px; /* увеличили, чтобы был запас по вертикали */
+      background: url("https://txtrs.ru/textures/sand/sand-6.jpg") repeat;
       background-size: auto 100%;
-      overflow: hidden;
-    }
-
-    /* ===== ТЕКСТ ===== */
-    .header {
-      text-align: center;
-      color: #fff;
-      text-shadow: 0 3px 8px rgba(0,0,0,0.6);
-      padding: 40px 0 10px;
-    }
-    .header h1 {
-      font-family: 'Marmelad', sans-serif;
-      font-size: clamp(32px, 6vw, 64px);
-      margin: 0;
+      overflow: visible;
     }
 
     /* ===== ТРАССА ===== */
     .race {
       position: relative;
-      width: 5000px; /* длина трассы */
-      height: 100%;
+      width: 5000px;   /* горизонтальный размер */
+      height: 100%;    /* растягивается по песку */
     }
 
     .lane {
@@ -149,7 +148,6 @@
         horse.id = 'horse' + i;
 
         if (i === 0) {
-          // чуть ниже линии, чтобы "голова" не лезла под забор
           horse.style.bottom = sandHeight - horseHeight/2 - 40 + "px";
         } else {
           horse.style.bottom = sandHeight - horseHeight/2 - (i * step) + "px";
@@ -177,7 +175,7 @@
       }
     };
 
-    // Параллакс при скролле вправо
+    // Параллакс по горизонтали
     window.addEventListener('scroll', () => {
       const sx = window.scrollX;
       const fence = document.getElementById('fence');
