@@ -32,20 +32,21 @@
     /* ===== СЕКЦИИ ===== */
     .fence {
       height: 120px;
+      width: 5000px; /* тянем вправо на всю трассу */
       background: url("https://i.postimg.cc/cJJ3rDsb/Chat-GPT-Image-21-2025-07-52-16.png") repeat-x bottom;
-      background-size: auto 100%;
     }
 
     .track-start-line {
       height: 2px;
       background: white;
+      width: 5000px;
     }
 
     .sand {
       position: relative;
       min-height: 1200px; /* продлили вниз */
-      background: url("https://txtrs.ru/textures/sand/sand-6.jpg") repeat;
-      background-size: auto;
+      width: 5000px;      /* тянем вправо */
+      background: url("https://txtrs.ru/textures/sand/sand-6.jpg") repeat; /* плитка */
       overflow: visible;
     }
 
@@ -148,7 +149,7 @@
         horse.id = 'horse' + i;
 
         if (i === 0) {
-          // первая лошадь на верхней дорожке, чуть наезжает на забор
+          // первая лошадь на верхней дорожке, слегка заезжает на забор
           horse.style.bottom = sandHeight - horseHeight/2 + "px";
         } else {
           horse.style.bottom = sandHeight - horseHeight/2 - (i * step) + "px";
