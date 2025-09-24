@@ -8,10 +8,6 @@
   <link href="https://fonts.googleapis.com/css2?family=Marmelad&display=swap" rel="stylesheet">
 
   <style>
-    :root {
-      --horse-size: 200px; /* ← меняй здесь размер всех лошадей */
-    }
-
     html, body {
       margin: 0;
       padding: 0;
@@ -38,7 +34,7 @@
       height: 120px;
       width: 5000px;
       background: url("https://i.postimg.cc/cJJ3rDsb/Chat-GPT-Image-21-2025-07-52-16.png") repeat-x bottom;
-      background-size: 500px auto;
+      background-size: 600px auto; /* регулируй плитку забора */
     }
 
     .track-start-line {
@@ -52,7 +48,7 @@
       min-height: 1200px;
       width: 5000px;
       background: url("https://txtrs.ru/textures/sand/sand-6.jpg") repeat;
-      background-size: 400px auto;
+      background-size: 450px auto; /* регулируй плитку песка */
       overflow: visible;
     }
 
@@ -82,7 +78,6 @@
 
     .horse img {
       display: block;
-      width: var(--horse-size);
       height: auto;
       user-select: none;
       -webkit-user-drag: none;
@@ -106,6 +101,14 @@
       z-index: 70;
     }
     .horse:hover::after { opacity: 1; }
+
+    /* Барьеры */
+    .barrier {
+      position: absolute;
+      height: 60px;
+      z-index: 30;
+      transform: translateY(50%); /* чтобы барьер стоял на дорожке */
+    }
   </style>
 </head>
 <body>
@@ -140,28 +143,34 @@
       "https://i.ibb.co/1tdkmwVf/Chat-GPT-Image-Sep-24-2025-01-31-58-PM.png"  // 10
     ];
 
+    // Размеры каждой лошади (можно менять индивидуально)
+    const horseSizes = [
+      "200px","200px","200px","200px","200px",
+      "200px","200px","200px","200px","200px"
+    ];
+
     // Очки для каждой лошади
     const horsePoints = [1, 2, 4, 0, 5, 2, 0, 0, 1, 0];
 
     const race = document.getElementById('race');
+    const barrierImage = "https://i.ibb.co/VpS1RTNT/pngtree-3d-a-horse-jumping-fence-equestrian-art-on-realistic-png-image-20944975.png";
 
     function placeHorses() {
       race.innerHTML = '';
 
       const sandHeight = race.offsetHeight;
-      const horseHeight = parseInt(getComputedStyle(document.documentElement).getPropertyValue('--horse-size'));
-      const step = horseHeight / 2;
+      const step = 100; // вертикальное смещение (половина высоты)
 
       // верхняя линия
       const firstLane = document.createElement('div');
       firstLane.className = 'lane';
-      firstLane.style.bottom = (sandHeight - horseHeight/2 + step) + "px";
+      firstLane.style.bottom = (sandHeight - parseInt(horseSizes[0])/2 + step/2) + "px";
       race.appendChild(firstLane);
 
       for (let i = 0; i < horsePoints.length; i++) {
         const lane = document.createElement('div');
         lane.className = 'lane';
-        lane.style.bottom = (sandHeight - horseHeight/2 - (i * step)) + "px";
+        lane.style.bottom = (sandHeight - parseInt(horseSizes[i])/2 - (i * step)) + "px";
         race.appendChild(lane);
 
         const horse = document.createElement('div');
@@ -169,19 +178,30 @@
         horse.id = 'horse' + i;
 
         if (i === 0) {
-          horse.style.bottom = sandHeight - horseHeight/2 + "px"; // первая на верхней дорожке
+          horse.style.bottom = sandHeight - parseInt(horseSizes[i])/2 + "px";
         } else {
-          horse.style.bottom = sandHeight - horseHeight/2 - (i * step) + "px";
+          horse.style.bottom = sandHeight - parseInt(horseSizes[i])/2 - (i * step) + "px";
         }
 
         horse.setAttribute('data-points', horsePoints[i]);
 
         const img = document.createElement('img');
-        img.src = horseImages[i] || "https://i.postimg.cc/593CXQst/20250920-1029-remix-01k5jsen2he3ebb44mn75tbs8q.png"; // запасная картинка
+        img.src = horseImages[i];
+        img.style.width = horseSizes[i];
         img.alt = 'Лошадь ' + (i+1);
         horse.appendChild(img);
 
         race.appendChild(horse);
+
+        // Добавляем барьеры каждые 50 шагов (50*120px = 6000, но у нас ширина 5000px → до конца трассы)
+        for (let x = 600; x < 5000; x += 600) {
+          const barrier = document.createElement('img');
+          barrier.src = barrierImage;
+          barrier.className = 'barrier';
+          barrier.style.left = x + "px";
+          barrier.style.bottom = horse.style.bottom;
+          race.appendChild(barrier);
+        }
       }
     }
 
