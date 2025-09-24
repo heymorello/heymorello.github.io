@@ -286,7 +286,7 @@ html, body {
         <div>Пегас Бригитта</div>
       </td>
       <td class="description">
-      Её искали все девчонки в 2000-х. Пока вы искали её на земле, она летала в облаках. Просто принцесса, просто лучшая. Все основы, оцененные более чем на 12 баллов, дают вам дополнительные +5⚡️ скорости.
+      По ней сходили с ума все девчонки в 2000-х. Пока вы искали её на земле, она летала в облаках. Просто принцесса, просто лучшая. Все основы, оцененные более чем на 12 баллов, дают вам дополнительные +5⚡️ скорости.
       <td></td>
       <td>0⚡️</td>
     </tr>
@@ -346,46 +346,39 @@ html, body {
 .results table {
   table-layout: fixed;
   width: 100%;
-  border-collapse: collapse;
-  text-align: center;
+  border-collapse: collapse; /* обязательно */
+  border-spacing: 0;         /* на всякий случай */
+  border: none;              /* бордера задаём на ячейках */
   font-size: 16px;
 }
-.results th, .results td {
-  border: 0px solid #333;
-  padding: 10px;
-  vertical-align: top;
+
+/* одинаковая тонкая обводка у всех ячеек */
+.results th,
+.results td {
+  border: 1px solid #333;
+  padding: 12px;
+  vertical-align: middle;
 }
 
-  .results table td {
-  vertical-align: middle; /* текст по вертикали по центру */
-}
-
-  .results table td, 
-.results table th {
-  border: 1px solid #000; /* одинаковая толщина обводки */
-  padding: 8px;           /* одинаковые отступы */
-  vertical-align: middle; /* выравнивание */
-}
-
-/* ширина колонок */
+/* колонки: первая для картинки, вторая — описание, третья — спонсоры, четвёртая — скорость */
 .results th:nth-child(1), .results td:nth-child(1) { width: 220px; }
 .results th:nth-child(2), .results td:nth-child(2) { width: 45%; }
 .results th:nth-child(3), .results td:nth-child(3) { width: 20%; }
 .results th:nth-child(4), .results td:nth-child(4) { width: 100px; }
 
-/* первая колонка с картинкой */
-.participant {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 8px;
-  font-weight: bold;
-}
+/* картинка — не даём ей собственной рамки, она не «толстит» границу таблицы */
 .participant img {
-  width: 100px;
-  height: 100px;
+  display: block;
+  width: 150px;
+  height: 150px;
   object-fit: cover;
-  border-radius: 8px;
+  margin: 0 auto;
+  border: none;      /* ВАЖНО: убираем бордер у картинки */
+  box-shadow: none;  /* убираем тени, если были */
+}
+
+  .results table td {
+  vertical-align: middle; /* текст по вертикали по центру */
 }
 
 /* уменьшенный текст во второй колонке */
