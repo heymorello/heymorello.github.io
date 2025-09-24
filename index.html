@@ -535,7 +535,10 @@ closeBtn.onclick = () => faqModal.style.display = "none";
 window.onclick = (e) => { if(e.target == faqModal) faqModal.style.display = "none"; };
 </script>
 
-  <!-- Модальное окно для таблицы заданий -->
+  <!-- Кнопка ⚡️ -->
+<button id="taskBtn">⚡️</button>
+
+<!-- Модальное окно для таблицы заданий -->
 <div id="taskModal" class="modal">
   <div class="modal-content">
     <span class="close" id="closeTask">&times;</span>
@@ -549,8 +552,19 @@ window.onclick = (e) => { if(e.target == faqModal) faqModal.style.display = "non
             <th>Скорость</th>
           </tr>
         </thead>
-        <tbody id="taskTableBody">
-          <!-- Строки будем генерировать через JS -->
+        <tbody>
+          <!-- Вставляешь свои строки вручную -->
+          <tr>
+            <td>Тип 1</td>
+            <td>Описание задания 1</td>
+            <td>+10 ⚡️</td>
+          </tr>
+          <tr>
+            <td>Тип 2</td>
+            <td>Описание задания 2</td>
+            <td>+20 ⚡️</td>
+          </tr>
+          <!-- … и так далее до 30 строк -->
         </tbody>
       </table>
     </div>
@@ -558,15 +572,13 @@ window.onclick = (e) => { if(e.target == faqModal) faqModal.style.display = "non
 </div>
 
 <style>
-/* Модальные окна */
+/* Модальное окно */
 .modal {
-  display: none;
+  display: none; 
   position: fixed;
   z-index: 1000;
-  left: 0;
-  top: 0;
-  width: 100%;
-  height: 100%;
+  left: 0; top: 0;
+  width: 100%; height: 100%;
   overflow-y: auto;
   background-color: rgba(0,0,0,0.8);
   padding: 20px;
@@ -583,10 +595,7 @@ window.onclick = (e) => { if(e.target == faqModal) faqModal.style.display = "non
   line-height: 1.5;
 }
 
-.modal-content h1 {
-  text-align: center;
-  margin-bottom: 20px;
-}
+.modal-content h1 { text-align: center; margin-bottom: 20px; }
 
 .modal-content table {
   width: 100%;
@@ -600,9 +609,7 @@ window.onclick = (e) => { if(e.target == faqModal) faqModal.style.display = "non
   padding: 8px 12px;
 }
 
-.modal-content th {
-  background: #eee;
-}
+.modal-content th { background: #eee; }
 
 .close {
   color: #333;
@@ -612,49 +619,20 @@ window.onclick = (e) => { if(e.target == faqModal) faqModal.style.display = "non
   cursor: pointer;
 }
 
-.close:hover {
-  color: red;
-}
+.close:hover { color: red; }
 
-.table-wrapper {
-  overflow-x: auto;
-}
+.table-wrapper { overflow-x: auto; }
 </style>
 
 <script>
-// Существующая кнопка с молнией
+// Работа кнопки ⚡️
 const taskBtn = document.getElementById('taskBtn');
 const taskModal = document.getElementById('taskModal');
 const closeTask = document.getElementById('closeTask');
-const taskTableBody = document.getElementById('taskTableBody');
 
-// Генерация 30 строк
-for (let i = 1; i <= 30; i++) {
-  const row = document.createElement('tr');
-  row.innerHTML = `
-    <td>Тип ${i}</td>
-    <td>Описание задания ${i}</td>
-    <td>+${i} ⚡️</td>
-  `;
-  taskTableBody.appendChild(row);
-}
-
-// Открытие модального окна
-taskBtn.addEventListener('click', () => {
-  taskModal.style.display = 'block';
-});
-
-// Закрытие по крестику
-closeTask.addEventListener('click', () => {
-  taskModal.style.display = 'none';
-});
-
-// Закрытие при клике вне окна
-window.addEventListener('click', (e) => {
-  if (e.target == taskModal) {
-    taskModal.style.display = 'none';
-  }
-});
+taskBtn.addEventListener('click', () => taskModal.style.display = 'block');
+closeTask.addEventListener('click', () => taskModal.style.display = 'none');
+window.addEventListener('click', e => { if(e.target == taskModal) taskModal.style.display = 'none'; });
 </script>
 
 <script>
