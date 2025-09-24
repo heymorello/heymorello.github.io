@@ -377,13 +377,12 @@ html, body {
   box-shadow: none;  /* убираем тени, если были */
 }
 
-  .results table td {
-  vertical-align: middle; /* текст по вертикали по центру */
-}
-
-/* уменьшенный текст во второй колонке */
-.description {
-  text-align: justify;
+.results td:nth-child(2),
+.results th:nth-child(2) {
+  padding-left: 12px;   /* отступ слева */
+  padding-right: 12px;  /* отступ справа */
+  text-align: justify;   /* выравнивание по ширине */
+  vertical-align: middle; /* равные отступы сверху и снизу */
 }
 
   .results table td:nth-child(4) {
