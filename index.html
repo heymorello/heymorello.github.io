@@ -1,269 +1,140 @@
 <!DOCTYPE html>
 <html lang="ru">
 <head>
-  <meta charset="utf-8" />
-  <title>Скачки и задачки</title>
-
-  <!-- Шрифт Marmelad -->
-  <link href="https://fonts.googleapis.com/css2?family=Marmelad&display=swap" rel="stylesheet">
-
-  <style>
-    html, body {
-      margin: 0;
-      padding: 0;
-      overflow: auto;
-      font-family: Arial, sans-serif;
-      background: #64a8be; /* небо */
-    }
-
-    /* ===== ЗАГОЛОВОК ===== */
-    .header {
-      text-align: center;
-      color: #fff;
-      text-shadow: 0 3px 8px rgba(0,0,0,0.6);
-      padding: 40px 0 10px;
-    }
-    .header h1 {
-      font-family: 'Marmelad', sans-serif;
-      font-size: clamp(32px, 6vw, 64px);
-      margin: 0;
-    }
-
-    /* ===== ЗАБОР ===== */
-    .fence {
-      height: 120px;
-      width: 5000px;
-      background: url("https://i.postimg.cc/cJJ3rDsb/Chat-GPT-Image-21-2025-07-52-16.png") repeat-x bottom;
-      background-size: 600px auto;
-    }
-
-    /* ===== ЛИНИЯ СТАРТА ===== */
-    .track-start-line {
-      height: 2px;
-      background: white;
-      width: 5000px;
-    }
-
-    /* ===== ПЕСОК ===== */
-    .sand {
-      position: relative;
-      min-height: 1400px;
-      width: 5000px;
-      background: url("https://txtrs.ru/textures/sand/sand-6.jpg") repeat;
-      background-size: 450px auto;
-      overflow: visible;
-      padding-bottom: 40px;
-    }
-
-    /* ===== ТРАССА ===== */
-    .race {
-      position: relative;
-      width: 5000px;
-      height: 1000px; /* под лошадей */
-    }
-
-    .lane {
-      position: absolute;
-      left: 0;
-      width: 100%;
-      height: 2px;
-      background: rgba(255,255,255,0.7);
-      z-index: 25;
-    }
-
-    /* ===== БАРЬЕР ===== */
-    .barrier {
-      position: absolute;
-      width: 6px;
-      height: 230px; /* видимая высота */
-      background: #fff;
-      bottom: 0; /* привязка к нижней линии */
-      z-index: 50; /* выше лошадей */
-      box-shadow: 0 0 4px black;
-    }
-
-    .barrier::after {
-      content: "Барьер";
-      position: absolute;
-      top: -30px;
-      left: 50%;
-      transform: translateX(-50%);
-      padding: 6px 8px;
-      background: white;
-      color: black;
-      border-radius: 6px;
-      font-size: 16px;
-      opacity: 0;
-      transition: opacity .2s;
-      white-space: nowrap;
-    }
-
-    .barrier:hover::after { opacity: 1; }
-
-    .horse {
-      position: absolute;
-      left: 0;
-      cursor: pointer;
-      transition: left 2s linear;
-      z-index: 45;
-    }
-    .horse img {
-      display: block;
-      height: auto;
-      user-select: none;
-      -webkit-user-drag: none;
-    }
-    .horse::after {
-      content: attr(data-points) " очков";
-      position: absolute;
-      bottom: 110%;
-      left: 50%;
-      transform: translateX(-50%);
-      padding: 8px 10px;
-      background: white;
-      color: black;
-      border-radius: 6px;
-      font-size: 16px;
-      opacity: 0;
-      pointer-events: none;
-      transition: opacity .2s;
-      white-space: nowrap;
-      z-index: 70;
-    }
-    .horse:hover::after { opacity: 1; }
-
-    /* ===== ТАБЛИЦА ===== */
-    .results {
-      width: 100%;
-      background: url("https://txtrs.ru/textures/sand/sand-6.jpg") repeat;
-      background-size: 450px auto;
-      padding: 40px 0;
-    }
-
-    .results table {
-      margin: 0 auto;
-      border-collapse: collapse;
-      text-align: center;
-      font-size: 16px;
-      width: 95%;
-      background: rgba(255,255,255,0.9);
-    }
-
-    .results th, .results td {
-      border: 1px solid #333;
-      padding: 10px;
-    }
-  </style>
+<meta charset="UTF-8">
+<title>Скачки и задачки</title>
+<link href="https://fonts.googleapis.com/css2?family=Marmelad&display=swap" rel="stylesheet">
+<style>
+  html, body {
+    margin: 0;
+    padding: 0;
+    font-family: Arial, sans-serif;
+    background: #64a8be;
+  }
+  .header {
+    text-align: center;
+    color: #fff;
+    text-shadow: 0 3px 8px rgba(0,0,0,0.6);
+    padding: 40px 0 10px;
+  }
+  .header h1 {
+    font-family: 'Marmelad', sans-serif;
+    font-size: clamp(32px, 6vw, 64px);
+    margin: 0;
+  }
+  .fence { height: 120px; background: url("https://i.postimg.cc/cJJ3rDsb/Chat-GPT-Image-21-2025-07-52-16.png") repeat-x bottom; background-size: 600px auto; }
+  .track-start-line { height: 2px; background: white; width: 100%; }
+  .sand {
+    position: relative;
+    min-height: 400px;
+    background: url("https://txtrs.ru/textures/sand/sand-6.jpg") repeat;
+    background-size: 450px auto;
+  }
+  .race {
+    position: relative;
+    width: 100%;
+    height: 250px;
+    margin: 20px 0;
+  }
+  .horse {
+    position: absolute;
+    bottom: 0;
+    transition: left 2s linear;
+    z-index: 20;
+  }
+  .horse img { width: 100px; display: block; }
+  .barrier {
+    position: absolute;
+    width: 6px;
+    height: 250px;
+    background: white;
+    bottom: 0;
+    z-index: 10;
+    box-shadow: 0 0 4px black;
+  }
+  .results {
+    padding: 20px;
+  }
+  .results table {
+    width: 90%;
+    margin: 0 auto;
+    border-collapse: collapse;
+    background: rgba(255,255,255,0.9);
+  }
+  .results th, .results td { border: 1px solid #333; padding: 10px; text-align: center; }
+</style>
 </head>
 <body>
-  <!-- ЗАГОЛОВОК -->
-  <div class="header">
-    <h1>Скачки и задачки</h1>
-  </div>
 
-  <!-- ЗАБОР -->
-  <div class="fence"></div>
+<div class="header"><h1>Скачки и задачки</h1></div>
+<div class="fence"></div>
+<div class="track-start-line"></div>
 
-  <!-- ЛИНИЯ СТАРТА -->
-  <div class="track-start-line"></div>
+<div class="sand">
+  <div class="race" id="race"></div>
+</div>
 
-  <!-- ПЕСОК -->
-  <div class="sand" id="sand">
-    <div class="race" id="race"></div>
-  </div>
+<div class="results">
+  <table>
+    <tr><th>Участники</th><th>Характеристики</th><th>Скорость</th></tr>
+    <tr><td>Корова Брунхильда</td><td>Описание</td><td>0⚡️</td></tr>
+    <tr><td>Фестрал Невермор</td><td>Описание</td><td>0⚡️</td></tr>
+    <tr><td>Козёл Винсент</td><td>Описание</td><td>0⚡️</td></tr>
+    <tr><td>Лошадь Покахонтас</td><td>Описание</td><td>0⚡️</td></tr>
+    <tr><td>Волк Ихвильнихт</td><td>Описание</td><td>0⚡️</td></tr>
+    <tr><td>Гиппогриф Крылоклюв</td><td>Описание</td><td>0⚡️</td></tr>
+    <tr><td>Капибара Лабуба</td><td>Описание</td><td>100⚡️</td></tr>
+    <tr><td>Слон Юра</td><td>Описание</td><td>0⚡️</td></tr>
+    <tr><td>Кельпи Вафля</td><td>Описание</td><td>0⚡️</td></tr>
+    <tr><td>Свинка Шарлотта</td><td>Описание</td><td>0⚡️</td></tr>
+  </table>
+</div>
 
-  <!-- ТАБЛИЦА -->
-  <div class="results">
-    <table>
-      <tr>
-        <th>Участники скачек</th>
-        <th>Характеристики</th>
-        <th>Спонсоры</th>
-        <th>Скорость</th>
-      </tr>
-      <tr><td>Корова Брунхильда</td><td>Участница прямком с фермы Весёлого Молочника из Альпийских гор. Даёт молоко для Гриффолада вкуснее Милки. Вы можете брать неограниченное количество первокурсников на кураторство в течение семестра. Получайте +50 ⚡️ скорости за каждого первокурсника, который освоился на факультете (вступил в телеграм-чат, зарегистрировался в Башне, заселился в команту и написал в ней пост от 1000 символов).</td><td></td><td>0⚡️</td></tr>
-      <tr><td>Фестрал Невермор</td><td>Числится на балансе школы — главного конкурента Хогвартса Дамблдора в тик-токе. Каждый раз, когда вы пересекаете барьер, все ваши конкуренты получают –15 ⚡️ скорости.</td><td></td><td>0⚡️</td></tr>
-      <tr><td>Козёл Винсент</td><td>Счастливый ребёнок двухкратного обладателя титула «Мистер Хогвартс Дамблдора» и почётного профессора кафедры естествознания. Все учебные баллы, заработанные в рамках предметов кафедры естествознания, умножаются х2.</td><td></td><td>0⚡️</td></tr>
-      <tr><td>Лошадь Покахонтас</td><td>Ветер прерий с вольным нравом! Скачет так, что не догнать. Все рпг-посты от 1000 символов на территориях школы (вне Мабона) дают вам +3⚡️ к скорости.</td><td></td><td>0⚡️</td></tr>
-      <tr><td>Волк Ихвильнихт</td><td>Когда водила протянул аукс, все мои волки делают — ауф! Главный по песням, танцам и мемам. Все внеучебные баллы, заработанные в течение семестра, умножаются х2.</td><td></td><td>0⚡️</td></tr>
-      <tr><td>Гиппогриф Крылоклюв</td><td>Брат самого известного актёра поттерианы, который устал быть в тени своего родственника. Все учебные баллы, заработанные в рамках предметов кафедры искусств, умножаются х2.</td><td></td><td>0⚡️</td></tr>
-      <tr><td>Капибара Лабуба</td><td>Самая трендовая чика на ипподроме. Её кубок будет не золотой, а цвета сливочного масла. Вы уже в тренде и начинаете забег с +100⚡️ cскорости. Вам доступны бонусы двух барьеров.</td><td></td><td>100⚡️</td></tr>
-      <tr><td>Слон Юра</td><td>Наш слоняра, который покорил всех одним только взглядом! Ему уже предлагали  «Оскар» среди скакунов, но он отказался. Все задания скачек, выполненные в рамках факультетской Башни, умножаются на х3.</td><td></td><td>0⚡️</td></tr>
-      <tr><td>Кельпи Вафля</td><td>Ни рыба, ни мясо, а настоящий десерт среди участников! Настолько же легендарна, как появление профессора Брука в стенах школы. Все учебные баллы, заработанные в рамках предметов кафедры мракоборства, умножаются х2.</td><td></td><td>0⚡️</td></tr>
-      <tr><td>Свинка Шарлотта</td><td>Ни рыба, ни мясо, а настоящий десерт среди участников! Настолько же легендарна, как появление профессора Брука в стенах школы. Все учебные баллы, заработанные в рамках предметов кафедры мракоборства, умножаются х2.</td><td></td><td>0⚡️</td></tr>
-    </table>
-  </div>
+<script>
+const horseImages = [
+  "https://i.ibb.co/tTWMGsWW/Chat-GPT-Image-23-2025-17-23-57.png",
+  "https://i.ibb.co/Jwp91sZ9/Chat-GPT-Image-23-2025-17-57-01.png",
+  "https://i.ibb.co/wNJ2x6Xz/20250920-1029-remix-01k5jsen2he3ebb44mn75tbs8q.png",
+  "https://i.ibb.co/pjXSLx0t/Chat-GPT-Image-23-2025-17-40-57.png",
+  "https://i.ibb.co/m5LhSWN1/20250920-1529-remix-01k5kakeq0fsaskz0yr5q2mzby.png",
+  "https://i.ibb.co/Pvn0PrtF/Chat-GPT-Image-24-2025-07-23-43.png",
+  "https://i.ibb.co/Ps8Mr98J/20250920-1357-remix-01k5k5cjmcf2ja5878w22hhxh7.png",
+  "https://i.ibb.co/VWvRft9V/Chat-GPT-Image-24-2025-07-39-30.png",
+  "https://i.ibb.co/vxLQJcsj/20250920-1128-remix-01k5jwttgrervbg17xtjk37xgs.png",
+  "https://i.ibb.co/1tdkmwVf/Chat-GPT-Image-Sep-24-2025-01-31-58-PM.png"
+];
+const horsePoints = [0, 2, 4, 0, 5, 2, 0, 0, 1, 0]; // стартовые очки
+const race = document.getElementById('race');
 
-  <script>
-    const horseImages = [
-      "https://i.ibb.co/tTWMGsWW/Chat-GPT-Image-23-2025-17-23-57.png",
-      "https://i.ibb.co/Jwp91sZ9/Chat-GPT-Image-23-2025-17-57-01.png",
-      "https://i.ibb.co/wNJ2x6Xz/20250920-1029-remix-01k5jsen2he3ebb44mn75tbs8q.png",
-      "https://i.ibb.co/pjXSLx0t/Chat-GPT-Image-23-2025-17-40-57.png",
-      "https://i.ibb.co/m5LhSWN1/20250920-1529-remix-01k5kakeq0fsaskz0yr5q2mzby.png",
-      "https://i.ibb.co/Pvn0PrtF/Chat-GPT-Image-24-2025-07-23-43.png",
-      "https://i.ibb.co/Ps8Mr98J/20250920-1357-remix-01k5k5cjmcf2ja5878w22hhxh7.png",
-      "https://i.ibb.co/VWvRft9V/Chat-GPT-Image-24-2025-07-39-30.png",
-      "https://i.ibb.co/vxLQJcsj/20250920-1128-remix-01k5jwttgrervbg17xtjk37xgs.png",
-      "https://i.ibb.co/1tdkmwVf/Chat-GPT-Image-Sep-24-2025-01-31-58-PM.png"
-    ];
+function placeHorses() {
+  race.innerHTML = '';
+  const laneHeight = 30;
 
-    const horseSizes = [200, 180, 220, 210, 190, 200, 170, 230, 200, 210];
-    const horsePoints = [1, 2, 4, 0, 5, 2, 0, 0, 1, 0];
+  for (let i = 0; i < horsePoints.length; i++) {
+    const horse = document.createElement('div');
+    horse.className = 'horse';
+    horse.style.left = (horsePoints[i]*120) + 'px';
+    horse.style.bottom = (i*laneHeight) + 'px';
 
-    const race = document.getElementById('race');
+    const img = document.createElement('img');
+    img.src = horseImages[i];
+    horse.appendChild(img);
 
-    function placeHorses() {
-      race.innerHTML = '';
-      const sandHeight = race.offsetHeight;
-      const baseHorseHeight = 200;
-      const step = baseHorseHeight / 2;
+    race.appendChild(horse);
+  }
 
-      // верхняя линия
-      const firstLane = document.createElement('div');
-      firstLane.className = 'lane';
-      firstLane.style.bottom = (sandHeight - baseHorseHeight/2 + step) + "px";
-      race.appendChild(firstLane);
+  // барьеры каждые 50 очков
+  for (let x = 50; x <= 500; x += 50) {
+    const barrier = document.createElement('div');
+    barrier.className = 'barrier';
+    barrier.style.left = (x*12) + 'px'; // масштаб под экран
+    race.appendChild(barrier);
+  }
+}
 
-      for (let i = 0; i < horsePoints.length; i++) {
-        const lane = document.createElement('div');
-        lane.className = 'lane';
-        lane.style.bottom = (sandHeight - baseHorseHeight/2 - (i * step)) + "px";
-        race.appendChild(lane);
+window.onload = placeHorses;
+window.onresize = placeHorses;
+</script>
 
-        const horse = document.createElement('div');
-        horse.className = 'horse';
-        horse.id = 'horse' + i;
-        horse.style.bottom = (sandHeight - baseHorseHeight/2 - (i * step)) + "px";
-        horse.setAttribute('data-points', horsePoints[i]);
-
-        const img = document.createElement('img');
-        img.src = horseImages[i];
-        img.alt = 'Лошадь ' + (i+1);
-        img.style.width = horseSizes[i] + "px";
-        horse.appendChild(img);
-
-        race.appendChild(horse);
-      }
-
-      // Барьеры каждые 50 очков
-      for (let x = 50; x <= 500; x += 50) {
-        const barrier = document.createElement('div');
-        barrier.className = 'barrier';
-        barrier.style.left = (x * 120) + "px";
-        race.appendChild(barrier);
-      }
-    }
-
-    placeHorses();
-    window.addEventListener('resize', placeHorses);
-
-    window.onload = () => {
-      for (let i = 0; i < horsePoints.length; i++) {
-        const el = document.getElementById('horse' + i);
-        if (el) el.style.left = (horsePoints[i] * 120) + 'px';
-      }
-    };
-  </script>
 </body>
 </html>
