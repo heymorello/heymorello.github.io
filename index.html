@@ -1,219 +1,199 @@
 <!DOCTYPE html>
 <html lang="ru">
 <head>
-  <meta charset="utf-8" />
-  <title>Скачки и задачки</title>
+<meta charset="utf-8" />
+<title>Скачки и задачки</title>
+<link href="https://fonts.googleapis.com/css2?family=Marmelad&display=swap" rel="stylesheet">
+<style>
+html, body {
+  margin: 0;
+  padding: 0;
+  font-family: 'Marmelad', sans-serif;
+  background: #b18155;
+  overflow-y: auto;
+}
 
-  <!-- Шрифт Marmelad -->
-  <link href="https://fonts.googleapis.com/css2?family=Marmelad&display=swap" rel="stylesheet">
+/* ===== КНОПКИ ===== */
+.top-buttons {
+  position: fixed;
+  top: 10px;
+  left: 10px;
+  z-index: 100;
+  display: flex;
+  gap: 12px;
+}
+.top-buttons button {
+  width: 60px;
+  height: 60px;
+  font-size: 28px;
+  border: none;
+  border-radius: 50%;
+  background: #fff;
+  cursor: pointer;
+}
 
-  <style>
-    html, body {
-      margin: 0;
-      padding: 0;
-      font-family: 'Marmelad', sans-serif;
-      background: #b18155;
-      overflow-y: auto;
-    }
+/* ===== ЗАГОЛОВОК ===== */
+.header {
+  text-align: center;
+  color: #fff;
+  padding: 30px 0 5px;
+}
+.header h1 {
+  font-size: clamp(32px, 6vw, 64px);
+  margin: 0;
+}
+.header h2 {
+  font-size: 20px;
+  font-weight: normal;
+  margin-top: 8px;
+  color: #fff;
+}
 
-    /* ===== КНОПКИ ===== */
-    .top-buttons {
-      position: fixed;
-      top: 10px;
-      left: 10px;
-      z-index: 100;
-      display: flex;
-      gap: 12px;
-    }
-    .top-buttons button {
-      width: 60px;
-      height: 60px;
-      font-size: 28px;
-      border: none;
-      border-radius: 50%;
-      background: #fff;
-      cursor: pointer;
-    }
+/* ===== БЛОК С ЛОШАДЬМИ ===== */
+.race-container {
+  width: 95%;
+  height: 800px;
+  max-width: 1200px;
+  margin: 20px auto;
+  border: 4px solid #fff;
+  border-radius: 12px;
+  overflow: auto;
+  background: url("https://txtrs.ru/textures/sand/sand-6.jpg") repeat;
+  background-size: 450px auto;
+  position: relative;
+}
 
-    /* ===== ЗАГОЛОВОК ===== */
-    .header {
-      text-align: center;
-      color: #fff;
-      padding: 30px 0 5px;
-    }
-    .header h1 {
-      font-size: clamp(32px, 6vw, 64px);
-      margin: 0;
-    }
-    .header h2 {
-      font-size: 20px;
-      font-weight: normal;
-      margin-top: 8px;
-      color: #fff;
-    }
+.race-inner {
+  position: relative;
+  width: 3000px;
+  height: 100%;
+}
 
-    /* ===== БЛОК С ЛОШАДЬМИ ===== */
-    .race-container {
-      width: 95%;
-      height: 800px;
-      max-width: 1200px;
-      margin: 20px auto;
-      border: 4px solid #fff;
-      border-radius: 12px;
-      overflow: auto;
-      background: url("https://txtrs.ru/textures/sand/sand-6.jpg") repeat;
-      background-size: 450px auto;
-      position: relative;
-    }
+.sky {
+  position: absolute;
+  top: 0;
+  width: 100%;
+  height: 150px;
+  background: #64a8be;
+  z-index: 1;
+}
 
-    .race-inner {
-      position: relative;
-      width: 3000px;
-      height: 100%;
-    }
+.fence {
+  position: absolute;
+  top: -10px; /* поднят на 10px */
+  width: 3000px;
+  height: 230px;
+  background: url("https://i.postimg.cc/cJJ3rDsb/Chat-GPT-Image-21-2025-07-52-16.png") repeat-x bottom;
+  background-size: 800px auto;
+  z-index: 2;
+}
 
-    .sky {
-      position: absolute;
-      top: 0;
-      width: 100%;
-      height: 150px;
-      background: #64a8be;
-      z-index: 1;
-    }
+.lane {
+  position: absolute;
+  left: 0;
+  width: 100%;
+  height: 2px;
+  background: rgba(255,255,255,0.9);
+  z-index: 3;
+}
 
-    .fence {
-      position: absolute;
-      top: -10px; /* подняли на 10px вверх */
-      width: 3000px;
-      height: 230px; /* как ты хотела */
-      background: url("https://i.postimg.cc/cJJ3rDsb/Chat-GPT-Image-21-2025-07-52-16.png") repeat-x bottom;
-      background-size: 800px auto;
-      z-index: 2;
-    }
+.flag {
+  position: absolute;
+  width: 60px;
+  height: auto;
+  z-index: 5;
+  cursor: pointer;
+}
+.flag::after {
+  content: attr(data-tip);
+  position: absolute;
+  top: -35px;
+  left: 50%;
+  transform: translateX(-50%);
+  padding: 6px 8px;
+  background: white;
+  color: black;
+  border-radius: 6px;
+  font-size: 14px;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity .2s;
+  white-space: nowrap;
+}
+.flag:hover::after { opacity: 1; }
 
-    .lane {
-      position: absolute;
-      left: 0;
-      width: 100%;
-      height: 2px;
-      background: rgba(255,255,255,0.9);
-      z-index: 3;
-    }
+.horse {
+  position: absolute;
+  cursor: pointer;
+  z-index: 6;
+  transition: left 3s ease-in-out;
+}
+.horse img {
+  display: block;
+  height: auto;
+  user-select: none;
+  -webkit-user-drag: none;
+}
+.horse::after {
+  content: attr(data-points) " ⚡️ скорости";
+  position: absolute;
+  bottom: 75%; /* подсказка выше лошади */
+  left: 50%;
+  transform: translateX(-50%);
+  padding: 6px 8px;
+  background: white;
+  color: black;
+  border-radius: 6px;
+  font-size: 14px;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity .2s;
+  white-space: nowrap;
+}
+.horse:hover::after { opacity: 1; }
 
-    .flag {
-      position: absolute;
-      width: 60px;
-      height: auto;
-      z-index: 4;
-      cursor: pointer;
-    }
-    .flag::after {
-      content: attr(data-tip);
-      position: absolute;
-      top: -30px; /* ближе к флажку */
-      left: 50%;
-      transform: translateX(-50%);
-      padding: 6px 8px;
-      background: white;
-      color: black;
-      border-radius: 6px;
-      font-size: 14px;
-      opacity: 0;
-      pointer-events: none;
-      transition: opacity .2s;
-      white-space: nowrap;
-      z-index: 10;
-    }
-    .flag:hover::after { opacity: 1; }
-
-    .horse {
-      position: absolute;
-      cursor: pointer;
-      z-index: 5;
-      transition: left 3s ease-in-out;
-    }
-
-    .horse img {
-      display: block;
-      height: auto;
-      user-select: none;
-      -webkit-user-drag: none;
-    }
-
-    .horse::after {
-      content: attr(data-points) " ⚡️ скорости";
-      position: absolute;
-      bottom: 70%; /* подняли подсказку выше */
-      left: 50%;
-      transform: translateX(-50%);
-      padding: 6px 8px;
-      background: white;
-      color: black;
-      border-radius: 6px;
-      font-size: 14px;
-      opacity: 0;
-      pointer-events: none;
-      transition: opacity .2s;
-      white-space: nowrap;
-    }
-    .horse:hover::after { opacity: 1; }
-
-    /* ===== ТАБЛИЦА ===== */
-    .results {
-      width: 90%;
-      max-width: 1200px;
-      margin: 20px auto;
-      background: rgba(255,255,255,0.9);
-      padding: 20px;
-      border-radius: 12px;
-    }
-
-    .results table {
-      width: 100%;
-      border-collapse: collapse;
-      text-align: center;
-      font-size: 16px;
-    }
-
-    .results th, .results td {
-      border: 1px solid #333;
-      padding: 10px;
-    }
-
-    .results td:nth-child(2) {
-      text-align: justify;
-    }
-  </style>
+/* ===== ТАБЛИЦА ===== */
+.results {
+  width: 90%;
+  max-width: 1200px;
+  margin: 20px auto;
+  background: rgba(255,255,255,0.9);
+  padding: 20px;
+  border-radius: 12px;
+}
+.results table {
+  width: 100%;
+  border-collapse: collapse;
+  text-align: center;
+  font-size: 16px;
+}
+.results th, .results td {
+  border: 1px solid #333;
+  padding: 10px;
+}
+.results td:nth-child(2) { text-align: justify; }
+</style>
 </head>
 <body>
-  <!-- КНОПКИ -->
-  <div class="top-buttons">
-    <button>❓</button>
-    <button>⚡️</button>
-  </div>
+<div class="top-buttons">
+  <button>❓</button>
+  <button>⚡️</button>
+</div>
 
-  <!-- ЗАГОЛОВОК -->
-  <div class="header">
-    <h1>Скачки и задачки</h1>
-    <h2>Волшебники, добро пожаловать на скачки! <br>
-    В этом семестре у нас настоящее гриффиндорское дерби. Ведите своего скакуна к победе.</h2>
-  </div>
+<div class="header">
+  <h1>Скачки и задачки</h1>
+  <h2>Волшебники, добро пожаловать на скачки! <br>В этом семестре у нас настоящее гриффиндорское дерби. Ведите своего скакуна к победе.</h2>
+</div>
 
-  <!-- БЛОК С ЛОШАДЬМИ -->
-  <div class="race-container">
-    <div class="race-inner" id="race">
-      <div class="sky"></div>
-      <div class="fence"></div>
-    </div>
+<div class="race-container">
+  <div class="race-inner" id="race">
+    <div class="sky"></div>
+    <div class="fence"></div>
   </div>
+</div>
 
-  <!-- ТАБЛИЦА -->
-  <div class="header">
-    <h1>Рейтинг участников</h1>
-  </div>
-  <div class="results">
-    <table>…</table>
-  </div>
+<div class="header"><h1>Рейтинг участников</h1></div>
+<div class="results"><table>…</table></div>
 
 <script>
 const horseImages = [
@@ -230,46 +210,44 @@ const horseImages = [
 ];
 
 const horseSizes = [200,200,200,200,200,200,200,200,200,200];
-const horsePoints = [0, 50, 100, 200, 300, 150, 400, 250, 350, 500]; 
+const horsePoints = [0,50,100,200,300,150,400,250,350,500]; 
 
 const race = document.getElementById('race');
 
 function placeHorses() {
   race.innerHTML = '<div class="sky"></div><div class="fence"></div>';
-
   const trackStep = 120;
   const pixelsPerPoint = 5; 
   const totalPoints = 550;
+  const raise = 10; // на сколько поднять элементы
 
   for (let i = 0; i < horsePoints.length; i++) {
-    // линии дорожек (подняты на 10px)
+    // линии дорожек
     const lane = document.createElement('div');
     lane.className = 'lane';
-    lane.style.top = 260 + i * trackStep + 'px';
+    lane.style.top = 280 - raise + i * trackStep + 'px';
     race.appendChild(lane);
 
-    // лошади (подняты на 10px)
+    // лошади
     const horse = document.createElement('div');
     horse.className = 'horse';
     horse.id = 'horse' + i;
-    horse.style.top = 220 + i * trackStep + 'px';
+    horse.style.top = 230 - raise + i * trackStep + 'px';
     horse.style.left = '0px';
     horse.setAttribute('data-points', horsePoints[i]);
-
     const img = document.createElement('img');
     img.src = horseImages[i];
     img.style.width = horseSizes[i] + 'px';
     horse.appendChild(img);
-
     race.appendChild(horse);
 
-    // флажки под лошадями (подняты на 10px)
+    // флажки
     for (let x = 100; x <= totalPoints; x += 100) {
       const flag = document.createElement('img');
       flag.src = "https://i.postimg.cc/DzM4VWsT/Flag-Animation-After-Effects-Course-Laurentiu-Lunic.gif";
       flag.className = 'flag';
       flag.style.left = (x * pixelsPerPoint) + 'px';
-      flag.style.top = (240 + i * trackStep) + 'px'; 
+      flag.style.top = (260 - raise + i * trackStep) + 'px';
       if (x === 100) flag.setAttribute('data-tip', '100 – крутой никнейм');
       if (x === 200) flag.setAttribute('data-tip', '200 – выкуп скакуна');
       if (x === 300) flag.setAttribute('data-tip', '300 – шапка в Башне');
@@ -277,7 +255,7 @@ function placeHorses() {
       race.appendChild(flag);
     }
 
-    // анимация движения лошади
+    // анимация
     setTimeout(() => {
       horse.style.left = (horsePoints[i] * pixelsPerPoint) + 'px';
     }, 500);
