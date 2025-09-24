@@ -8,6 +8,10 @@
   <link href="https://fonts.googleapis.com/css2?family=Marmelad&display=swap" rel="stylesheet">
 
   <style>
+    :root {
+      --horse-size: 200px; /* ← меняй здесь размер всех лошадей */
+    }
+
     html, body {
       margin: 0;
       padding: 0;
@@ -32,9 +36,9 @@
     /* ===== СЕКЦИИ ===== */
     .fence {
       height: 120px;
-      width: 5000px; /* тянем вправо на всю трассу */
+      width: 5000px;
       background: url("https://i.postimg.cc/cJJ3rDsb/Chat-GPT-Image-21-2025-07-52-16.png") repeat-x bottom;
-      background-size: 600px auto; /* ← регулируй ширину плитки забора */
+      background-size: 200px auto;
     }
 
     .track-start-line {
@@ -45,18 +49,18 @@
 
     .sand {
       position: relative;
-      min-height: 1200px; /* продлили вниз */
-      width: 5000px;      /* тянем вправо */
+      min-height: 1200px;
+      width: 5000px;
       background: url("https://txtrs.ru/textures/sand/sand-6.jpg") repeat;
-      background-size: 450px auto; /* ← регулируй размер плитки песка */
+      background-size: 250px auto;
       overflow: visible;
     }
 
     /* ===== ТРАССА ===== */
     .race {
       position: relative;
-      width: 5000px;   /* длина трассы */
-      height: 100%;    /* растягивается по песку */
+      width: 5000px;
+      height: 100%;
     }
 
     .lane {
@@ -78,7 +82,7 @@
 
     .horse img {
       display: block;
-      width: 200px;
+      width: var(--horse-size);
       height: auto;
       user-select: none;
       -webkit-user-drag: none;
@@ -122,7 +126,21 @@
   </div>
 
   <script>
-    const horseImage = "https://i.postimg.cc/593CXQst/20250920-1029-remix-01k5jsen2he3ebb44mn75tbs8q.png";
+    // Ссылки на картинки лошадей
+    const horseImages = [
+      "https://i.ibb.co/tTWMGsWW/Chat-GPT-Image-23-2025-17-23-57.png", // 1
+      "https://i.ibb.co/Jwp91sZ9/Chat-GPT-Image-23-2025-17-57-01.png", // 2
+      "https://i.ibb.co/wNJ2x6Xz/20250920-1029-remix-01k5jsen2he3ebb44mn75tbs8q.png", // 3
+      "https://i.ibb.co/pjXSLx0t/Chat-GPT-Image-23-2025-17-40-57.png", // 4
+      "https://i.ibb.co/m5LhSWN1/20250920-1529-remix-01k5kakeq0fsaskz0yr5q2mzby.png", // 5
+      "https://i.ibb.co/Pvn0PrtF/Chat-GPT-Image-24-2025-07-23-43.png", // 6
+      "https://i.ibb.co/Ps8Mr98J/20250920-1357-remix-01k5k5cjmcf2ja5878w22hhxh7.png", // 7
+      "https://i.ibb.co/VWvRft9V/Chat-GPT-Image-24-2025-07-39-30.png", // 8
+      "https://i.ibb.co/vxLQJcsj/20250920-1128-remix-01k5jwttgrervbg17xtjk37xgs.png", // 9
+      "https://i.ibb.co/1tdkmwVf/Chat-GPT-Image-Sep-24-2025-01-31-58-PM.png"  // 10
+    ];
+
+    // Очки для каждой лошади
     const horsePoints = [1, 2, 4, 0, 5, 2, 0, 0, 1, 0];
 
     const race = document.getElementById('race');
@@ -131,7 +149,7 @@
       race.innerHTML = '';
 
       const sandHeight = race.offsetHeight;
-      const horseHeight = 200;
+      const horseHeight = parseInt(getComputedStyle(document.documentElement).getPropertyValue('--horse-size'));
       const step = horseHeight / 2;
 
       // верхняя линия
@@ -159,7 +177,7 @@
         horse.setAttribute('data-points', horsePoints[i]);
 
         const img = document.createElement('img');
-        img.src = horseImage;
+        img.src = horseImages[i] || "https://i.postimg.cc/593CXQst/20250920-1029-remix-01k5jsen2he3ebb44mn75tbs8q.png"; // запасная картинка
         img.alt = 'Лошадь ' + (i+1);
         horse.appendChild(img);
 
@@ -178,7 +196,7 @@
       }
     };
 
-    // Параллакс по горизонтали
+    // Параллакс
     window.addEventListener('scroll', () => {
       const sx = window.scrollX;
       const fence = document.getElementById('fence');
