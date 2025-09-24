@@ -166,6 +166,28 @@ html, body {
 .results table { width: 100%; border-collapse: collapse; text-align: center; font-size: 16px; }
 .results th, .results td { border: 1px solid #333; padding: 10px; }
 .results td:nth-child(2) { text-align: justify; }
+
+/* ===== АДАПТИВ ДЛЯ ТЕЛЕФОНА ===== */
+@media (max-width: 600px) {
+  /* Центрируем кнопки сверху */
+  .top-buttons {
+    left: 50%;
+    transform: translateX(-50%);
+    gap: 8px; /* уменьшаем расстояние между кнопками */
+  }
+
+  /* Легче заголовки и подзаголовки */
+  .header h1 {
+    font-weight: 500;
+  }
+  .header h2 {
+    font-size: 16px;
+    line-height: 1.4;
+    padding: 0 12px; /* отступы слева и справа */
+    box-sizing: border-box;
+  }
+}
+
 </style>
 </head>
 <body>
