@@ -227,7 +227,7 @@ for (let x = 100; x <= totalPoints; x += 100) {
   flag.src = "https://i.postimg.cc/DzM4VWsT/Flag-Animation-After-Effects-Course-Laurentiu-Lunic.gif";
   flag.className = 'flag';
   flag.style.left = (x * pixelsPerPoint) + 'px';
-  flag.style.top = (250 - raise + i * trackStep) + 'px'; // на линии
+  flag.style.top = (200 - raise + i * trackStep) + 'px'; // на линии
 
   // создаём tooltip
   const tip = document.createElement('div');
@@ -254,8 +254,8 @@ for (let x = 100; x <= totalPoints; x += 100) {
   flag.addEventListener('mouseenter', () => tip.style.opacity = 1);
   flag.addEventListener('mouseleave', () => tip.style.opacity = 0);
 
-  race.appendChild(flag);
-  race.appendChild(tip);
+  flagsContainer.appendChild(flag);
+flagsContainer.appendChild(tip);
 }
 
     // лошади
