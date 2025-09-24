@@ -34,7 +34,7 @@
       height: 120px;
       width: 5000px;
       background: url("https://i.postimg.cc/cJJ3rDsb/Chat-GPT-Image-21-2025-07-52-16.png") repeat-x bottom;
-      background-size: 600px auto; /* регулируй плитку забора */
+      background-size: 600px auto;
     }
 
     .track-start-line {
@@ -48,7 +48,7 @@
       min-height: 1200px;
       width: 5000px;
       background: url("https://txtrs.ru/textures/sand/sand-6.jpg") repeat;
-      background-size: 450px auto; /* регулируй плитку песка */
+      background-size: 450px auto;
       overflow: visible;
     }
 
@@ -83,31 +83,67 @@
       -webkit-user-drag: none;
     }
 
+    /* Подсказка лошадей */
     .horse::after {
       content: attr(data-points) " очков";
       position: absolute;
       bottom: 110%;
       left: 50%;
       transform: translateX(-50%);
-      padding: 6px 8px;
-      background: rgba(0,0,0,0.75);
-      color: #fff;
+      padding: 8px 12px;
+      background: #fff;
+      color: #000;
       border-radius: 6px;
-      font-size: 13px;
+      font-size: 16px;
       opacity: 0;
       pointer-events: none;
       transition: opacity .2s;
       white-space: nowrap;
       z-index: 70;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.3);
     }
     .horse:hover::after { opacity: 1; }
 
-    /* Барьеры */
-    .barrier {
+    /* Барьерные линии */
+    .barrier-line {
       position: absolute;
-      height: 150px;
+      top: 0;
+      bottom: 0;
+      width: 6px;
+      background: white;
       z-index: 30;
-      transform: translateY(50%); /* чтобы барьер стоял на дорожке */
+    }
+    .barrier-line::after {
+      content: "Барьер";
+      position: absolute;
+      top: -30px;
+      left: 50%;
+      transform: translateX(-50%);
+      padding: 6px 10px;
+      background: #fff;
+      color: #000;
+      border-radius: 6px;
+      font-size: 14px;
+      opacity: 0;
+      white-space: nowrap;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.3);
+      transition: opacity .2s;
+    }
+    .barrier-line:hover::after { opacity: 1; }
+
+    /* Таблица */
+    .results {
+      width: 100%;
+      border-collapse: collapse;
+      margin: 40px auto;
+      text-align: center;
+    }
+    .results th, .results td {
+      border: 1px solid #ddd;
+      padding: 10px;
+    }
+    .results th {
+      background: #eee;
     }
   </style>
 </head>
@@ -128,49 +164,62 @@
     <div class="race" id="race"></div>
   </div>
 
+  <!-- Таблица -->
+  <table class="results">
+    <thead>
+      <tr>
+        <th>Колонка 1</th>
+        <th>Колонка 2</th>
+        <th>Колонка 3</th>
+        <th>Колонка 4</th>
+      </tr>
+    </thead>
+    <tbody>
+      <!-- 10 строк -->
+      ${Array.from({length: 10}).map(() => `
+        <tr>
+          <td>Текст</td><td>Данные</td><td>Инфо</td><td>Значение</td>
+        </tr>`).join("")}
+    </tbody>
+  </table>
+
   <script>
-    // Ссылки на картинки лошадей
     const horseImages = [
-      "https://i.ibb.co/tTWMGsWW/Chat-GPT-Image-23-2025-17-23-57.png", // 1
-      "https://i.ibb.co/Jwp91sZ9/Chat-GPT-Image-23-2025-17-57-01.png", // 2
-      "https://i.ibb.co/wNJ2x6Xz/20250920-1029-remix-01k5jsen2he3ebb44mn75tbs8q.png", // 3
-      "https://i.ibb.co/pjXSLx0t/Chat-GPT-Image-23-2025-17-40-57.png", // 4
-      "https://i.ibb.co/m5LhSWN1/20250920-1529-remix-01k5kakeq0fsaskz0yr5q2mzby.png", // 5
-      "https://i.ibb.co/Pvn0PrtF/Chat-GPT-Image-24-2025-07-23-43.png", // 6
-      "https://i.ibb.co/Ps8Mr98J/20250920-1357-remix-01k5k5cjmcf2ja5878w22hhxh7.png", // 7
-      "https://i.ibb.co/VWvRft9V/Chat-GPT-Image-24-2025-07-39-30.png", // 8
-      "https://i.ibb.co/vxLQJcsj/20250920-1128-remix-01k5jwttgrervbg17xtjk37xgs.png", // 9
-      "https://i.ibb.co/1tdkmwVf/Chat-GPT-Image-Sep-24-2025-01-31-58-PM.png"  // 10
+      "https://i.ibb.co/tTWMGsWW/Chat-GPT-Image-23-2025-17-23-57.png",
+      "https://i.ibb.co/Jwp91sZ9/Chat-GPT-Image-23-2025-17-57-01.png",
+      "https://i.ibb.co/wNJ2x6Xz/20250920-1029-remix-01k5jsen2he3ebb44mn75tbs8q.png",
+      "https://i.ibb.co/pjXSLx0t/Chat-GPT-Image-23-2025-17-40-57.png",
+      "https://i.ibb.co/m5LhSWN1/20250920-1529-remix-01k5kakeq0fsaskz0yr5q2mzby.png",
+      "https://i.ibb.co/Pvn0PrtF/Chat-GPT-Image-24-2025-07-23-43.png",
+      "https://i.ibb.co/Ps8Mr98J/20250920-1357-remix-01k5k5cjmcf2ja5878w22hhxh7.png",
+      "https://i.ibb.co/VWvRft9V/Chat-GPT-Image-24-2025-07-39-30.png",
+      "https://i.ibb.co/vxLQJcsj/20250920-1128-remix-01k5jwttgrervbg17xtjk37xgs.png",
+      "https://i.ibb.co/1tdkmwVf/Chat-GPT-Image-Sep-24-2025-01-31-58-PM.png"
     ];
 
-    // Размеры каждой лошади (можно менять индивидуально)
-    const horseSizes = [
-      "300px","200px","200px","200px","200px",
-      "300px","200px","200px","200px","200px"
-    ];
+    // Размеры каждой лошади
+    const horseSizes = ["200px","180px","220px","210px","200px","190px","200px","210px","200px","220px"];
 
-    // Очки для каждой лошади
     const horsePoints = [1, 2, 4, 0, 5, 2, 0, 0, 1, 0];
 
     const race = document.getElementById('race');
-    const barrierImage = "https://i.ibb.co/VpS1RTNT/pngtree-3d-a-horse-jumping-fence-equestrian-art-on-realistic-png-image-20944975.png";
 
     function placeHorses() {
       race.innerHTML = '';
 
       const sandHeight = race.offsetHeight;
-      const step = 100; // вертикальное смещение (половина высоты)
+      const step = 100; // фиксированное расстояние между дорожками
 
       // верхняя линия
       const firstLane = document.createElement('div');
       firstLane.className = 'lane';
-      firstLane.style.bottom = (sandHeight - parseInt(horseSizes[0])/2 + step/2) + "px";
+      firstLane.style.bottom = (sandHeight - 100/2 + step/2) + "px";
       race.appendChild(firstLane);
 
       for (let i = 0; i < horsePoints.length; i++) {
         const lane = document.createElement('div');
         lane.className = 'lane';
-        lane.style.bottom = (sandHeight - parseInt(horseSizes[i])/2 - (i * step)) + "px";
+        lane.style.bottom = (sandHeight - 100/2 - (i * step)) + "px";
         race.appendChild(lane);
 
         const horse = document.createElement('div');
@@ -178,9 +227,9 @@
         horse.id = 'horse' + i;
 
         if (i === 0) {
-          horse.style.bottom = sandHeight - parseInt(horseSizes[i])/2 + "px";
+          horse.style.bottom = sandHeight - 100/2 + "px";
         } else {
-          horse.style.bottom = sandHeight - parseInt(horseSizes[i])/2 - (i * step) + "px";
+          horse.style.bottom = sandHeight - 100/2 - (i * step) + "px";
         }
 
         horse.setAttribute('data-points', horsePoints[i]);
@@ -192,16 +241,14 @@
         horse.appendChild(img);
 
         race.appendChild(horse);
+      }
 
-        // Добавляем барьеры каждые 50 шагов (50*120px = 6000, но у нас ширина 5000px → до конца трассы)
-        for (let x = 600; x < 5000; x += 600) {
-          const barrier = document.createElement('img');
-          barrier.src = barrierImage;
-          barrier.className = 'barrier';
-          barrier.style.left = x + "px";
-          barrier.style.bottom = horse.style.bottom;
-          race.appendChild(barrier);
-        }
+      // Барьерные линии каждые 50 очков (50*120px)
+      for (let x = 600; x < 5000; x += 600) {
+        const barrier = document.createElement('div');
+        barrier.className = 'barrier-line';
+        barrier.style.left = x + "px";
+        race.appendChild(barrier);
       }
     }
 
