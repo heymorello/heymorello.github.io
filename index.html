@@ -12,8 +12,8 @@
       margin: 0;
       padding: 0;
       font-family: Arial, sans-serif;
-      background: #64a8be; /* небо */
-      overflow-y: auto; /* только вертикальный скролл для страницы */
+      background: #64a8be; /* небо страницы */
+      overflow-y: auto; /* вертикальный скролл */
     }
 
     /* ===== ЗАГОЛОВОК ===== */
@@ -28,25 +28,70 @@
       font-size: clamp(32px, 6vw, 64px);
       margin: 0;
     }
+    .header h2 {
+      font-family: Arial, sans-serif;
+      font-size: 20px;
+      font-weight: normal;
+      margin-top: 10px;
+      color: #fffa;
+    }
+
+    .header-buttons {
+      margin-top: 20px;
+    }
+    .header-buttons button {
+      padding: 10px 20px;
+      margin: 0 10px;
+      font-size: 16px;
+      border: none;
+      border-radius: 8px;
+      background: #fff;
+      color: #333;
+      cursor: pointer;
+      transition: background .2s;
+    }
+    .header-buttons button:hover {
+      background: #f0f0f0;
+    }
 
     /* ===== БЛОК С ЛОШАДЬМИ ===== */
     .race-container {
-      width: 100%;
-      max-width: 1000px; /* ширина рамки */
-      height: 600px; /* высота рамки */
+      width: 90%;
+      max-width: 95%;
+      height: 600px;
       margin: 40px auto;
       border: 4px solid #fff;
+      border-radius: 12px;
       box-shadow: 0 4px 15px rgba(0,0,0,0.3);
       overflow: auto; /* скролл внутрь блока */
-      background: #f3e5ab; /* песчаный фон */
+      background: linear-gradient(to bottom, #64a8be 0%, #f3e5ab 20%, #f3e5ab 100%); /* небо + песок */
     }
 
     .race-inner {
       position: relative;
-      width: 3000px; /* "длина" трассы */
-      height: 1200px; /* высота поля */
+      width: 3000px;
+      height: 1200px;
       background: url("https://txtrs.ru/textures/sand/sand-6.jpg") repeat;
       background-size: 450px auto;
+    }
+
+    .fence {
+      position: absolute;
+      bottom: 0;
+      width: 3000px;
+      height: 120px;
+      background: url("https://i.postimg.cc/cJJ3rDsb/Chat-GPT-Image-21-2025-07-52-16.png") repeat-x bottom;
+      background-size: 600px auto;
+      z-index: 5;
+    }
+
+    .lane {
+      position: absolute;
+      left: 0;
+      width: 100%;
+      height: 2px;
+      background: rgba(255,255,255,0.7);
+      z-index: 6;
     }
 
     .horse {
@@ -105,12 +150,18 @@
   <!-- ЗАГОЛОВОК -->
   <div class="header">
     <h1>Скачки и задачки</h1>
+    <h2>Учебная игра Гриффиндора, осень 2025</h2>
+    <div class="header-buttons">
+      <button>Как играть</button>
+      <button>Как ускоряться</button>
+    </div>
   </div>
 
   <!-- БЛОК С ЛОШАДЬМИ -->
   <div class="race-container">
     <div class="race-inner" id="race">
-      <!-- Лошади будут добавлены через JS -->
+      <!-- Забор -->
+      <div class="fence"></div>
     </div>
   </div>
 
@@ -148,14 +199,21 @@
     const race = document.getElementById('race');
 
     function placeHorses() {
-      race.innerHTML = '';
-      const baseY = 50;
+      race.innerHTML = '<div class="fence"></div>'; // оставляем забор
 
+      const trackStep = 120; // расстояние между дорожками
       for (let i = 0; i < horsePoints.length; i++) {
+        // дорожка
+        const lane = document.createElement('div');
+        lane.className = 'lane';
+        lane.style.top = 150 + i * trackStep + 'px';
+        race.appendChild(lane);
+
+        // лошадь
         const horse = document.createElement('div');
         horse.className = 'horse';
         horse.id = 'horse' + i;
-        horse.style.top = (baseY + i * 150) + 'px';
+        horse.style.top = 130 + i * trackStep + 'px'; // чуть выше линии
         horse.style.left = (horsePoints[i] * 2.7) + 'px'; // масштаб по 3000px = 1100 очков
         horse.setAttribute('data-points', horsePoints[i]);
 
