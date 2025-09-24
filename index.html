@@ -217,76 +217,82 @@
     <table>…</table>
   </div>
 
-  <script>
-    const horseImages = [
-      "https://i.ibb.co/tTWMGsWW/Chat-GPT-Image-23-2025-17-23-57.png",
-      "https://i.ibb.co/Jwp91sZ9/Chat-GPT-Image-23-2025-17-57-01.png",
-      "https://i.ibb.co/wNJ2x6Xz/20250920-1029-remix-01k5jsen2he3ebb44mn75tbs8q.png",
-      "https://i.ibb.co/pjXSLx0t/Chat-GPT-Image-23-2025-17-40-57.png",
-      "https://i.ibb.co/m5LhSWN1/20250920-1529-remix-01k5kakeq0fsaskz0yr5q2mzby.png",
-      "https://i.ibb.co/Pvn0PrtF/Chat-GPT-Image-24-2025-07-23-43.png",
-      "https://i.ibb.co/Ps8Mr98J/20250920-1357-remix-01k5k5cjmcf2ja5878w22hhxh7.png",
-      "https://i.ibb.co/VWvRft9V/Chat-GPT-Image-24-2025-07-39-30.png",
-      "https://i.ibb.co/vxLQJcsj/20250920-1128-remix-01k5jwttgrervbg17xtjk37xgs.png",
-      "https://i.ibb.co/1tdkmwVf/Chat-GPT-Image-Sep-24-2025-01-31-58-PM.png"
-    ];
+<script>
+const horseImages = [
+  "https://i.ibb.co/tTWMGsWW/Chat-GPT-Image-23-2025-17-23-57.png",
+  "https://i.ibb.co/Jwp91sZ9/Chat-GPT-Image-23-2025-17-57-01.png",
+  "https://i.ibb.co/wNJ2x6Xz/20250920-1029-remix-01k5jsen2he3ebb44mn75tbs8q.png",
+  "https://i.ibb.co/pjXSLx0t/Chat-GPT-Image-23-2025-17-40-57.png",
+  "https://i.ibb.co/m5LhSWN1/20250920-1529-remix-01k5kakeq0fsaskz0yr5q2mzby.png",
+  "https://i.ibb.co/Pvn0PrtF/Chat-GPT-Image-24-2025-07-23-43.png",
+  "https://i.ibb.co/Ps8Mr98J/20250920-1357-remix-01k5k5cjmcf2ja5878w22hhxh7.png",
+  "https://i.ibb.co/VWvRft9V/Chat-GPT-Image-24-2025-07-39-30.png",
+  "https://i.ibb.co/vxLQJcsj/20250920-1128-remix-01k5jwttgrervbg17xtjk37xgs.png",
+  "https://i.ibb.co/1tdkmwVf/Chat-GPT-Image-Sep-24-2025-01-31-58-PM.png"
+];
 
-    const horseSizes = [200,200,200,200,200,200,200,200,200,200];
-    const horsePoints = [0, 50, 100, 200, 300, 150, 400, 250, 350, 500]; 
+const horseSizes = [200,200,200,200,200,200,200,200,200,200];
+const horsePoints = [0, 50, 100, 200, 300, 150, 400, 250, 350, 500]; 
 
-    const race = document.getElementById('race');
+const race = document.getElementById('race');
 
-    function placeHorses() {
-      race.innerHTML = '<div class="sky"></div><div class="fence"></div>';
+function placeHorses() {
+  race.innerHTML = '<div class="sky"></div><div class="fence"></div>';
 
-      const trackStep = 120;
-      const pixelsPerPoint = 5; 
-      const totalPoints = 550;
+  const trackStep = 120;
+  const pixelsPerPoint = 5; 
+  const totalPoints = 500;
 
-      for (let i = 0; i < horsePoints.length; i++) {
-        const lane = document.createElement('div');
-        lane.className = 'lane';
-        lane.style.top = 280 + i * trackStep + 'px';
-        race.appendChild(lane);
+  for (let i = 0; i < horsePoints.length; i++) {
+    // линии дорожек
+    const lane = document.createElement('div');
+    lane.className = 'lane';
+    lane.style.top = 280 + i * trackStep + 'px';
+    race.appendChild(lane);
 
-        // флажки каждые 100 очков
-        for (let x = 100; x <= totalPoints; x += 100) {
-          const flag = document.createElement('img');
-          flag.src = "https://i.postimg.cc/DzM4VWsT/Flag-Animation-After-Effects-Course-Laurentiu-Lunic.gif";
-          flag.className = 'flag';
-          flag.style.left = (x * pixelsPerPoint) + 'px';
-          flag.style.top = (260 + i * trackStep) + 'px'; 
-          // подсказки
-          if (x === 100) flag.setAttribute('data-tip', '100 – крутой никнейм');
-          if (x === 200) flag.setAttribute('data-tip', '200 – выкуп скакуна');
-          if (x === 300) flag.setAttribute('data-tip', '300 – шапка в Башне');
-          if (x === 400) flag.setAttribute('data-tip', '400 – статус в чате Телеграма');
+    // флажки каждые 100 очков
+    for (let x = 100; x <= totalPoints; x += 100) {
+      const flag = document.createElement('div'); // ОБЕРНУТЬ В div
+      flag.className = 'flag';
+      flag.style.left = (x * pixelsPerPoint) + 'px';
+      flag.style.top = (260 + i * trackStep) + 'px';
 
-          race.appendChild(flag);
-        }
+      // подсказки
+      if (x === 100) flag.setAttribute('data-tip', '100 – крутой никнейм');
+      if (x === 200) flag.setAttribute('data-tip', '200 – выкуп скакуна');
+      if (x === 300) flag.setAttribute('data-tip', '300 – шапка в Башне');
+      if (x === 400) flag.setAttribute('data-tip', '400 – статус в чате Телеграма');
+      if (x === 500) flag.setAttribute('data-tip', '500 – суперприз!');
 
-        const horse = document.createElement('div');
-        horse.className = 'horse';
-        horse.id = 'horse' + i;
-        horse.style.top = 230 + i * trackStep + 'px';
-        horse.style.left = '0px';
-        horse.setAttribute('data-points', horsePoints[i]);
+      const img = document.createElement('img');
+      img.src = "https://i.postimg.cc/DzM4VWsT/Flag-Animation-After-Effects-Course-Laurentiu-Lunic.gif";
+      img.style.width = '60px';
+      flag.appendChild(img);
 
-        const img = document.createElement('img');
-        img.src = horseImages[i];
-        img.style.width = horseSizes[i] + 'px';
-        horse.appendChild(img);
-
-        race.appendChild(horse);
-
-        // анимация
-        setTimeout(() => {
-          horse.style.left = (horsePoints[i] * pixelsPerPoint) + 'px';
-        }, 500);
-      }
+      race.appendChild(flag);
     }
 
-    placeHorses();
-  </script>
-</body>
-</html>
+    // лошадь
+    const horse = document.createElement('div');
+    horse.className = 'horse';
+    horse.id = 'horse' + i;
+    horse.style.top = 230 + i * trackStep + 'px';
+    horse.style.left = '0px';
+    horse.setAttribute('data-points', horsePoints[i]);
+
+    const img = document.createElement('img');
+    img.src = horseImages[i];
+    img.style.width = horseSizes[i] + 'px';
+    horse.appendChild(img);
+
+    race.appendChild(horse);
+
+    // анимация движения
+    setTimeout(() => {
+      horse.style.left = (horsePoints[i] * pixelsPerPoint) + 'px';
+    }, 500);
+  }
+}
+
+placeHorses();
+</script>
