@@ -191,7 +191,6 @@ html, body {
 </style>
 </head>
 <body>
-<div class="top-buttons"><button>❓</button><button>⚡️</button></div>
 
 <div class="header">
   <h1>Скачки и задачки</h1>
@@ -287,6 +286,7 @@ html, body {
       </td>
       <td class="description">
       По ней сходили с ума все девчонки в 2000-х. Пока вы искали её на земле, она летала в облаках. Просто принцесса, просто лучшая. Все основы, оценённые более чем на 12 баллов, дают вам дополнительные +5⚡️ скорости.
+      </td>
       <td></td>
       <td>0⚡️</td>
     </tr>
@@ -416,7 +416,7 @@ html, body {
   <!-- Кнопка FAQ -->
 <div class="top-buttons">
   <button id="faqBtn">❓</button>
-  <button>⚡️</button>
+<button id="taskBtn">⚡️</button>
 </div>
 
 <!-- Модальное окно -->
@@ -623,7 +623,7 @@ window.onclick = (e) => { if(e.target == faqModal) faqModal.style.display = "non
 
 <script>
 // Существующая кнопка с молнией
-const taskBtn = document.querySelector('.top-buttons button:nth-child(2)'); 
+const taskBtn = document.getElementById('taskBtn');
 const taskModal = document.getElementById('taskModal');
 const closeTask = document.getElementById('closeTask');
 const taskTableBody = document.getElementById('taskTableBody');
