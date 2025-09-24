@@ -254,8 +254,10 @@ for (let x = 100; x <= totalPoints; x += 100) {
   flag.addEventListener('mouseenter', () => tip.style.opacity = 1);
   flag.addEventListener('mouseleave', () => tip.style.opacity = 0);
 
-  flagsContainer.appendChild(flag);
+flagsContainer.appendChild(flag);
 flagsContainer.appendChild(tip);
+tip.style.left = (flag.offsetLeft + flag.offsetWidth / 2) + 'px';
+tip.style.transform = 'translateX(-50%)';
 }
 
     // лошади
