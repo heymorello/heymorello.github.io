@@ -535,6 +535,128 @@ closeBtn.onclick = () => faqModal.style.display = "none";
 window.onclick = (e) => { if(e.target == faqModal) faqModal.style.display = "none"; };
 </script>
 
+  <!-- Кнопка с молнией уже есть -->
+<button id="taskBtn">⚡️</button>
+
+<!-- Модальное окно для таблицы заданий -->
+<div id="taskModal" class="modal">
+  <div class="modal-content">
+    <span class="close" id="closeTask">&times;</span>
+    <h1>Задания</h1>
+    <div class="table-wrapper">
+      <table>
+        <thead>
+          <tr>
+            <th>Тип задания</th>
+            <th>Задание</th>
+            <th>Скорость</th>
+          </tr>
+        </thead>
+        <tbody>
+          <!-- Генерируем 30 строк -->
+          <script>
+            const tbody = [];
+            for (let i = 1; i <= 30; i++) {
+              tbody.push(`<tr>
+                <td>Тип ${i}</td>
+                <td>Описание задания ${i}</td>
+                <td>+${i} ⚡️</td>
+              </tr>`);
+            }
+            document.write(tbody.join(''));
+          </script>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+
+<style>
+/* Модальные окна */
+.modal {
+  display: none;
+  position: fixed;
+  z-index: 1000;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  overflow-y: auto;
+  background-color: rgba(0,0,0,0.8);
+  padding: 20px;
+}
+
+.modal-content {
+  background-color: #f9f9f9;
+  margin: 40px auto;
+  padding: 20px;
+  border-radius: 12px;
+  max-width: 1000px;
+  box-shadow: 0 0 20px rgba(0,0,0,0.5);
+  font-size: 16px;
+  line-height: 1.5;
+}
+
+.modal-content h1 {
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+.modal-content table {
+  width: 100%;
+  border-collapse: collapse;
+  text-align: left;
+  font-size: 14px;
+}
+
+.modal-content th, .modal-content td {
+  border: 1px solid #333;
+  padding: 8px 12px;
+}
+
+.modal-content th {
+  background: #eee;
+}
+
+.close {
+  color: #333;
+  float: right;
+  font-size: 28px;
+  font-weight: bold;
+  cursor: pointer;
+}
+
+.close:hover {
+  color: red;
+}
+
+.table-wrapper {
+  overflow-x: auto;
+}
+</style>
+
+<script>
+// Кнопка открытия
+const taskBtn = document.getElementById('taskBtn');
+const taskModal = document.getElementById('taskModal');
+const closeTask = document.getElementById('closeTask');
+
+taskBtn.addEventListener('click', () => {
+  taskModal.style.display = 'block';
+});
+
+closeTask.addEventListener('click', () => {
+  taskModal.style.display = 'none';
+});
+
+// Закрытие при клике вне окна
+window.addEventListener('click', (e) => {
+  if (e.target == taskModal) {
+    taskModal.style.display = 'none';
+  }
+});
+</script>
+
 <script>
 const horseImages = [
 "https://i.ibb.co/tTWMGsWW/Chat-GPT-Image-23-2025-17-23-57.png",
