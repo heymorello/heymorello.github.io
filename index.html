@@ -82,14 +82,14 @@
     }
 
     .fence {
-      position: absolute;
-      top: 180px;
-      width: 3000px;
-      height: 180px;
-      background: url("https://i.postimg.cc/cJJ3rDsb/Chat-GPT-Image-21-2025-07-52-16.png") repeat-x bottom;
-      background-size: 600px auto;
-      z-index: 2;
-    }
+  position: absolute;
+  top: 180px;          /* верх забора */
+  width: 3000px;
+  height: 300px;       /* увеличенная высота */
+  background: url("https://i.postimg.cc/cJJ3rDsb/Chat-GPT-Image-21-2025-07-52-16.png") repeat-x bottom;
+  background-size: 600px 300px; /* подгоняем фон под новую высоту */
+  z-index: 2;
+}
 
     .lane {
       position: absolute;
@@ -144,7 +144,7 @@
     .horse::after {
       content: attr(data-points) " ⚡️ скорости";
       position: absolute;
-      bottom: 110%;
+      bottom: 80%;
       left: 50%;
       transform: translateX(-50%);
       padding: 6px 8px;
@@ -241,33 +241,27 @@ function placeHorses() {
 
   const trackStep = 120;
   const pixelsPerPoint = 5; 
-  const totalPoints = 500;
+  const totalPoints = 550;
 
   for (let i = 0; i < horsePoints.length; i++) {
     // линии дорожек
     const lane = document.createElement('div');
     lane.className = 'lane';
-    lane.style.top = 280 + i * trackStep + 'px';
+    lane.style.top = 480 + i * trackStep + 'px'; // первая линия точно на стыке забора и песка
     race.appendChild(lane);
 
     // флажки каждые 100 очков
     for (let x = 100; x <= totalPoints; x += 100) {
-      const flag = document.createElement('div'); // ОБЕРНУТЬ В div
+      const flag = document.createElement('img');
+      flag.src = "https://i.postimg.cc/DzM4VWsT/Flag-Animation-After-Effects-Course-Laurentiu-Lunic.gif";
       flag.className = 'flag';
       flag.style.left = (x * pixelsPerPoint) + 'px';
-      flag.style.top = (260 + i * trackStep) + 'px';
-
+      flag.style.top = (460 + i * trackStep) + 'px'; 
       // подсказки
       if (x === 100) flag.setAttribute('data-tip', '100 – крутой никнейм');
       if (x === 200) flag.setAttribute('data-tip', '200 – выкуп скакуна');
       if (x === 300) flag.setAttribute('data-tip', '300 – шапка в Башне');
       if (x === 400) flag.setAttribute('data-tip', '400 – статус в чате Телеграма');
-      if (x === 500) flag.setAttribute('data-tip', '500 – суперприз!');
-
-      const img = document.createElement('img');
-      img.src = "https://i.postimg.cc/DzM4VWsT/Flag-Animation-After-Effects-Course-Laurentiu-Lunic.gif";
-      img.style.width = '60px';
-      flag.appendChild(img);
 
       race.appendChild(flag);
     }
@@ -276,7 +270,7 @@ function placeHorses() {
     const horse = document.createElement('div');
     horse.className = 'horse';
     horse.id = 'horse' + i;
-    horse.style.top = 230 + i * trackStep + 'px';
+    horse.style.top = 450 + i * trackStep + 'px'; // чуть выше линии дорожки
     horse.style.left = '0px';
     horse.setAttribute('data-points', horsePoints[i]);
 
