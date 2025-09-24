@@ -247,7 +247,7 @@ function placeHorses() {
     // линии дорожек
     const lane = document.createElement('div');
     lane.className = 'lane';
-    lane.style.top = 480 + i * trackStep + 'px'; // первая линия точно на стыке забора и песка
+    lane.style.top = 270 + i * trackStep + 'px'; // ровно на стыке забора и песка
     race.appendChild(lane);
 
     // флажки каждые 100 очков
@@ -256,7 +256,7 @@ function placeHorses() {
       flag.src = "https://i.postimg.cc/DzM4VWsT/Flag-Animation-After-Effects-Course-Laurentiu-Lunic.gif";
       flag.className = 'flag';
       flag.style.left = (x * pixelsPerPoint) + 'px';
-      flag.style.top = (460 + i * trackStep) + 'px'; 
+      flag.style.top = (250 + i * trackStep) + 'px'; // чуть выше дорожки
       // подсказки
       if (x === 100) flag.setAttribute('data-tip', '100 – крутой никнейм');
       if (x === 200) flag.setAttribute('data-tip', '200 – выкуп скакуна');
@@ -266,11 +266,11 @@ function placeHorses() {
       race.appendChild(flag);
     }
 
-    // лошадь
+    // лошади
     const horse = document.createElement('div');
     horse.className = 'horse';
     horse.id = 'horse' + i;
-    horse.style.top = 450 + i * trackStep + 'px'; // чуть выше линии дорожки
+    horse.style.top = 230 + i * trackStep + 'px'; // чуть выше дорожки, чтобы ноги на песке
     horse.style.left = '0px';
     horse.setAttribute('data-points', horsePoints[i]);
 
@@ -281,7 +281,7 @@ function placeHorses() {
 
     race.appendChild(horse);
 
-    // анимация движения
+    // анимация
     setTimeout(() => {
       horse.style.left = (horsePoints[i] * pixelsPerPoint) + 'px';
     }, 500);
