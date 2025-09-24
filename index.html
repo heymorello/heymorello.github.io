@@ -50,7 +50,7 @@
     .race-inner {
       position: relative;
       width: 3000px; /* длинная трасса */
-      height: 1400px;
+      height: 1000px;
       background: url("https://txtrs.ru/textures/sand/sand-6.jpg") repeat;
       background-size: 450px auto;
       padding-top: 180px; /* отступ под небо */
@@ -219,7 +219,7 @@
         const horse = document.createElement('div');
         horse.className = 'horse';
         horse.id = 'horse' + i;
-        horse.style.top = 180 + i * trackStep - 20 + 'px'; // чуть выше линии
+        horse.style.top = 140 + i * trackStep - 20 + 'px'; // чуть выше линии
         horse.style.left = (horsePoints[i] * 2) + 'px';
         horse.setAttribute('data-points', horsePoints[i]);
 
