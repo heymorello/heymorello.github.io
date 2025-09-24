@@ -11,9 +11,9 @@
     html, body {
       margin: 0;
       padding: 0;
-      overflow: auto;
       font-family: Arial, sans-serif;
       background: #64a8be; /* небо */
+      overflow-y: auto; /* только вертикальный скролл для страницы */
     }
 
     /* ===== ЗАГОЛОВОК ===== */
@@ -29,54 +29,31 @@
       margin: 0;
     }
 
-    /* ===== ЗАБОР ===== */
-    .fence {
-      height: 120px;
-      width: 5000px;
-      background: url("https://i.postimg.cc/cJJ3rDsb/Chat-GPT-Image-21-2025-07-52-16.png") repeat-x bottom;
-      background-size: 600px auto;
+    /* ===== БЛОК С ЛОШАДЬМИ ===== */
+    .race-container {
+      width: 100%;
+      max-width: 1000px; /* ширина рамки */
+      height: 600px; /* высота рамки */
+      margin: 40px auto;
+      border: 4px solid #fff;
+      box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+      overflow: auto; /* скролл внутрь блока */
+      background: #f3e5ab; /* песчаный фон */
     }
 
-    /* ===== ЛИНИЯ СТАРТА ===== */
-    .track-start-line {
-      height: 2px;
-      background: white;
-      width: 5000px;
-    }
-
-    /* ===== ПЕСОК ===== */
-    .sand {
+    .race-inner {
       position: relative;
-      min-height: 1400px;
-      width: 5000px;
+      width: 3000px; /* "длина" трассы */
+      height: 1200px; /* высота поля */
       background: url("https://txtrs.ru/textures/sand/sand-6.jpg") repeat;
       background-size: 450px auto;
-      overflow: visible;
-      padding-bottom: 40px;
-    }
-
-    /* ===== ТРАССА ===== */
-    .race {
-      position: relative;
-      width: 5000px;
-      height: 1000px; /* под лошадей */
-    }
-
-    .lane {
-      position: absolute;
-      left: 0;
-      width: 100%;
-      height: 2px;
-      background: rgba(255,255,255,0.7);
-      z-index: 25;
     }
 
     .horse {
       position: absolute;
-      left: 0;
       cursor: pointer;
       transition: left 2s linear;
-      z-index: 45;
+      z-index: 10;
     }
     .horse img {
       display: block;
@@ -90,34 +67,32 @@
       bottom: 110%;
       left: 50%;
       transform: translateX(-50%);
-      padding: 8px 10px;
+      padding: 6px 8px;
       background: white;
       color: black;
       border-radius: 6px;
-      font-size: 16px;
+      font-size: 14px;
       opacity: 0;
       pointer-events: none;
       transition: opacity .2s;
       white-space: nowrap;
-      z-index: 70;
     }
     .horse:hover::after { opacity: 1; }
 
     /* ===== ТАБЛИЦА ===== */
     .results {
-      width: 100%;
-      background: url("https://txtrs.ru/textures/sand/sand-6.jpg") repeat;
-      background-size: 450px auto;
-      padding: 40px 0;
+      width: 90%;
+      margin: 40px auto;
+      background: rgba(255,255,255,0.9);
+      padding: 20px;
+      border-radius: 12px;
     }
 
     .results table {
-      margin: 0 auto;
+      width: 100%;
       border-collapse: collapse;
       text-align: center;
       font-size: 16px;
-      width: 95%;
-      background: rgba(255,255,255,0.9);
     }
 
     .results th, .results td {
@@ -132,15 +107,11 @@
     <h1>Скачки и задачки</h1>
   </div>
 
-  <!-- ЗАБОР -->
-  <div class="fence"></div>
-
-  <!-- ЛИНИЯ СТАРТА -->
-  <div class="track-start-line"></div>
-
-  <!-- ПЕСОК -->
-  <div class="sand" id="sand">
-    <div class="race" id="race"></div>
+  <!-- БЛОК С ЛОШАДЬМИ -->
+  <div class="race-container">
+    <div class="race-inner" id="race">
+      <!-- Лошади будут добавлены через JS -->
+    </div>
   </div>
 
   <!-- ТАБЛИЦА -->
@@ -155,16 +126,10 @@
         <th>Спонсоры</th>
         <th>Скорость</th>
       </tr>
-      <tr><td>Корова Брунхильда</td><td>Описание</td><td></td><td>0⚡️</td></tr>
-      <tr><td>Фестрал Невермор</td><td>Описание</td><td></td><td>0⚡️</td></tr>
-      <tr><td>Козёл Винсент</td><td>Описание</td><td></td><td>0⚡️</td></tr>
-      <tr><td>Лошадь Покахонтас</td><td>Описание</td><td></td><td>0⚡️</td></tr>
-      <tr><td>Волк Ихвильнихт</td><td>Описание</td><td></td><td>0⚡️</td></tr>
-      <tr><td>Гиппогриф Крылоклюв</td><td>Описание</td><td></td><td>0⚡️</td></tr>
-      <tr><td>Капибара Лабуба</td><td>Описание</td><td></td><td>100⚡️</td></tr>
-      <tr><td>Слон Юра</td><td>Описание</td><td></td><td>0⚡️</td></tr>
-      <tr><td>Кельпи Вафля</td><td>Описание</td><td></td><td>0⚡️</td></tr>
-      <tr><td>Свинка Шарлотта</td><td>Описание</td><td></td><td>0⚡️</td></tr>
+      <tr><td>Корова Брунхильда</td><td>Участница фермы Весёлого Молочника.</td><td></td><td>0⚡️</td></tr>
+      <tr><td>Фестрал Невермор</td><td>Главный конкурент Хогвартса Дамблдора.</td><td></td><td>0⚡️</td></tr>
+      <tr><td>Козёл Винсент</td><td>Все учебные баллы умножаются х2.</td><td></td><td>0⚡️</td></tr>
+      <tr><td>Капибара Лабуба</td><td>Стартует с бонусом +100⚡️.</td><td></td><td>100⚡️</td></tr>
     </table>
   </div>
 
@@ -174,42 +139,29 @@
       "https://i.ibb.co/Jwp91sZ9/Chat-GPT-Image-23-2025-17-57-01.png",
       "https://i.ibb.co/wNJ2x6Xz/20250920-1029-remix-01k5jsen2he3ebb44mn75tbs8q.png",
       "https://i.ibb.co/pjXSLx0t/Chat-GPT-Image-23-2025-17-40-57.png",
-      "https://i.ibb.co/m5LhSWN1/20250920-1529-remix-01k5kakeq0fsaskz0yr5q2mzby.png",
-      "https://i.ibb.co/Pvn0PrtF/Chat-GPT-Image-24-2025-07-23-43.png",
-      "https://i.ibb.co/Ps8Mr98J/20250920-1357-remix-01k5k5cjmcf2ja5878w22hhxh7.png",
-      "https://i.ibb.co/VWvRft9V/Chat-GPT-Image-24-2025-07-39-30.png",
-      "https://i.ibb.co/vxLQJcsj/20250920-1128-remix-01k5jwttgrervbg17xtjk37xgs.png",
-      "https://i.ibb.co/1tdkmwVf/Chat-GPT-Image-Sep-24-2025-01-31-58-PM.png"
+      "https://i.ibb.co/m5LhSWN1/20250920-1529-remix-01k5kakeq0fsaskz0yr5q2mzby.png"
     ];
 
-    const horseSizes = [250, 220, 220, 230, 190, 250, 250, 230, 250, 190];
-    const horsePoints = [0, 0, 0, 0, 100, 0, 0, 0, 0, 0];
+    const horseSizes = [200, 180, 220, 210, 190, 200];
+    const horsePoints = [0, 50, 100, 30, 80, 20];
 
     const race = document.getElementById('race');
 
     function placeHorses() {
       race.innerHTML = '';
-      const sandHeight = race.offsetHeight;
-      const baseHorseHeight = 200;
-      const step = baseHorseHeight / 2;
+      const baseY = 50;
 
-      // линии трассы
       for (let i = 0; i < horsePoints.length; i++) {
-        const lane = document.createElement('div');
-        lane.className = 'lane';
-        lane.style.bottom = (sandHeight - baseHorseHeight/2 - (i * step)) + "px";
-        race.appendChild(lane);
-
         const horse = document.createElement('div');
         horse.className = 'horse';
         horse.id = 'horse' + i;
-        horse.style.bottom = (sandHeight - baseHorseHeight/2 - (i * step)) + "px";
+        horse.style.top = (baseY + i * 150) + 'px';
+        horse.style.left = (horsePoints[i] * 2.7) + 'px'; // масштаб по 3000px = 1100 очков
         horse.setAttribute('data-points', horsePoints[i]);
 
         const img = document.createElement('img');
         img.src = horseImages[i];
-        img.alt = 'Лошадь ' + (i+1);
-        img.style.width = horseSizes[i] + "px";
+        img.style.width = horseSizes[i] + 'px';
         horse.appendChild(img);
 
         race.appendChild(horse);
@@ -217,14 +169,6 @@
     }
 
     placeHorses();
-    window.addEventListener('resize', placeHorses);
-
-    window.onload = () => {
-      for (let i = 0; i < horsePoints.length; i++) {
-        const el = document.getElementById('horse' + i);
-        if (el) el.style.left = (horsePoints[i] * 120) + 'px';
-      }
-    };
   </script>
 </body>
 </html>
