@@ -201,7 +201,7 @@ const horseImages = [
 "https://i.ibb.co/1tdkmwVf/Chat-GPT-Image-Sep-24-2025-01-31-58-PM.png"
 ];
 
-const horseSizes = [300,300,300,300,300,300,300,300,300,300];
+const horseSizes = [300,300,250,300,300,350,300,300,300,300];
 const horsePoints = [0,0,0,0,0,0,0,0,0,0]; 
 const race = document.getElementById('race');
 const flagsContainer = document.getElementById('flags');
@@ -265,7 +265,7 @@ tip.style.transform = 'translateX(-50%)';
     const horse = document.createElement('div');
     horse.className = 'horse';
     horse.id = 'horse' + i;
-    horse.style.top = 230 - raise + i * trackStep + 'px';
+    horse.style.top = 230 - raise - 30 + i * trackStep + 'px';
     horse.style.left = '0px';
     horse.setAttribute('data-points', horsePoints[i]);
     const img = document.createElement('img');
