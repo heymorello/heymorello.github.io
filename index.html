@@ -71,14 +71,16 @@
       z-index: 25;
     }
 
+    /* ===== БАРЬЕР ===== */
     .barrier {
       position: absolute;
       width: 6px;
+      height: 220px; /* высота барьера */
       background: white;
-      top: 0;
-      bottom: 0;
+      bottom: 0; /* привязка к низу трассы */
       z-index: 30;
     }
+
     .barrier::after {
       content: "Барьер";
       position: absolute;
@@ -94,7 +96,10 @@
       transition: opacity .2s;
       white-space: nowrap;
     }
-    .barrier:hover::after { opacity: 1; }
+
+    .barrier:hover::after { 
+      opacity: 1; 
+    }
 
     .horse {
       position: absolute;
