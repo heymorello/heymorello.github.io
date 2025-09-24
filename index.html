@@ -89,12 +89,22 @@ html, body {
   z-index: 3;
 }
 
+.flags-container {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 10; /* подсказки поверх лошадей */
+  pointer-events: none;
+}
+
 .flag {
   position: absolute;
   width: 60px;
   height: auto;
-  z-index: 5;
   cursor: pointer;
+  pointer-events: auto; /* чтобы клики работали */
 }
 .flag::after {
   content: attr(data-tip);
@@ -170,6 +180,7 @@ html, body {
   <div class="race-inner" id="race">
     <div class="sky"></div>
     <div class="fence"></div>
+    <div class="flags-container" id="flags"></div>
   </div>
 </div>
 
@@ -193,10 +204,12 @@ const horseImages = [
 const horseSizes = [200,200,200,200,200,200,200,200,200,200];
 const horsePoints = [0,50,100,200,300,150,400,250,350,500]; 
 const race = document.getElementById('race');
-const raise = 30; // смещение вверх
+const flagsContainer = document.getElementById('flags');
+const raise = 40; // смещение вверх
 
 function placeHorses() {
-  race.innerHTML = '<div class="sky"></div><div class="fence"></div>';
+  race.querySelectorAll('.horse, .lane').forEach(el => el.remove());
+  flagsContainer.innerHTML = '';
   const trackStep = 120;
   const pixelsPerPoint = 5; 
   const totalPoints = 550;
@@ -219,7 +232,7 @@ function placeHorses() {
       if (x === 200) flag.setAttribute('data-tip', '200 – выкуп скакуна');
       if (x === 300) flag.setAttribute('data-tip', '300 – шапка в Башне');
       if (x === 400) flag.setAttribute('data-tip', '400 – статус в чате Телеграма');
-      race.appendChild(flag);
+      flagsContainer.appendChild(flag);
     }
 
     // лошади
