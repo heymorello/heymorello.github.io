@@ -13,13 +13,7 @@
       padding: 0;
       font-family: 'Marmelad', sans-serif;
       background: #b18155; /* фон сайта */
-      overflow-y: auto;
-      display: flex;
-      justify-content: center;
-    }
-
-    body {
-      width: 1200px; /* ширина страницы = контейнеру с лошадьми */
+      overflow-y: auto; /* вертикальный скролл */
     }
 
     /* ===== ЗАГОЛОВОК ===== */
@@ -30,12 +24,10 @@
       padding: 40px 0 10px;
     }
     .header h1 {
-      font-family: 'Marmelad', sans-serif;
       font-size: clamp(32px, 6vw, 64px);
       margin: 0;
     }
     .header h2 {
-      font-family: 'Marmelad', sans-serif;
       font-size: 20px;
       font-weight: normal;
       margin-top: 10px;
@@ -44,21 +36,23 @@
 
     /* ===== БЛОК С ЛОШАДЬМИ ===== */
     .race-container {
-      width: 100%;
-      height: 700px;
-      margin: 40px 0;
+      width: 95%;
+      max-width: 1200px;
+      margin: 40px auto;
       border: 4px solid #fff;
       border-radius: 12px;
       overflow: auto;
       background: #64a8be; /* основной фон контейнера */
+      position: relative;
     }
 
     .race-inner {
       position: relative;
-      width: 3000px;
+      width: 3000px; /* длинная трасса */
       height: 1200px;
       background: url("https://txtrs.ru/textures/sand/sand-6.jpg") repeat;
       background-size: 450px auto;
+      padding-top: 150px; /* отступ под небо */
     }
 
     .sky {
@@ -72,7 +66,7 @@
 
     .fence {
       position: absolute;
-      top: 150px;
+      top: 150px; /* граница неба и песка */
       width: 3000px;
       height: 120px;
       background: url("https://i.postimg.cc/cJJ3rDsb/Chat-GPT-Image-21-2025-07-52-16.png") repeat-x;
@@ -93,7 +87,6 @@
       position: absolute;
       cursor: pointer;
       z-index: 4;
-      animation: jump 0.6s infinite alternate;
     }
 
     .horse img {
@@ -121,16 +114,11 @@
     }
     .horse:hover::after { opacity: 1; }
 
-    @keyframes jump {
-      0% { transform: translateY(0); }
-      50% { transform: translateY(-15px); }
-      100% { transform: translateY(0); }
-    }
-
     /* ===== ТАБЛИЦА ===== */
     .results {
-      width: 100%;
-      margin: 40px 0;
+      width: 95%;
+      max-width: 1200px;
+      margin: 40px auto;
       background: rgba(255,255,255,0.9);
       padding: 20px;
       border-radius: 12px;
@@ -176,7 +164,7 @@
         <th>Спонсоры</th>
         <th>Скорость</th>
       </tr>
-      <tr><td>Корова Брунхильда</td><td>Участница прямком с фермы Весёлого Молочника из Альпийских гор. Даёт молоко для Гриффолада вкуснее Милки. Вы можете брать неограниченное количество первокурсников на кураторство в течение семестра. Получайте +50 ⚡️ скорости за каждого первокурсника, который освоился на факультете (вступил в телеграм-чат, зарегистрировался в Башне, заселился в команту и написал в ней пост от 1000 символов).</td><td></td><td>0⚡️</td></tr>
+      <tr><td>Корова Брунхильда</td><td>Участница прямком с фермы Весёлого Молочника из Альпийских гор. Даёт молоко для Гриффолада вкуснее Милки. Вы можете брать неограниченное количество первокурсников на кураторство в течение семестра. Получайте +50 ⚡️ скорости за каждого первокурсника, который освоился на факультете (вступил в телеграм-чат, зарегистрировался в Башне, заселился в комнту и написал в ней пост от 1000 символов).</td><td></td><td>0⚡️</td></tr>
       <tr><td>Фестрал Невермор</td><td>Числится на балансе школы — главного конкурента Хогвартса Дамблдора в тик-токе. Каждый раз, когда вы пересекаете барьер, все ваши конкуренты получают –15 ⚡️ скорости.</td><td></td><td>0⚡️</td></tr>
       <tr><td>Козёл Винсент</td><td>Счастливый ребёнок двухкратного обладателя титула «Мистер Хогвартс Дамблдора» и почётного профессора кафедры естествознания. Все учебные баллы, заработанные в рамках предметов кафедры естествознания, умножаются х2.</td><td></td><td>0⚡️</td></tr>
       <tr><td>Лошадь Покахонтас</td><td>Ветер прерий с вольным нравом! Скачет так, что не догнать. Все рпг-посты от 1000 символов на территориях школы (вне Мабона) дают вам +3⚡️ к скорости.</td><td></td><td>0⚡️</td></tr>
@@ -204,28 +192,29 @@
     ];
 
     const horseSizes = [250, 220, 220, 230, 190, 250, 250, 230, 250, 190];
-    const horsePoints = [0, 0, 0, 0, 100, 0, 0, 0, 0, 0];
+    const horsePoints = [0, 0, 0, 0, 100, 0, 0, 0, 0, 0]; // 100 очков будет в два раза дальше
 
     const race = document.getElementById('race');
 
     function placeHorses() {
       race.innerHTML = '<div class="sky"></div><div class="fence"></div>';
 
-      const startTop = 280; // первая линия дорожки после забора
+      const fenceBottom = 270; // от верхнего края контейнера до первой линии
       const trackStep = 120;
-      const scale = 5.4; // масштаб очков
 
       for (let i = 0; i < horsePoints.length; i++) {
+        // линии дорожек
         const lane = document.createElement('div');
         lane.className = 'lane';
-        lane.style.top = startTop + i * trackStep + 'px';
+        lane.style.top = fenceBottom + i * trackStep + 'px';
         race.appendChild(lane);
 
+        // лошади
         const horse = document.createElement('div');
         horse.className = 'horse';
         horse.id = 'horse' + i;
-        horse.style.top = startTop + i * trackStep - 20 + 'px'; 
-        horse.style.left = (horsePoints[i] * scale) + 'px';
+        horse.style.top = fenceBottom + i * trackStep - 20 + 'px';
+        horse.style.left = (horsePoints[i] * 2) + 'px'; // увеличенный масштаб
         horse.setAttribute('data-points', horsePoints[i]);
 
         const img = document.createElement('img');
