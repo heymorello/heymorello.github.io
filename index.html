@@ -12,7 +12,7 @@
       margin: 0;
       padding: 0;
       font-family: 'Marmelad', sans-serif;
-      background: #b18155; /* фон сайта */
+      background: #b18155;
       overflow-y: auto;
     }
 
@@ -61,17 +61,15 @@
       border: 4px solid #fff;
       border-radius: 12px;
       overflow: auto;
-      background: #64a8be;
+      background: url("https://txtrs.ru/textures/sand/sand-6.jpg") repeat;
+      background-size: 300px auto; /* мелкая мозаика */
       position: relative;
     }
 
     .race-inner {
       position: relative;
-      width: 3000px; /* длинная трасса */
+      width: 3000px;
       height: 100%;
-      background: url("https://txtrs.ru/textures/sand/sand-6.jpg") repeat-х;
-      background-size: auto 100%;
-      padding-top: 0;
     }
 
     .sky {
@@ -85,9 +83,9 @@
 
     .fence {
       position: absolute;
-      top: 150px; /* ровно стык с небом */
+      top: 180px;
       width: 3000px;
-      height: 150px;
+      height: 100px;
       background: url("https://i.postimg.cc/cJJ3rDsb/Chat-GPT-Image-21-2025-07-52-16.png") repeat-x bottom;
       background-size: 600px auto;
       z-index: 2;
@@ -104,7 +102,7 @@
 
     .flag {
       position: absolute;
-      width: 80px; /* было 40px → увеличено в 2 раза */
+      width: 50px; /* чуть меньше чем раньше */
       height: auto;
       z-index: 5;
     }
@@ -113,6 +111,7 @@
       position: absolute;
       cursor: pointer;
       z-index: 4;
+      transition: left 3s ease-in-out; /* плавное движение */
     }
 
     .horse img {
@@ -178,7 +177,7 @@
   <div class="header">
     <h1>Скачки и задачки</h1>
     <h2>Волшебники, добро пожаловать на скачки! <br>
-    В этом семестре у нас гриффиндорское дерби. Ведите своего скакуна к победе.</h2>
+    В этом семестре у нас настоящее гриффиндорское дерби. Ведите своего скакуна к победе.</h2>
   </div>
 
   <!-- БЛОК С ЛОШАДЬМИ -->
@@ -201,16 +200,16 @@
         <th>Спонсоры</th>
         <th>Скорость</th>
       </tr>
-      <tr><td>Корова Брунхильда</td><td>Участница прямком с фермы Весёлого Молочника из Альпийских гор. Даёт молоко для Гриффолада вкуснее Милки. Вы можете брать неограниченное количество первокурсников на кураторство в течение семестра. Получайте +50 ⚡️ скорости за каждого первокурсника, который освоился на факультете (вступил в телеграм-чат, зарегистрировался в Башне, заселился в команту и написал в ней пост от 1000 символов).</td><td></td><td>0⚡️</td></tr>
+      <tr><td>Корова Брунхильда</td><td>Участница прямком с фермы Весёлого Молочника из Альпийских гор. Даёт молоко для Гриффолада вкуснее Милки. Вы можете брать неограниченное количество первокурсников на кураторство в течение семестра. Получайте +50 ⚡️ скорости за каждого первокурсника, который освоился на факультете (вступил в телеграм-чат, зарегистрировался в Башне, заселился в комнту и написал в ней пост от 1000 символов).</td><td></td><td>0⚡️</td></tr>
       <tr><td>Фестрал Невермор</td><td>Числится на балансе школы — главного конкурента Хогвартса Дамблдора в тик-токе. Каждый раз, когда вы пересекаете барьер, все ваши конкуренты получают –15 ⚡️ скорости.</td><td></td><td>0⚡️</td></tr>
       <tr><td>Козёл Винсент</td><td>Счастливый ребёнок двухкратного обладателя титула «Мистер Хогвартс Дамблдора» и почётного профессора кафедры естествознания. Все учебные баллы, заработанные в рамках предметов кафедры естествознания, умножаются х2.</td><td></td><td>0⚡️</td></tr>
       <tr><td>Лошадь Покахонтас</td><td>Ветер прерий с вольным нравом! Скачет так, что не догнать. Все рпг-посты от 1000 символов на территориях школы (вне Мабона) дают вам +3⚡️ к скорости.</td><td></td><td>0⚡️</td></tr>
       <tr><td>Волк Ихвильнихт</td><td>Когда водила протянул аукс, все мои волки делают — ауф! Главный по песням, танцам и мемам. Все внеучебные баллы, заработанные в течение семестра, умножаются х2.</td><td></td><td>0⚡️</td></tr>
       <tr><td>Гиппогриф Крылоклюв</td><td>Брат самого известного актёра поттерианы, который устал быть в тени своего родственника. Все учебные баллы, заработанные в рамках предметов кафедры искусств, умножаются х2.</td><td></td><td>0⚡️</td></tr>
-      <tr><td>Капибара Лабуба</td><td>Самая трендовая чика на ипподроме. Её кубок будет не золотой, а цвета сливочного масла. Вы уже в тренде и начинаете забег с +100⚡️ cскорости. Вам доступны бонусы двух барьеров.</td><td></td><td>100⚡️</td></tr>
+      <tr><td>Капибара Лабуба</td><td>Самая трендовая чика на ипподроме. Её кубок будет не золотой, а цвета сливочного масла. Вы уже в тренде и начинаете забег с +100⚡️ cкорости. Вам доступны бонусы двух барьеров.</td><td></td><td>100⚡️</td></tr>
       <tr><td>Слон Юра</td><td>Наш слоняра, который покорил всех одним только взглядом! Ему уже предлагали  «Оскар» среди скакунов, но он отказался. Все задания скачек, выполненные в рамках факультетской Башни, умножаются на х3.</td><td></td><td>0⚡️</td></tr>
       <tr><td>Кельпи Вафля</td><td>Ни рыба, ни мясо, а настоящий десерт среди участников! Настолько же легендарна, как появление профессора Брука в стенах школы. Все учебные баллы, заработанные в рамках предметов кафедры мракоборства, умножаются х2.</td><td></td><td>0⚡️</td></tr>
-      <tr><td>Свинка Шарлотта</td><td>Ни рыба, ни мясо, а настоящий десерт среди участников! Настолько же легендарна, как появление профессора Брука в стенах школы. Все учебные баллы, заработанные в рамках предметов кафедры мракоборства, умножаются х2.</td><td></td><td>0⚡️</td></tr>
+      <tr><td>Свинка Нюша</td><td>Ни рыба, ни мясо, а настоящий десерт среди участников! Настолько же легендарна, как появление профессора Брука в стенах школы. Все учебные баллы, заработанные в рамках предметов кафедры мракоборства, умножаются х2.</td><td></td><td>0⚡️</td></tr>
     </table>
   </div>
 
@@ -221,15 +220,16 @@
       "https://i.ibb.co/wNJ2x6Xz/20250920-1029-remix-01k5jsen2he3ebb44mn75tbs8q.png",
       "https://i.ibb.co/pjXSLx0t/Chat-GPT-Image-23-2025-17-40-57.png",
       "https://i.ibb.co/m5LhSWN1/20250920-1529-remix-01k5kakeq0fsaskz0yr5q2mzby.png",
-      "https://i.ibb.co/Pvn0PrtF/Chat-GPT-Image-24-2025-07-23-43.png", // капибара
+      "https://i.ibb.co/Pvn0PrtF/Chat-GPT-Image-24-2025-07-23-43.png",
       "https://i.ibb.co/Ps8Mr98J/20250920-1357-remix-01k5k5cjmcf2ja5878w22hhxh7.png",
       "https://i.ibb.co/VWvRft9V/Chat-GPT-Image-24-2025-07-39-30.png",
       "https://i.ibb.co/vxLQJcsj/20250920-1128-remix-01k5jwttgrervbg17xtjk37xgs.png",
       "https://i.ibb.co/1tdkmwVf/Chat-GPT-Image-Sep-24-2025-01-31-58-PM.png"
     ];
 
-    const horseSizes = [300, 300, 300, 300, 300, 300, 300, 300, 300, 300];
-    const horsePoints = [0, 0, 0, 0, 100, 0, 0, 0, 0, 0];
+    const horseSizes = [200, 200, 200, 200, 200, 200, 200, 200, 200, 200];
+    const horsePoints = [0, 50, 100, 200, 300, 150, 400, 250, 350, 500]; 
+    // ⚡️ теперь лошадь с 100 окажется ровно у второго флажка
 
     const race = document.getElementById('race');
 
@@ -237,14 +237,13 @@
       race.innerHTML = '<div class="sky"></div><div class="fence"></div>';
 
       const trackStep = 120;
-      const pixelsPerPoint = 5; // масштаб: 1 очко = 5px
+      const pixelsPerPoint = 5; 
       const totalPoints = 550;
 
       for (let i = 0; i < horsePoints.length; i++) {
-        // линии дорожек
         const lane = document.createElement('div');
         lane.className = 'lane';
-        lane.style.top = 280 + i * trackStep + 'px'; 
+        lane.style.top = 280 + i * trackStep + 'px';
         race.appendChild(lane);
 
         // флажки каждые 100 очков
@@ -253,18 +252,15 @@
           flag.src = "https://i.postimg.cc/DzM4VWsT/Flag-Animation-After-Effects-Course-Laurentiu-Lunic.gif";
           flag.className = 'flag';
           flag.style.left = (x * pixelsPerPoint) + 'px';
-          flag.style.top = (280 + i * trackStep - 60) + 'px'; // над линией
+          flag.style.top = (260 + i * trackStep) + 'px'; 
           race.appendChild(flag);
         }
 
-        // лошади
         const horse = document.createElement('div');
         horse.className = 'horse';
         horse.id = 'horse' + i;
-        horse.style.top = 250 + i * trackStep + 'px'; // выше линии
-        let points = horsePoints[i];
-        if (i === 5) points *= 2; // капибара в 2 раза дальше
-        horse.style.left = (points * pixelsPerPoint) + 'px';
+        horse.style.top = 240 + i * trackStep + 'px';
+        horse.style.left = '0px';
         horse.setAttribute('data-points', horsePoints[i]);
 
         const img = document.createElement('img');
@@ -273,6 +269,11 @@
         horse.appendChild(img);
 
         race.appendChild(horse);
+
+        // анимация движения
+        setTimeout(() => {
+          horse.style.left = (horsePoints[i] * pixelsPerPoint) + 'px';
+        }, 500);
       }
     }
 
