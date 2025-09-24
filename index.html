@@ -29,7 +29,7 @@
       margin: 0;
     }
 
-    /* ===== СЕКЦИИ ===== */
+    /* ===== ЗАБОР ===== */
     .fence {
       height: 120px;
       width: 5000px;
@@ -37,15 +37,17 @@
       background-size: 600px auto;
     }
 
+    /* ===== ЛИНИЯ СТАРТА ===== */
     .track-start-line {
       height: 2px;
       background: white;
       width: 5000px;
     }
 
+    /* ===== ПЕСОК ===== */
     .sand {
       position: relative;
-      min-height: 1200px;
+      min-height: 2000px; /* до конца страницы */
       width: 5000px;
       background: url("https://txtrs.ru/textures/sand/sand-6.jpg") repeat;
       background-size: 450px auto;
@@ -68,6 +70,31 @@
       z-index: 25;
     }
 
+    .barrier {
+      position: absolute;
+      width: 4px;
+      height: 100%;
+      background: white;
+      z-index: 30;
+    }
+
+    .barrier::after {
+      content: "Барьер";
+      position: absolute;
+      top: -30px;
+      left: 50%;
+      transform: translateX(-50%);
+      padding: 6px 8px;
+      background: white;
+      color: black;
+      border-radius: 6px;
+      font-size: 16px;
+      opacity: 0;
+      transition: opacity .2s;
+      white-space: nowrap;
+    }
+    .barrier:hover::after { opacity: 1; }
+
     .horse {
       position: absolute;
       left: 0;
@@ -83,16 +110,15 @@
       -webkit-user-drag: none;
     }
 
-    /* Подсказка лошадей */
     .horse::after {
       content: attr(data-points) " очков";
       position: absolute;
       bottom: 110%;
       left: 50%;
       transform: translateX(-50%);
-      padding: 8px 12px;
-      background: #fff;
-      color: #000;
+      padding: 8px 10px;
+      background: white;
+      color: black;
       border-radius: 6px;
       font-size: 16px;
       opacity: 0;
@@ -100,50 +126,29 @@
       transition: opacity .2s;
       white-space: nowrap;
       z-index: 70;
-      box-shadow: 0 2px 6px rgba(0,0,0,0.3);
     }
     .horse:hover::after { opacity: 1; }
 
-    /* Барьерные линии */
-    .barrier-line {
-      position: absolute;
-      top: 0;
-      bottom: 0;
-      width: 6px;
-      background: white;
-      z-index: 30;
-    }
-    .barrier-line::after {
-      content: "Барьер";
-      position: absolute;
-      top: -30px;
-      left: 50%;
-      transform: translateX(-50%);
-      padding: 6px 10px;
-      background: #fff;
-      color: #000;
-      border-radius: 6px;
-      font-size: 14px;
-      opacity: 0;
-      white-space: nowrap;
-      box-shadow: 0 2px 6px rgba(0,0,0,0.3);
-      transition: opacity .2s;
-    }
-    .barrier-line:hover::after { opacity: 1; }
-
-    /* Таблица */
+    /* ===== ТАБЛИЦА ===== */
     .results {
       width: 100%;
+      overflow-x: hidden;
+      background: url("https://txtrs.ru/textures/sand/sand-6.jpg") repeat;
+      background-size: 450px auto;
+      padding: 40px 0;
+    }
+
+    .results table {
+      margin: 0 auto;
       border-collapse: collapse;
-      margin: 40px auto;
       text-align: center;
+      font-size: 18px;
+      width: 90%;
     }
+
     .results th, .results td {
-      border: 1px solid #ddd;
+      border: 1px solid #333;
       padding: 10px;
-    }
-    .results th {
-      background: #eee;
     }
   </style>
 </head>
@@ -164,26 +169,31 @@
     <div class="race" id="race"></div>
   </div>
 
-  <!-- Таблица -->
-  <table class="results">
-    <thead>
+  <!-- ТАБЛИЦА -->
+  <div class="results">
+    <table>
       <tr>
         <th>Колонка 1</th>
         <th>Колонка 2</th>
         <th>Колонка 3</th>
         <th>Колонка 4</th>
       </tr>
-    </thead>
-    <tbody>
       <!-- 10 строк -->
-      ${Array.from({length: 10}).map(() => `
-        <tr>
-          <td>Текст</td><td>Данные</td><td>Инфо</td><td>Значение</td>
-        </tr>`).join("")}
-    </tbody>
-  </table>
+      <tr><td>Съешь ещё этих мягких французских булок</td><td>Съешь ещё этих мягких французских булок</td><td>Съешь ещё этих мягких французских булок</td><td>Съешь ещё этих мягких французских булок</td></tr>
+      <tr><td>Съешь ещё этих мягких французских булок</td><td>Съешь ещё этих мягких французских булок</td><td>Съешь ещё этих мягких французских булок</td><td>Съешь ещё этих мягких французских булок</td></tr>
+      <tr><td>Съешь ещё этих мягких французских булок</td><td>Съешь ещё этих мягких французских булок</td><td>Съешь ещё этих мягких французских булок</td><td>Съешь ещё этих мягких французских булок</td></tr>
+      <tr><td>Съешь ещё этих мягких французских булок</td><td>Съешь ещё этих мягких французских булок</td><td>Съешь ещё этих мягких французских булок</td><td>Съешь ещё этих мягких французских булок</td></tr>
+      <tr><td>Съешь ещё этих мягких французских булок</td><td>Съешь ещё этих мягких французских булок</td><td>Съешь ещё этих мягких французских булок</td><td>Съешь ещё этих мягких французских булок</td></tr>
+      <tr><td>Съешь ещё этих мягких французских булок</td><td>Съешь ещё этих мягких французских булок</td><td>Съешь ещё этих мягких французских булок</td><td>Съешь ещё этих мягких французских булок</td></tr>
+      <tr><td>Съешь ещё этих мягких французских булок</td><td>Съешь ещё этих мягких французских булок</td><td>Съешь ещё этих мягких французских булок</td><td>Съешь ещё этих мягких французских булок</td></tr>
+      <tr><td>Съешь ещё этих мягких французских булок</td><td>Съешь ещё этих мягких французских булок</td><td>Съешь ещё этих мягких французских булок</td><td>Съешь ещё этих мягких французских булок</td></tr>
+      <tr><td>Съешь ещё этих мягких французских булок</td><td>Съешь ещё этих мягких французских булок</td><td>Съешь ещё этих мягких французских булок</td><td>Съешь ещё этих мягких французских булок</td></tr>
+      <tr><td>Съешь ещё этих мягких французских булок</td><td>Съешь ещё этих мягких французских булок</td><td>Съешь ещё этих мягких французских булок</td><td>Съешь ещё этих мягких французских булок</td></tr>
+    </table>
+  </div>
 
   <script>
+    // Картинки лошадей
     const horseImages = [
       "https://i.ibb.co/tTWMGsWW/Chat-GPT-Image-23-2025-17-23-57.png",
       "https://i.ibb.co/Jwp91sZ9/Chat-GPT-Image-23-2025-17-57-01.png",
@@ -197,29 +207,29 @@
       "https://i.ibb.co/1tdkmwVf/Chat-GPT-Image-Sep-24-2025-01-31-58-PM.png"
     ];
 
-    // Размеры каждой лошади
-    const horseSizes = ["200px","180px","220px","210px","200px","190px","200px","210px","200px","220px"];
+    // Размеры лошадей (можно менять каждую отдельно)
+    const horseSizes = [200, 180, 220, 210, 190, 200, 170, 230, 200, 210];
 
     const horsePoints = [1, 2, 4, 0, 5, 2, 0, 0, 1, 0];
-
     const race = document.getElementById('race');
 
     function placeHorses() {
       race.innerHTML = '';
 
       const sandHeight = race.offsetHeight;
-      const step = 100; // фиксированное расстояние между дорожками
+      const baseHorseHeight = 200;
+      const step = baseHorseHeight / 2;
 
       // верхняя линия
       const firstLane = document.createElement('div');
       firstLane.className = 'lane';
-      firstLane.style.bottom = (sandHeight - 100/2 + step/2) + "px";
+      firstLane.style.bottom = (sandHeight - baseHorseHeight/2 + step) + "px";
       race.appendChild(firstLane);
 
       for (let i = 0; i < horsePoints.length; i++) {
         const lane = document.createElement('div');
         lane.className = 'lane';
-        lane.style.bottom = (sandHeight - 100/2 - (i * step)) + "px";
+        lane.style.bottom = (sandHeight - baseHorseHeight/2 - (i * step)) + "px";
         race.appendChild(lane);
 
         const horse = document.createElement('div');
@@ -227,27 +237,29 @@
         horse.id = 'horse' + i;
 
         if (i === 0) {
-          horse.style.bottom = sandHeight - 100/2 + "px";
+          horse.style.bottom = sandHeight - baseHorseHeight/2 + "px";
         } else {
-          horse.style.bottom = sandHeight - 100/2 - (i * step) + "px";
+          horse.style.bottom = sandHeight - baseHorseHeight/2 - (i * step) + "px";
         }
 
         horse.setAttribute('data-points', horsePoints[i]);
 
         const img = document.createElement('img');
         img.src = horseImages[i];
-        img.style.width = horseSizes[i];
         img.alt = 'Лошадь ' + (i+1);
+        img.style.width = horseSizes[i] + "px";
         horse.appendChild(img);
 
         race.appendChild(horse);
       }
 
-      // Барьерные линии каждые 50 очков (50*120px)
-      for (let x = 600; x < 5000; x += 600) {
+      // Барьеры каждые 50 очков
+      for (let x = 50; x <= 500; x += 50) {
         const barrier = document.createElement('div');
-        barrier.className = 'barrier-line';
-        barrier.style.left = x + "px";
+        barrier.className = 'barrier';
+        barrier.style.left = (x * 120) + "px";
+        barrier.style.top = "0";
+        barrier.style.height = sandHeight + "px";
         race.appendChild(barrier);
       }
     }
@@ -255,22 +267,12 @@
     placeHorses();
     window.addEventListener('resize', placeHorses);
 
-    // Анимация
     window.onload = () => {
       for (let i = 0; i < horsePoints.length; i++) {
         const el = document.getElementById('horse' + i);
         if (el) el.style.left = (horsePoints[i] * 120) + 'px';
       }
     };
-
-    // Параллакс
-    window.addEventListener('scroll', () => {
-      const sx = window.scrollX;
-      const fence = document.getElementById('fence');
-      const sand = document.getElementById('sand');
-      if (fence) fence.style.backgroundPositionX = -(sx * 0.6) + 'px';
-      if (sand) sand.style.backgroundPositionX  = -(sx * 1) + 'px';
-    });
   </script>
 </body>
 </html>
