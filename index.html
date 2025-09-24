@@ -75,10 +75,11 @@
     .barrier {
       position: absolute;
       width: 6px;
-      height: 220px; /* высота барьера */
-      background: white;
-      bottom: 0; /* привязка к низу трассы */
-      z-index: 30;
+      height: 230px; /* видимая высота */
+      background: #fff;
+      bottom: 0; /* привязка к нижней линии */
+      z-index: 50; /* выше лошадей */
+      box-shadow: 0 0 4px black;
     }
 
     .barrier::after {
@@ -97,9 +98,7 @@
       white-space: nowrap;
     }
 
-    .barrier:hover::after { 
-      opacity: 1; 
-    }
+    .barrier:hover::after { opacity: 1; }
 
     .horse {
       position: absolute;
