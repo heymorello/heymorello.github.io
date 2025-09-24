@@ -221,19 +221,42 @@ function placeHorses() {
     lane.style.top = 270 - raise + i * trackStep + 'px';
     race.appendChild(lane);
 
-    // флажки под лошадьми
-    for (let x = 100; x <= totalPoints; x += 100) {
-      const flag = document.createElement('img');
-      flag.src = "https://i.postimg.cc/DzM4VWsT/Flag-Animation-After-Effects-Course-Laurentiu-Lunic.gif";
-      flag.className = 'flag';
-      flag.style.left = (x * pixelsPerPoint) + 'px';
-      flag.style.top = (260 - raise + i * trackStep) + 'px';
-      if (x === 100) flag.setAttribute('data-tip', '100 – крутой никнейм');
-      if (x === 200) flag.setAttribute('data-tip', '200 – выкуп скакуна');
-      if (x === 300) flag.setAttribute('data-tip', '300 – шапка в Башне');
-      if (x === 400) flag.setAttribute('data-tip', '400 – статус в чате Телеграма');
-      flagsContainer.appendChild(flag);
-    }
+    // внутри placeHorses()
+for (let x = 100; x <= totalPoints; x += 100) {
+  const flag = document.createElement('img');
+  flag.src = "https://i.postimg.cc/DzM4VWsT/Flag-Animation-After-Effects-Course-Laurentiu-Lunic.gif";
+  flag.className = 'flag';
+  flag.style.left = (x * pixelsPerPoint) + 'px';
+  flag.style.top = (270 - raise + i * trackStep) + 'px'; // на линии
+
+  // создаём tooltip
+  const tip = document.createElement('div');
+  tip.className = 'flag-tip';
+  if (x === 100) tip.textContent = '100 – крутой никнейм';
+  if (x === 200) tip.textContent = '200 – выкуп скакуна';
+  if (x === 300) tip.textContent = '300 – шапка в Башне';
+  if (x === 400) tip.textContent = '400 – статус в чате Телеграма';
+
+  tip.style.position = 'absolute';
+  tip.style.left = flag.style.left;
+  tip.style.top = (parseInt(flag.style.top) - 40) + 'px';
+  tip.style.padding = '6px 8px';
+  tip.style.background = 'white';
+  tip.style.color = 'black';
+  tip.style.borderRadius = '6px';
+  tip.style.fontSize = '14px';
+  tip.style.opacity = '0';
+  tip.style.transition = 'opacity .2s';
+  tip.style.whiteSpace = 'nowrap';
+  tip.style.pointerEvents = 'none';
+  tip.style.zIndex = '999'; // поверх всего
+
+  flag.addEventListener('mouseenter', () => tip.style.opacity = 1);
+  flag.addEventListener('mouseleave', () => tip.style.opacity = 0);
+
+  race.appendChild(flag);
+  race.appendChild(tip);
+}
 
     // лошади
     const horse = document.createElement('div');
