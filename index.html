@@ -771,13 +771,14 @@ const flagsContainer = document.getElementById('flags');
 const raise = 50; // смещение вверх
 
 function placeHorses() {
+  // очищаем только динамические элементы, но не небо и забор
   race.querySelectorAll('.horse, .lane').forEach(el => el.remove());
   flagsContainer.innerHTML = '';
 
   const pixelsPerPoint = 2.5;
-  const totalPoints = 1500; // трасса до 1500 очков
+  const totalPoints = 1500; 
   const trackWidth = totalPoints * pixelsPerPoint;
-  const trackStep = 120; // <-- ВОТ ЭТОГО НЕ ХВАТАЛО
+  const trackStep = 120; // шаг между дорожками
 
   // обновляем ширину трассы
   race.style.width = trackWidth + 'px';
@@ -789,109 +790,109 @@ function placeHorses() {
   fence.style.width = trackWidth + 'px';
 
   for (let i = 0; i < horsePoints.length; i++) {
-    // линии дорожек
+    // линия дорожки
     const lane = document.createElement('div');
     lane.className = 'lane';
     lane.style.top = 270 - raise + i * trackStep + 'px';
     lane.style.width = trackWidth + 'px';
     race.appendChild(lane);
 
-// флажки каждые 100 до 500
-for (let x = 100; x <= 500; x += 100) {
-  const flag = document.createElement('img');
-  flag.src = "https://i.postimg.cc/DzM4VWsT/Flag-Animation-After-Effects-Course-Laurentiu-Lunic.gif";
-  flag.className = 'flag';
-  flag.style.left = (x * pixelsPerPoint) + 'px';
-  flag.style.top = (210 - raise + i * trackStep) + 'px';
+    // флажки до 500
+    for (let x = 100; x <= 500; x += 100) {
+      const flag = document.createElement('img');
+      flag.src = "https://i.postimg.cc/DzM4VWsT/Flag-Animation-After-Effects-Course-Laurentiu-Lunic.gif";
+      flag.className = 'flag';
+      flag.style.left = (x * pixelsPerPoint) + 'px';
+      flag.style.top = (210 - raise + i * trackStep) + 'px';
 
-  const tip = document.createElement('div');
-  if (x === 100) tip.textContent = '100 – крутой никнейм';
-  if (x === 200) tip.textContent = '200 – открытка в Башне';
-  if (x === 300) tip.textContent = '300 – ваша шапка в Башне';
-  if (x === 400) tip.textContent = '400 – статус в чате Телеграма';
-  if (x === 500) tip.textContent = '500 – именной гриффолад';
+      const tip = document.createElement('div');
+      if (x === 100) tip.textContent = '100 – крутой никнейм';
+      if (x === 200) tip.textContent = '200 – открытка в Башне';
+      if (x === 300) tip.textContent = '300 – ваша шапка в Башне';
+      if (x === 400) tip.textContent = '400 – статус в чате Телеграма';
+      if (x === 500) tip.textContent = '500 – именной гриффолад';
 
-  Object.assign(tip.style, {
-    position: 'absolute',
-    left: flag.style.left,
-    top: (parseInt(flag.style.top) - 40) + 'px',
-    padding: '6px 8px',
-    background: 'white',
-    color: 'black',
-    borderRadius: '6px',
-    fontSize: '14px',
-    opacity: '0',
-    transition: 'opacity .2s',
-    whiteSpace: 'nowrap',
-    pointerEvents: 'none',
-    zIndex: '999'
-  });
+      Object.assign(tip.style, {
+        position: 'absolute',
+        left: flag.style.left,
+        top: (parseInt(flag.style.top) - 40) + 'px',
+        padding: '6px 8px',
+        background: 'white',
+        color: 'black',
+        borderRadius: '6px',
+        fontSize: '14px',
+        opacity: '0',
+        transition: 'opacity .2s',
+        whiteSpace: 'nowrap',
+        pointerEvents: 'none',
+        zIndex: '999'
+      });
 
-  flag.addEventListener('mouseenter', () => tip.style.opacity = '1');
-  flag.addEventListener('mouseleave', () => tip.style.opacity = '0');
+      flag.addEventListener('mouseenter', () => tip.style.opacity = '1');
+      flag.addEventListener('mouseleave', () => tip.style.opacity = '0');
 
-  flagsContainer.appendChild(flag);
-  flagsContainer.appendChild(tip);
+      flagsContainer.appendChild(flag);
+      flagsContainer.appendChild(tip);
 
-  tip.style.left = (flag.offsetLeft + flag.offsetWidth / 2) + 'px';
-  tip.style.transform = 'translateX(-50%)';
-}
+      tip.style.left = (flag.offsetLeft + flag.offsetWidth / 2) + 'px';
+      tip.style.transform = 'translateX(-50%)';
+    }
 
-// вторые флажки (начиная с 750, шаг 250)
-for (let x = 750; x <= totalPoints; x += 250) {
-  const flag2 = document.createElement('img');
-  flag2.src = "https://i.ibb.co/YrG1SRf/Flasg-Animation-After-Effects-Course-Laurentiu-Lunic.gif";
-  flag2.className = 'flag';
-  flag2.style.left = (x * pixelsPerPoint) + 'px';
-  flag2.style.top = (210 - raise + i * trackStep) + 'px';
+    // флажки от 750 через 250
+    for (let x = 750; x <= totalPoints; x += 250) {
+      const flag2 = document.createElement('img');
+      flag2.src = "https://i.ibb.co/YrG1SRf/Flasg-Animation-After-Effects-Course-Laurentiu-Lunic.gif";
+      flag2.className = 'flag';
+      flag2.style.left = (x * pixelsPerPoint) + 'px';
+      flag2.style.top = (210 - raise + i * trackStep) + 'px';
 
-  // подсказка "х — так держать!"
-  const tip2 = document.createElement('div');
-  tip2.className = 'flag-tip';
-  tip2.textContent = `${x} — так держать!`;
+      const tip2 = document.createElement('div');
+      tip2.textContent = `${x} — так держать!`;
 
-  Object.assign(tip2.style, {
-    position: 'absolute',
-    left: flag2.style.left,
-    top: (parseInt(flag2.style.top) - 40) + 'px',
-    padding: '6px 8px',
-    background: 'white',
-    color: 'black',
-    borderRadius: '6px',
-    fontSize: '14px',
-    opacity: '0',
-    transition: 'opacity .2s',
-    whiteSpace: 'nowrap',
-    pointerEvents: 'none',
-    zIndex: '999'
-  });
+      Object.assign(tip2.style, {
+        position: 'absolute',
+        left: flag2.style.left,
+        top: (parseInt(flag2.style.top) - 40) + 'px',
+        padding: '6px 8px',
+        background: 'white',
+        color: 'black',
+        borderRadius: '6px',
+        fontSize: '14px',
+        opacity: '0',
+        transition: 'opacity .2s',
+        whiteSpace: 'nowrap',
+        pointerEvents: 'none',
+        zIndex: '999'
+      });
 
-  flag2.addEventListener('mouseenter', () => tip2.style.opacity = '1');
-  flag2.addEventListener('mouseleave', () => tip2.style.opacity = '0');
+      flag2.addEventListener('mouseenter', () => tip2.style.opacity = '1');
+      flag2.addEventListener('mouseleave', () => tip2.style.opacity = '0');
 
-  flagsContainer.appendChild(flag2);
-  flagsContainer.appendChild(tip2);
+      flagsContainer.appendChild(flag2);
+      flagsContainer.appendChild(tip2);
 
-  // Центрируем подсказку относительно флага после добавления в DOM
-  tip2.style.left = (flag2.offsetLeft + flag2.offsetWidth / 2) + 'px';
-  tip2.style.transform = 'translateX(-50%)';
-}
+      tip2.style.left = (flag2.offsetLeft + flag2.offsetWidth / 2) + 'px';
+      tip2.style.transform = 'translateX(-50%)';
+    }
 
-    // лошади
+    // Лошадь
     const horse = document.createElement('div');
     horse.className = 'horse';
     horse.id = 'horse' + i;
     horse.style.top = 230 - raise - 40 + i * trackStep + 'px';
     horse.style.left = '0px';
     horse.setAttribute('data-points', horsePoints[i]);
+
     const img = document.createElement('img');
     img.src = horseImages[i];
     img.style.width = horseSizes[i] + 'px';
     horse.appendChild(img);
     race.appendChild(horse);
 
-    // анимация
-    setTimeout(() => { horse.style.left = (horsePoints[i] * pixelsPerPoint) + 'px'; }, 500);
+    // анимация движения
+    setTimeout(() => {
+      horse.style.left = (horsePoints[i] * pixelsPerPoint) + 'px';
+    }, 500);
   }
 }
 
