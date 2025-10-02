@@ -57,7 +57,6 @@ html, body {
 
 .race-inner {
   position: relative;
-  width: 3000px;
   height: 100%;
 }
 
@@ -774,16 +773,26 @@ const raise = 50; // смещение вверх
 function placeHorses() {
   race.querySelectorAll('.horse, .lane').forEach(el => el.remove());
   flagsContainer.innerHTML = '';
-  const trackStep = 120;
-  const pixelsPerPoint = 2.5; 
-  const totalPoints = 1500;
+  const pixelsPerPoint = 2.5;
+const totalPoints = 1500; // теперь до 1500
+const trackWidth = totalPoints * pixelsPerPoint;
+
+// обновляем ширину трассы
+race.style.width = trackWidth + 'px';
+
+// расширяем небо и забор
+const sky = race.querySelector('.sky');
+const fence = race.querySelector('.fence');
+sky.style.width = trackWidth + 'px';
+fence.style.width = trackWidth + 'px';
 
   for (let i = 0; i < horsePoints.length; i++) {
     // линии дорожек
     const lane = document.createElement('div');
-    lane.className = 'lane';
-    lane.style.top = 270 - raise + i * trackStep + 'px';
-    race.appendChild(lane);
+lane.className = 'lane';
+lane.style.top = 270 - raise + i * trackStep + 'px';
+lane.style.width = trackWidth + 'px'; // добавляем!
+race.appendChild(lane);
 
     // внутри placeHorses()
 // флажки каждые 100 до 500
