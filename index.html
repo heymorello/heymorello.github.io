@@ -824,37 +824,44 @@ for (let x = 100; x <= totalPoints; x += 100) {
   tip.style.transform = 'translateX(-50%)';
 }
 
-// вторые флажки (каждые 250)
-for (let x = 250; x <= totalPoints; x += 250) {
-  const flag = document.createElement('img');
-  flag.src = "https://i.postimg.cc/y6JRZbgR/Flasg-Animation-After-Effects-Course-Laurentiu-Lunic.gif";
-  flag.className = 'flag';
-  flag.style.left = (x * pixelsPerPoint) + 'px';
-  flag.style.top = (210 - raise + i * trackStep) + 'px';
+// вторые флажки (начиная с 750, шаг 250)
+for (let x = 750; x <= totalPoints; x += 250) {
+  const flag2 = document.createElement('img');
+  flag2.src = "https://i.postimg.cc/y6JRZbgR/Flasg-Animation-After-Effects-Course-Laurentiu-Lunic.gif";
+  flag2.className = 'flag';
+  flag2.style.left = (x * pixelsPerPoint) + 'px';
+  flag2.style.top = (210 - raise + i * trackStep) + 'px';
 
-  const tip = document.createElement('div');
-  tip.textContent = `${x} — так держать!`;
+  // подсказка "х — так держать!"
+  const tip2 = document.createElement('div');
+  tip2.className = 'flag-tip';
+  tip2.textContent = `${x} — так держать!`;
 
-  tip.style.position = 'absolute';
-  tip.style.left = flag.style.left;
-  tip.style.top = (parseInt(flag.style.top) - 40) + 'px';
-  tip.style.padding = '6px 8px';
-  tip.style.background = 'white';
-  tip.style.color = 'black';
-  tip.style.borderRadius = '6px';
-  tip.style.fontSize = '14px';
-  tip.style.opacity = '0';
-  tip.style.transition = 'opacity .2s';
-  tip.style.whiteSpace = 'nowrap';
-  tip.style.pointerEvents = 'none';
+  Object.assign(tip2.style, {
+    position: 'absolute',
+    left: flag2.style.left,
+    top: (parseInt(flag2.style.top) - 40) + 'px',
+    padding: '6px 8px',
+    background: 'white',
+    color: 'black',
+    borderRadius: '6px',
+    fontSize: '14px',
+    opacity: '0',
+    transition: 'opacity .2s',
+    whiteSpace: 'nowrap',
+    pointerEvents: 'none',
+    zIndex: '999'
+  });
 
-  flag.addEventListener('mouseenter', () => tip.style.opacity = 1);
-  flag.addEventListener('mouseleave', () => tip.style.opacity = 0);
+  flag2.addEventListener('mouseenter', () => tip2.style.opacity = '1');
+  flag2.addEventListener('mouseleave', () => tip2.style.opacity = '0');
 
-  flagsContainer.appendChild(flag);
-  flagsContainer.appendChild(tip);
-  tip.style.left = (flag.offsetLeft + flag.offsetWidth / 2) + 'px';
-  tip.style.transform = 'translateX(-50%)';
+  flagsContainer.appendChild(flag2);
+  flagsContainer.appendChild(tip2);
+
+  // Центрируем подсказку относительно флага после добавления в DOM
+  tip2.style.left = (flag2.offsetLeft + flag2.offsetWidth / 2) + 'px';
+  tip2.style.transform = 'translateX(-50%)';
 }
 
     // лошади
