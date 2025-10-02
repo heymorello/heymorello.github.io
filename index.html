@@ -773,28 +773,29 @@ const raise = 50; // смещение вверх
 function placeHorses() {
   race.querySelectorAll('.horse, .lane').forEach(el => el.remove());
   flagsContainer.innerHTML = '';
+
   const pixelsPerPoint = 2.5;
-const totalPoints = 1500; // теперь до 1500
-const trackWidth = totalPoints * pixelsPerPoint;
+  const totalPoints = 1500; // трасса до 1500 очков
+  const trackWidth = totalPoints * pixelsPerPoint;
+  const trackStep = 120; // <-- ВОТ ЭТОГО НЕ ХВАТАЛО
 
-// обновляем ширину трассы
-race.style.width = trackWidth + 'px';
+  // обновляем ширину трассы
+  race.style.width = trackWidth + 'px';
 
-// расширяем небо и забор
-const sky = race.querySelector('.sky');
-const fence = race.querySelector('.fence');
-sky.style.width = trackWidth + 'px';
-fence.style.width = trackWidth + 'px';
+  // расширяем небо и забор
+  const sky = race.querySelector('.sky');
+  const fence = race.querySelector('.fence');
+  sky.style.width = trackWidth + 'px';
+  fence.style.width = trackWidth + 'px';
 
   for (let i = 0; i < horsePoints.length; i++) {
     // линии дорожек
     const lane = document.createElement('div');
-lane.className = 'lane';
-lane.style.top = 270 - raise + i * trackStep + 'px';
-lane.style.width = trackWidth + 'px'; // добавляем!
-race.appendChild(lane);
+    lane.className = 'lane';
+    lane.style.top = 270 - raise + i * trackStep + 'px';
+    lane.style.width = trackWidth + 'px';
+    race.appendChild(lane);
 
-    // внутри placeHorses()
 // флажки каждые 100 до 500
 for (let x = 100; x <= 500; x += 100) {
   const flag = document.createElement('img');
