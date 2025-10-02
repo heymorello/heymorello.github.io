@@ -786,21 +786,54 @@ function placeHorses() {
     race.appendChild(lane);
 
     // внутри placeHorses()
+// первые флажки (каждые 100)
 for (let x = 100; x <= totalPoints; x += 100) {
   const flag = document.createElement('img');
   flag.src = "https://i.postimg.cc/DzM4VWsT/Flag-Animation-After-Effects-Course-Laurentiu-Lunic.gif";
   flag.className = 'flag';
   flag.style.left = (x * pixelsPerPoint) + 'px';
-  flag.style.top = (210 - raise + i * trackStep) + 'px'; // на линии
+  flag.style.top = (210 - raise + i * trackStep) + 'px';
 
-  // создаём tooltip
   const tip = document.createElement('div');
-  tip.className = 'flag-tip';
   if (x === 100) tip.textContent = '100 – крутой никнейм';
   if (x === 200) tip.textContent = '200 – открытка в Башне';
   if (x === 300) tip.textContent = '300 – ваша шапка в Башне';
   if (x === 400) tip.textContent = '400 – статус в чате Телеграма';
   if (x === 500) tip.textContent = '500 – именной гриффолад';
+
+  // стиль подсказки тот же
+  tip.style.position = 'absolute';
+  tip.style.left = flag.style.left;
+  tip.style.top = (parseInt(flag.style.top) - 40) + 'px';
+  tip.style.padding = '6px 8px';
+  tip.style.background = 'white';
+  tip.style.color = 'black';
+  tip.style.borderRadius = '6px';
+  tip.style.fontSize = '14px';
+  tip.style.opacity = '0';
+  tip.style.transition = 'opacity .2s';
+  tip.style.whiteSpace = 'nowrap';
+  tip.style.pointerEvents = 'none';
+
+  flag.addEventListener('mouseenter', () => tip.style.opacity = 1);
+  flag.addEventListener('mouseleave', () => tip.style.opacity = 0);
+
+  flagsContainer.appendChild(flag);
+  flagsContainer.appendChild(tip);
+  tip.style.left = (flag.offsetLeft + flag.offsetWidth / 2) + 'px';
+  tip.style.transform = 'translateX(-50%)';
+}
+
+// вторые флажки (каждые 250)
+for (let x = 250; x <= totalPoints; x += 250) {
+  const flag = document.createElement('img');
+  flag.src = "https://i.postimg.cc/y6JRZbgR/Flasg-Animation-After-Effects-Course-Laurentiu-Lunic.gif";
+  flag.className = 'flag';
+  flag.style.left = (x * pixelsPerPoint) + 'px';
+  flag.style.top = (210 - raise + i * trackStep) + 'px';
+
+  const tip = document.createElement('div');
+  tip.textContent = `${x} — так держать!`;
 
   tip.style.position = 'absolute';
   tip.style.left = flag.style.left;
@@ -814,15 +847,14 @@ for (let x = 100; x <= totalPoints; x += 100) {
   tip.style.transition = 'opacity .2s';
   tip.style.whiteSpace = 'nowrap';
   tip.style.pointerEvents = 'none';
-  tip.style.zIndex = '999'; // поверх всего
 
   flag.addEventListener('mouseenter', () => tip.style.opacity = 1);
   flag.addEventListener('mouseleave', () => tip.style.opacity = 0);
 
-flagsContainer.appendChild(flag);
-flagsContainer.appendChild(tip);
-tip.style.left = (flag.offsetLeft + flag.offsetWidth / 2) + 'px';
-tip.style.transform = 'translateX(-50%)';
+  flagsContainer.appendChild(flag);
+  flagsContainer.appendChild(tip);
+  tip.style.left = (flag.offsetLeft + flag.offsetWidth / 2) + 'px';
+  tip.style.transform = 'translateX(-50%)';
 }
 
     // лошади
