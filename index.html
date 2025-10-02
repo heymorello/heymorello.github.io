@@ -786,8 +786,8 @@ function placeHorses() {
     race.appendChild(lane);
 
     // внутри placeHorses()
-// первые флажки (каждые 100)
-for (let x = 100; x <= totalPoints; x += 100) {
+// флажки каждые 100 до 500
+for (let x = 100; x <= 500; x += 100) {
   const flag = document.createElement('img');
   flag.src = "https://i.postimg.cc/DzM4VWsT/Flag-Animation-After-Effects-Course-Laurentiu-Lunic.gif";
   flag.className = 'flag';
@@ -801,25 +801,28 @@ for (let x = 100; x <= totalPoints; x += 100) {
   if (x === 400) tip.textContent = '400 – статус в чате Телеграма';
   if (x === 500) tip.textContent = '500 – именной гриффолад';
 
-  // стиль подсказки тот же
-  tip.style.position = 'absolute';
-  tip.style.left = flag.style.left;
-  tip.style.top = (parseInt(flag.style.top) - 40) + 'px';
-  tip.style.padding = '6px 8px';
-  tip.style.background = 'white';
-  tip.style.color = 'black';
-  tip.style.borderRadius = '6px';
-  tip.style.fontSize = '14px';
-  tip.style.opacity = '0';
-  tip.style.transition = 'opacity .2s';
-  tip.style.whiteSpace = 'nowrap';
-  tip.style.pointerEvents = 'none';
+  Object.assign(tip.style, {
+    position: 'absolute',
+    left: flag.style.left,
+    top: (parseInt(flag.style.top) - 40) + 'px',
+    padding: '6px 8px',
+    background: 'white',
+    color: 'black',
+    borderRadius: '6px',
+    fontSize: '14px',
+    opacity: '0',
+    transition: 'opacity .2s',
+    whiteSpace: 'nowrap',
+    pointerEvents: 'none',
+    zIndex: '999'
+  });
 
-  flag.addEventListener('mouseenter', () => tip.style.opacity = 1);
-  flag.addEventListener('mouseleave', () => tip.style.opacity = 0);
+  flag.addEventListener('mouseenter', () => tip.style.opacity = '1');
+  flag.addEventListener('mouseleave', () => tip.style.opacity = '0');
 
   flagsContainer.appendChild(flag);
   flagsContainer.appendChild(tip);
+
   tip.style.left = (flag.offsetLeft + flag.offsetWidth / 2) + 'px';
   tip.style.transform = 'translateX(-50%)';
 }
