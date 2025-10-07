@@ -784,19 +784,22 @@ function placeHorses() {
   const pixelsPerPoint = 2.5;
   const totalPoints = 1500; 
   const trackWidth = totalPoints * pixelsPerPoint;
-race.style.minWidth = trackWidth + 'px';
-race.querySelector('.sky').style.minWidth = trackWidth + 'px';
-race.querySelector('.fence').style.minWidth = trackWidth + 'px';
   const trackStep = 120; // шаг между дорожками
 
-  // обновляем ширину трассы
-  race.style.width = trackWidth + 'px';
-
-  // расширяем небо и забор
+  // расширяем небо, забор и фон
   const sky = race.querySelector('.sky');
   const fence = race.querySelector('.fence');
+  const raceContainer = document.querySelector('.race-inner');
+
+  race.style.width = trackWidth + 'px';
   sky.style.width = trackWidth + 'px';
   fence.style.width = trackWidth + 'px';
+  raceContainer.style.width = trackWidth + 'px';
+
+  // растягиваем песок до конца (всё поле)
+  raceContainer.style.background = 'url("https://txtrs.ru/textures/sand/sand-6.jpg") repeat';
+  raceContainer.style.backgroundSize = '450px auto';
+  raceContainer.style.backgroundPosition = 'left top';
 
   for (let i = 0; i < horsePoints.length; i++) {
     // линия дорожки
@@ -806,7 +809,7 @@ race.querySelector('.fence').style.minWidth = trackWidth + 'px';
     lane.style.width = trackWidth + 'px';
     race.appendChild(lane);
 
-    // флажки до 500
+    // === флажки до 500 ===
     for (let x = 100; x <= 500; x += 100) {
       const flag = document.createElement('img');
       flag.src = "https://i.postimg.cc/DzM4VWsT/Flag-Animation-After-Effects-Course-Laurentiu-Lunic.gif";
@@ -847,7 +850,7 @@ race.querySelector('.fence').style.minWidth = trackWidth + 'px';
       tip.style.transform = 'translateX(-50%)';
     }
 
-    // флажки от 750 через 250
+    // === флажки от 750 через 250 ===
     for (let x = 750; x <= totalPoints; x += 250) {
       const flag2 = document.createElement('img');
       flag2.src = "https://i.ibb.co/YrG1SRf/Flasg-Animation-After-Effects-Course-Laurentiu-Lunic.gif";
@@ -884,7 +887,7 @@ race.querySelector('.fence').style.minWidth = trackWidth + 'px';
       tip2.style.transform = 'translateX(-50%)';
     }
 
-    // Лошадь
+    // === Лошадь ===
     const horse = document.createElement('div');
     horse.className = 'horse';
     horse.id = 'horse' + i;
@@ -903,6 +906,10 @@ race.querySelector('.fence').style.minWidth = trackWidth + 'px';
       horse.style.left = (horsePoints[i] * pixelsPerPoint) + 'px';
     }, 500);
   }
+
+  // === продлеваем линии, небо, забор, фон ===
+  const lanes = document.querySelectorAll('.lane');
+  lanes.forEach(l => l.style.width = trackWidth + 'px');
 }
 
 placeHorses();
