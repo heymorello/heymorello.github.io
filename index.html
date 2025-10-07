@@ -768,6 +768,14 @@ window.onclick = (e) => { if(e.target == faqModal) faqModal.style.display = "non
 .close:hover { color: red; }
 
 .table-wrapper { overflow-x: auto; }
+/* ===== ВЫРАВНИВАНИЕ 2 И 3 СТОЛБЦОВ В ТАБЛИЦЕ УСКОРЕНИЙ ===== */
+#taskModal .modal-content tbody td:nth-child(2),
+#taskModal .modal-content tbody td:nth-child(3) {
+  text-align: justify;
+  vertical-align: top;
+  padding: 10px 14px;
+  line-height: 1.5;
+}
 </style>
 
 <script>
