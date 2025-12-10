@@ -45,6 +45,7 @@ html, body {
 .race-container {
   width: 95%;
   height: 800px;
+  max-width: 6000px;
   margin: 20px auto;
   border: 4px solid #fff;
   border-radius: 12px;
@@ -825,15 +826,14 @@ function placeHorses() {
   const trackWidth = totalPoints * pixelsPerPoint;
   const trackStep = 120; // шаг между дорожками
 
-  // 1. Обновляем ширину race-inner (основной контейнер трассы)
+  // обновляем ширину трассы
   race.style.width = trackWidth + 'px';
   
-  // 2. Обновляем ширину родительского контейнера для песка
-  const raceContainer = document.querySelector('.race-container');
-  raceContainer.style.width = trackWidth + 'px';
-  raceContainer.style.maxWidth = trackWidth + 'px'; // отключаем ограничение
-  
-  // 3. Расширяем небо и забор
+  // Также обновляем ширину .race-inner (основного контейнера)
+  const raceInner = document.querySelector('.race-inner');
+  raceInner.style.width = trackWidth + 'px';
+
+  // расширяем небо и забор
   const sky = race.querySelector('.sky');
   const fence = race.querySelector('.fence');
   sky.style.width = trackWidth + 'px';
