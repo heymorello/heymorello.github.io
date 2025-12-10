@@ -58,7 +58,7 @@ html, body {
 .race-inner {
   position: relative;
   height: 100%;
-  width: 6000px;
+  min-width: 100%;
 }
 
 .sky {
@@ -828,6 +828,10 @@ function placeHorses() {
 
   // обновляем ширину трассы
   race.style.width = trackWidth + 'px';
+  
+  // Также обновляем ширину .race-inner (основного контейнера)
+  const raceInner = document.querySelector('.race-inner');
+  raceInner.style.width = trackWidth + 'px';
 
   // расширяем небо и забор
   const sky = race.querySelector('.sky');
@@ -835,6 +839,7 @@ function placeHorses() {
   sky.style.width = trackWidth + 'px';
   fence.style.width = trackWidth + 'px';
 
+  // остальной код без изменений...
   for (let i = 0; i < horsePoints.length; i++) {
     // линия дорожки
     const lane = document.createElement('div');
